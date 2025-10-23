@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id        Int      @id @default(autoincrement())
+  name      String
+  surname   String
+  email     String   @unique
+  password  String
+  picture   String?
+  lastLogin DateTime @default(now())
+  roles     Roles[]
+}
+
+model Roles {
+  id       Int    @id @default(autoincrement())
+  roleName String
+  claims   String
+  Users    Users? @relation(fields: [usersId], references: [id])
+  usersId  Int?
+}
+
+model Category {
+  id              Int               @id @default(autoincrement())
+  categoryName    String
+  seoTitle        String
+  seoDescription  String
+  queue           Int?
+  CategorySources CategorySources[]
+  Newses          Newses[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime
+}
+
+model CategorySources {
+  id             Int      @id @default(autoincrement())
+  sourceUrl      String
+  sourceSiteName String
+  category       Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId     Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime
+}
+
+model Newses {
+  id             Int      @id @default(autoincrement())
+  title          String
+  subDescription String
+  content        String
+  imageId        String
+  seoTitle       String
+  seoDescription String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime
+  category       Category @relation(fields: [categoryId], references: [id])
+  categoryId     Int
+}
