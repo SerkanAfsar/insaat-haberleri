@@ -53,8 +53,8 @@ export async function decrypt(
       },
     );
     return payload;
-  } catch (error) {
-    console.log("Failed to verify session");
+  } catch (error: any) {
+    console.log("Failed to verify session", error);
   }
 }
 

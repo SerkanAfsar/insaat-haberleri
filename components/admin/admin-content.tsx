@@ -1,20 +1,32 @@
-import { MoonStar, Search, SquareArrowRight } from "lucide-react";
+"use client";
+import {
+  MoonStar,
+  Search,
+  SquareArrowLeft,
+  SquareArrowRight,
+} from "lucide-react";
 import AdminTopWrapper from "./admin-top-wrapper";
 import LastContactList from "./last-contact-list";
 import { Input } from "../ui/input";
 import UserInfo from "./user-info";
+import { useAdminContext } from "@/Providers/AdminContext";
 
 export default function AdminContent({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { isMenuOpened, setIsMenuOpened } = useAdminContext();
   return (
     <section className="flex h-full w-full flex-auto flex-col overflow-auto">
       <AdminTopWrapper className="sticky top-0 right-0 left-0 w-full justify-between border-b bg-white px-4 py-10">
         <div className="flex items-center justify-between gap-4">
-          <button className="flex h-10 w-12 items-center justify-center rounded-sm border">
-            <SquareArrowRight />
+          <button
+            type="button"
+            onClick={() => setIsMenuOpened((prev: boolean) => !prev)}
+            className="flex h-10 w-12 cursor-pointer items-center justify-center rounded-sm border"
+          >
+            {isMenuOpened ? <SquareArrowLeft /> : <SquareArrowRight />}
           </button>
           <div className="relative flex items-stretch">
             <Search className="absolute top-[50%] left-2 -translate-y-1/2 text-gray-300" />

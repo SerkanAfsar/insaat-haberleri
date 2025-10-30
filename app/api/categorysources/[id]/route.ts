@@ -1,7 +1,9 @@
 import {
   DeleteCategoryUrlService,
   GetCategorySourceUrlByIdService,
+  UpdateCategoryUrlService,
 } from "@/Services/CategoryUrl.service";
+import { AddCategorySourceType } from "@/Types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -14,6 +16,23 @@ export async function GET(
     return NextResponse.json(result, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 400 });
+  }
+}
+
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } },
+) {
+  try {
+    const { id } = params;
+    const data: AddCategorySourceType = await req.json();
+    const result = await UpdateCategoryUrlService(Number(id), data);
+    return NextResponse.json(result, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json(
+      { message: error.message || "Hata" },
+      { status: 400 },
+    );
   }
 }
 

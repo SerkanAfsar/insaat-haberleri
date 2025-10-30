@@ -8,15 +8,24 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AdminTopWrapper from "./admin-top-wrapper";
 import { AdminDataType } from "@/Types";
+import { useAdminContext } from "@/Providers/AdminContext";
 
 export default function AdminLeftMenu() {
+  const { isMenuOpened } = useAdminContext();
   const [activeItem, setActiveItem] = useState<string>("");
 
   return (
-    <aside className="flex h-full w-[240px] flex-auto shrink-0 grow-0 flex-col border-r text-[#344054]">
-      <AdminTopWrapper className="justify-start gap-4 px-5 py-4">
-        <TextAlignJustify size={18} />
-        <h1 className="text-xl font-bold uppercase">Admin Panel</h1>
+    <aside
+      className={cn(
+        "flex h-full w-auto flex-auto shrink-0 grow-0 flex-col border-r text-[#344054] transition-all",
+        isMenuOpened && "w-[240px]",
+      )}
+    >
+      <AdminTopWrapper className="justify-center gap-4 overflow-hidden text-nowrap">
+        <TextAlignJustify size={18} className="shrink-0 grow-0" />
+        {isMenuOpened && (
+          <h1 className="text-xl font-bold uppercase">Admin Panel</h1>
+        )}
       </AdminTopWrapper>
       <div className="flex w-full flex-col gap-1 p-4">
         {AdminMenuList.map((item, key) => (
@@ -41,6 +50,7 @@ function Item({
   activeItem: string;
   setActiveItem: React.Dispatch<React.SetStateAction<string>>;
 }) {
+  const { isMenuOpened } = useAdminContext();
   const Icon = item.icon;
   const pathName = usePathname();
   const [isOpened, setIsOpened] = useState<boolean>(false);
@@ -53,9 +63,10 @@ function Item({
   const height = isOpened ? innerDiv.current?.scrollHeight + "px" : "0px";
   const isCurrent = isCurrentItem(item, pathName);
 
-  return (
-    <li className="flex cursor-pointer flex-col gap-2">
-      <Link
+  const ComponentItem = ({ item }: { item: AdminDataType }) => {
+    const Component = item.subItems ? "div" : Link;
+    return (
+      <Component
         onClick={(e) => {
           if (item.subItems && !item.href) {
             e.preventDefault();
@@ -68,23 +79,30 @@ function Item({
         }}
         href={item.href ?? "#"}
         className={cn(
-          "flex w-full items-center justify-between gap-2 rounded-md bg-white px-2 py-3 text-sm hover:bg-[#ecf3ff]",
+          "flex w-full items-center justify-center gap-2 rounded-md bg-white px-2 py-3 text-sm hover:bg-[#ecf3ff]",
           (isOpened || isCurrent) && "bg-[#ecf3ff]",
+          isMenuOpened && "justify-between",
         )}
       >
-        <span className="flex items-center justify-between gap-2">
-          <Icon className="size-4.5" />
-          {item.title}
+        <span className="flex items-center justify-between gap-2 text-nowrap">
+          <Icon className="shrink-0 grow-0" size={18} />
+          {isMenuOpened && item.title}
         </span>
-        {item.subItems ? (
+        {item.subItems && isMenuOpened && (
           <ChevronDown
             className={cn(
               "size-4.5 transition-all duration-300",
               isOpened && "-rotate-180",
             )}
           />
-        ) : null}
-      </Link>
+        )}
+      </Component>
+    );
+  };
+
+  return (
+    <li className="flex cursor-pointer flex-col gap-2">
+      <ComponentItem item={item} />
       {item.subItems && (
         <div
           ref={innerDiv}

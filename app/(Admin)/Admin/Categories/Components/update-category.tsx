@@ -29,7 +29,7 @@ export type UpdateComponentRef = {
 const UpdateCategory = React.forwardRef<
   UpdateComponentRef,
   UpdateComponentType<Category>
->(({ id, setIsOpened, ...rest }, ref) => {
+>(({ id, setIsOpened }, ref) => {
   const { data, error, isLoading } = useSingleItemById<Category>(
     id,
     `${ENDPOINTS.categories.url}/${id}`,
@@ -151,7 +151,6 @@ const UpdateCategory = React.forwardRef<
                     {...field}
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}

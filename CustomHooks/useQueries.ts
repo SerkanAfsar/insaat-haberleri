@@ -2,17 +2,22 @@ import useFetchApi from "@/CustomHooks/useFetchApi";
 import { GetAllServiceType } from "@/Types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { useTopLoader } from "nextjs-toploader";
 
 export function useSingleItemById<T>(
   id: number,
   url: string,
   validateKey: string,
 ) {
+  const loader = useTopLoader();
   const { fetchProcess } = useFetchApi(url, "GET");
+
   const { data, error, isLoading } = useQuery({
     queryKey: [validateKey, { id }],
     queryFn: async () => {
+      loader.start();
       const result = await fetchProcess();
+      loader.done();
       if (result) {
         return result as T;
       }
@@ -64,10 +69,12 @@ export function useCrudData<T extends object, K extends object>(
   method: "POST" | "PUT" | "DELETE",
   validateKey: string,
 ) {
+  const loader = useTopLoader();
   const queryClient = useQueryClient();
   const { fetchProcess } = useFetchApi<T, K>(url, method);
   const { data, error, isPending, isSuccess, mutateAsync } = useMutation({
     onMutate: async () => {
+      loader.start();
       await queryClient.cancelQueries({
         queryKey: [validateKey],
       });
@@ -85,6 +92,7 @@ export function useCrudData<T extends object, K extends object>(
     },
     onSettled: async () => {
       await queryClient.invalidateQueries({ queryKey: [validateKey] });
+      loader.done();
     },
   });
   return { data, error, isSuccess, isPending, mutateAsync };

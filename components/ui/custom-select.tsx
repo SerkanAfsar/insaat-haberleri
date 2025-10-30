@@ -21,48 +21,51 @@ import {
 import { OptionsType } from "@/Types";
 
 export type CustomSelectType = {
+  value: number | string;
   options: OptionsType[];
-  defaultValue: string;
   placeholder: string;
-  onChange: (item: number) => void;
+  onChange: (item: string | number) => void;
 };
 
 export function CustomSelect({
-  defaultValue,
+  value: defaultValue,
   options,
   placeholder,
   onChange: customChange,
 }: CustomSelectType) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState<string>(defaultValue);
+  const [value, setValue] = React.useState<number | string>(defaultValue);
 
+  console.log(value, typeof value);
   React.useEffect(() => {
     setValue(defaultValue);
   }, [defaultValue]);
 
   React.useEffect(() => {
-    customChange(options.find((a) => a.value == value)?.id || 0);
-  }, [value, customChange, options]);
+    if (value) {
+      customChange(value);
+    }
+  }, [value, customChange]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger className="w-full" asChild>
         <Button
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-full justify-between"
         >
           {value
-            ? options.find((elem) => elem.value === value)?.label
+            ? options.find((elem) => elem.value == value)?.label
             : placeholder}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0">
+      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
         <Command className="w-full">
           <CommandInput placeholder={placeholder} className="h-9" />
-          <CommandList>
+          <CommandList className="w-full">
             <CommandEmpty>Veri Bulunamadı...</CommandEmpty>
             <CommandGroup>
               {options.map((item) => (
@@ -70,7 +73,11 @@ export function CustomSelect({
                   key={item.value}
                   value={item.value.toString()}
                   onSelect={(currentValue) => {
-                    setValue(currentValue);
+                    setValue(
+                      typeof value == "number"
+                        ? Number(currentValue)
+                        : String(currentValue),
+                    );
                     setOpen(false);
                   }}
                 >

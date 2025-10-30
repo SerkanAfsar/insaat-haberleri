@@ -1,5 +1,5 @@
 import prisma from "@/lib/db";
-import { GetAllServiceType } from "@/Types";
+import { AddCategorySourceType, GetAllServiceType } from "@/Types";
 import { Prisma } from "@prisma/client";
 import { ColumnFiltersState, SortingState } from "@tanstack/react-table";
 
@@ -115,7 +115,66 @@ export async function DeleteCategoryUrlService(id: number) {
 export async function GetCategorySourceUrlByIdService(id: number) {
   const data = await prisma.categorySources.findFirst({ where: { id } });
   if (!data) {
-    throw new Error("Kategori Bulunamadı");
+    throw new Error("Kategori Url Bulunamadı");
   }
   return data;
+}
+
+export async function UpdateCategoryUrlService(
+  id: number,
+  updateData: AddCategorySourceType,
+) {
+  const existed = await prisma.categorySources.findFirst({
+    where: {
+      id: {
+        not: id,
+      },
+      AND: {
+        sourceSiteName: updateData.sourceSiteName,
+        categoryId: updateData.categoryId,
+        sourceUrl: updateData.sourceUrl,
+      },
+    },
+  });
+  if (existed) {
+    throw new Error("Kayıtlı Kategori Url Mevcut");
+  }
+  const updatedCategoryUrl = await prisma.categorySources.update({
+    where: { id },
+    data: {
+      categoryId: updateData.categoryId,
+      sourceSiteName: updateData.sourceSiteName,
+      sourceUrl: updateData.sourceUrl,
+    },
+  });
+  if (!updateData) {
+    throw new Error("Kategori Url Bulunamadı!..");
+  }
+  return updatedCategoryUrl;
+}
+
+export async function AddCategoryUrlService(item: AddCategorySourceType) {
+  const existData = await prisma.categorySources.findFirst({
+    where: {
+      categoryId: item.categoryId,
+      sourceSiteName: item.sourceSiteName,
+      sourceUrl: item.sourceUrl,
+    },
+    include: {
+      category: true,
+    },
+  });
+  if (existData) {
+    throw new Error(
+      `${existData.category.categoryName} Kategorisinde ${existData.sourceUrl} Zaten Kayıtlı`,
+    );
+  }
+  return await prisma.categorySources.create({
+    data: {
+      sourceSiteName: item.sourceSiteName,
+      sourceUrl: item.sourceUrl,
+      updatedAt: new Date(),
+      categoryId: item.categoryId,
+    },
+  });
 }

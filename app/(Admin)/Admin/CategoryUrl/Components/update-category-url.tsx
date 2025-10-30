@@ -22,25 +22,25 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useCrudData, useSingleItemById } from "@/CustomHooks/useQueries";
 import { Category, CategorySources } from "@prisma/client";
 
-import { NEWS_SOURCES } from "@/lib/admin.data";
+import { ENDPOINTS, newsSourceArr } from "@/lib/utils";
 import { CustomSelect } from "@/components/ui/custom-select";
-import { ENDPOINTS } from "@/lib/utils";
-import { ColumnDef } from "@tanstack/react-table";
+import { NEWS_SOURCES } from "@/lib/admin.data";
 
 export type UpdateComponentRef = {
   submit: () => void;
 };
 
-const AddUpdateCategoryUrl = React.forwardRef<
+const AddUpdateCategoryUrlComponent = React.forwardRef<
   UpdateComponentRef,
   UpdateComponentType<Category>
->(({ id, meta, setIsOpened, ...rest }, ref) => {
-  const { categoryList, siteSourceList } = meta as any;
+>(({ id, column, setIsOpened }, ref) => {
+  const { categoryList }: { categoryList: OptionsType[] } = column?.columnDef
+    .meta as any;
 
   const { data, error, isLoading } = useSingleItemById<CategorySources>(
     id,
-    `${ENDPOINTS.categories.url}/${id}`,
-    ENDPOINTS.categories.validateKey,
+    `${ENDPOINTS.categorySources.url}/${id}`,
+    ENDPOINTS.categorySources.validateKey,
   );
 
   const form = useForm<AddCategorySourceType>({
@@ -56,9 +56,9 @@ const AddUpdateCategoryUrl = React.forwardRef<
     CategorySources,
     AddCategorySourceType
   >(
-    `${ENDPOINTS.categories.url}/${id}`,
+    `${ENDPOINTS.categorySources.url}/${id}`,
     "PUT",
-    ENDPOINTS.categories.validateKey,
+    ENDPOINTS.categorySources.validateKey,
   );
 
   const onSubmit: SubmitHandler<AddCategorySourceType> = async (data) => {
@@ -79,7 +79,7 @@ const AddUpdateCategoryUrl = React.forwardRef<
 
   useEffect(() => {
     form.reset({
-      categoryId: data?.categoryId,
+      categoryId: data?.categoryId as number,
       sourceSiteName: data?.sourceSiteName,
       sourceUrl: data?.sourceUrl,
     });
@@ -130,7 +130,6 @@ const AddUpdateCategoryUrl = React.forwardRef<
                 <FormLabel>Kategori Seçiniz</FormLabel>
                 <FormControl>
                   <CustomSelect
-                    defaultValue="deneme"
                     options={categoryList}
                     placeholder="Kategori Seçiniz"
                     {...field}
@@ -148,8 +147,7 @@ const AddUpdateCategoryUrl = React.forwardRef<
                 <FormLabel>Kaynak Seçiniz</FormLabel>
                 <FormControl>
                   <CustomSelect
-                    defaultValue="deneme"
-                    options={siteSourceList}
+                    options={newsSourceArr}
                     placeholder="Kaynak Seçiniz"
                     {...field}
                   />
@@ -166,9 +164,9 @@ const AddUpdateCategoryUrl = React.forwardRef<
                 <FormLabel>Site Url</FormLabel>
                 <FormControl>
                   <Input
-                    onKeyDown={(e) => {
+                    onKeyDown={async (e) => {
                       if (e.key === "Enter") {
-                        form.handleSubmit(onSubmit)();
+                        await form.handleSubmit(onSubmit);
                       }
                     }}
                     placeholder="Site Url"
@@ -184,5 +182,5 @@ const AddUpdateCategoryUrl = React.forwardRef<
     </div>
   );
 });
-AddUpdateCategoryUrl.displayName = "AddUpdateCategoryUrl";
-export default AddUpdateCategoryUrl;
+AddUpdateCategoryUrlComponent.displayName = "AddUpdateCategoryUrlComponent";
+export default AddUpdateCategoryUrlComponent;

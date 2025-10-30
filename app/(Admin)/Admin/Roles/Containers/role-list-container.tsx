@@ -1,16 +1,17 @@
 "use client";
+
 import { CustomDataTable } from "@/components/datatable";
 import DataTableColumnHeader from "@/components/datatable/datatable-column-header";
 import DatatableRowActions from "@/components/datatable/datatable-row-actions";
-import { Category } from "@prisma/client";
+import { Roles } from "@prisma/client";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
-import UpdateCategory from "../Components/update-category";
 import { ENDPOINTS } from "@/lib/utils";
 
-export default function CategoryListContainer() {
-  const columns = useMemo<ColumnDef<Category>[]>(
+export default function RoleListContainer() {
+  const endPointValues = ENDPOINTS.roles;
+  const columns = useMemo<ColumnDef<Roles>[]>(
     () => [
       {
         id: "select",
@@ -49,17 +50,18 @@ export default function CategoryListContainer() {
         enableHiding: false,
       },
       {
-        id: "categoryName",
-        accessorKey: "categoryName",
+        id: "roleName",
+        accessorKey: "roleName",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Kategori Adı" />
+          <DataTableColumnHeader column={column} title="Rol Adı" />
         ),
         cell: ({ row }) => {
-          return <div>{row.getValue("categoryName")}</div>;
+          return <div>{row.getValue("roleName")}</div>;
         },
         enableSorting: true,
         enableHiding: false,
       },
+
       {
         id: "actions",
         header: () => {
@@ -69,25 +71,22 @@ export default function CategoryListContainer() {
           return (
             <DatatableRowActions
               row={row}
-              componentKey="categories"
+              componentKey="roles"
+              detailUrl="/Admin/Roles/Add"
               column={column}
-              CustomUpdateComponent={UpdateCategory}
             />
           );
-        },
-        meta: {
-          updateTitle: "Kategori Güncelleme",
-          updateDescription: "Kategori Güncelleme İşlemleri",
         },
       },
     ],
     [],
   );
+
   return (
     <CustomDataTable
       columns={columns}
-      validateKey={ENDPOINTS.categories.validateKey}
-      fetchUrl={ENDPOINTS.categories.url}
+      validateKey={endPointValues.validateKey}
+      fetchUrl={endPointValues.url}
     />
   );
 }

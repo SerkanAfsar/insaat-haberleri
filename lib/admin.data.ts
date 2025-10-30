@@ -1,4 +1,4 @@
-import { AdminDataType } from "@/Types";
+import { AdminDataType, ModuleClaimType } from "@/Types";
 import {
   ChartBarStacked,
   LayoutDashboard,
@@ -75,5 +75,44 @@ export const AdminMenuList: AdminDataType[] = [
 
 export const NEWS_SOURCES = {
   HUKUKI_HABER: "Hukuki Haber",
-  ADALET_BIZ: "Adaler Biz",
+  ADALET_BIZ: "Adalet Biz",
 } as const;
+
+export const ModuleClaimsData = {
+  Categories: {
+    create: false,
+    delete: false,
+    read: false,
+    update: false,
+  },
+  CategoryUrl: {
+    create: false,
+    delete: false,
+    read: false,
+    update: false,
+  },
+  Dashboard: {
+    create: false,
+    delete: false,
+    read: false,
+    update: false,
+  },
+  Roles: {
+    create: false,
+    delete: false,
+    read: false,
+    update: false,
+  },
+  Settings: {
+    create: false,
+    delete: false,
+    read: false,
+    update: false,
+  },
+  Users: {
+    create: false,
+    delete: false,
+    read: false,
+    update: false,
+  },
+} as const satisfies ModuleClaimType;

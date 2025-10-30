@@ -1,9 +1,8 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { AdminMenuList } from "./admin.data";
+import { AdminMenuList, NEWS_SOURCES } from "./admin.data";
 import { EnvData } from "@/Types/common.types";
 import { AdminDataType, OptionsType } from "@/Types";
-import { keyof } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -65,6 +64,10 @@ export const ENDPOINTS = {
     url: "/api/categorysources",
     validateKey: "categorySources",
   },
+  roles: {
+    url: "/api/roles",
+    validateKey: "roles",
+  },
 } as const;
 
 export function ConvertData<
@@ -73,8 +76,17 @@ export function ConvertData<
   L extends keyof T,
 >(data: T[], idKey: K, valueKey: L): OptionsType[] {
   return data.map((item) => ({
-    id: item[idKey] as number,
     label: item[valueKey] as string,
-    value: item[valueKey] as string,
+    value: item[idKey] as number,
   }));
 }
+
+export const newsSourceArr: OptionsType[] = Object.entries(NEWS_SOURCES).reduce<
+  OptionsType[]
+>((acc, [key, value]) => {
+  acc.push({
+    label: value,
+    value: key,
+  });
+  return acc;
+}, []);

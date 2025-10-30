@@ -1,9 +1,20 @@
-import {
-  AddCategoryUrlService,
-  GetAllCategoryUrlService,
-} from "@/Services/CategoryUrl.service";
-import { AddCategorySourceType } from "@/Types";
+import { AddRoleService, GetAllRolesService } from "@/Services/Role.service";
+import { AddRoleType } from "@/Types";
 import { NextRequest, NextResponse } from "next/server";
+
+export async function POST(req: Request) {
+  try {
+    const data: AddRoleType = await req.json();
+
+    const result = await AddRoleService(data);
+    return NextResponse.json(result, { status: 201 });
+  } catch (error: any) {
+    return NextResponse.json(
+      { message: error.message || (error as string) },
+      { status: 400 },
+    );
+  }
+}
 
 export async function GET(req: NextRequest) {
   try {
@@ -14,7 +25,7 @@ export async function GET(req: NextRequest) {
     const sorting = JSON.parse(searchParams.get("sorting") || "[]");
     const filters = JSON.parse(searchParams.get("filters") || "[]");
 
-    const result = await GetAllCategoryUrlService({
+    const result = await GetAllRolesService({
       count,
       filters,
       globalFilter,
@@ -22,19 +33,6 @@ export async function GET(req: NextRequest) {
       sorting,
     });
     return NextResponse.json(result, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error.message || (error as string) },
-      { status: 400 },
-    );
-  }
-}
-export async function POST(req: NextRequest) {
-  try {
-    const data: AddCategorySourceType = await req.json();
-
-    const result = await AddCategoryUrlService(data);
-    return NextResponse.json(result, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(
       { message: error.message || (error as string) },

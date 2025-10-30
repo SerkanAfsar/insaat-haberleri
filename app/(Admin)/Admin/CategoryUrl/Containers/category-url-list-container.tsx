@@ -7,10 +7,8 @@ import { CategorySources } from "@prisma/client";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
-
 import { OptionsType } from "@/Types";
 
-import { NEWS_SOURCES } from "@/lib/admin.data";
 import { ENDPOINTS } from "@/lib/utils";
 import AddUpdateCategoryUrl from "../Components/update-category-url";
 
@@ -79,7 +77,7 @@ export default function CategoryUrlListContainer({
           const categoryId = row.original.categoryId;
           return (
             <div>
-              {categoryList.find((a) => a.id == categoryId)?.value ||
+              {categoryList.find((a) => a.value == categoryId)?.value ||
                 "Not Found"}
             </div>
           );
@@ -116,7 +114,8 @@ export default function CategoryUrlListContainer({
         },
         meta: {
           categoryList,
-          sourceList: NEWS_SOURCES,
+          updateTitle: "Kategori Url Güncelleme",
+          updateDescription: "Kategori Url Güncelleme İşlemleri",
         },
       },
     ],

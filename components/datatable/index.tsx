@@ -18,8 +18,6 @@ import {
 } from "@tanstack/react-table";
 import ReactPaginate from "react-paginate";
 
-import { useQuery } from "@tanstack/react-query";
-
 import {
   Table,
   TableBody,

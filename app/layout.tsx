@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import { ToastContainer } from "react-toastify";
+import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 
 const outFit = Outfit({
@@ -23,6 +24,12 @@ export default function RootLayout({
       <body className={`${outFit.variable} antialiased`}>
         {children}
         <ToastContainer />
+        <NextTopLoader
+          color="#CE0F2E"
+          height={3}
+          showSpinner={true}
+          zIndex={1600}
+        />
       </body>
     </html>
   );

@@ -1,3 +1,5 @@
+import AddRoleContainer from "../Containers/add-role-container";
+
 export default function Page() {
-  return <div> Add Role List</div>;
+  return <AddRoleContainer type="ADD" />;
 }

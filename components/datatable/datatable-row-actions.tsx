@@ -1,4 +1,4 @@
-import { ColumnDef, Row, Table } from "@tanstack/react-table";
+import { Column, Row } from "@tanstack/react-table";
 import {
   Tooltip,
   TooltipContent,
@@ -16,8 +16,6 @@ import {
 } from "@/components/ui/sheet";
 import { Info, Trash } from "lucide-react";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,31 +34,56 @@ import { UpdateComponentRef } from "@/app/(Admin)/Admin/Categories/Components/up
 import { useCrudData } from "@/CustomHooks/useQueries";
 import { ENDPOINTS } from "@/lib/utils";
 
-interface DatatableRowActionProps<TData extends object> {
+import { useRouter } from "nextjs-toploader/app";
+type EitherKey =
+  | {
+      CustomUpdateComponent: React.ForwardRefExoticComponent<any>;
+      detailUrl?: never;
+    }
+  | { CustomUpdateComponent?: never; detailUrl: string };
+
+type DatatableRowActionProps<TData extends object> = {
   row: Row<TData>;
   componentKey: keyof typeof ENDPOINTS;
-  CustomUpdateComponent: React.ForwardRefExoticComponent<any>;
-  column: ColumnDef<TData>;
-}
+  column: Column<TData>;
+} & EitherKey;
 
 export default function DatatableRowActions<TData extends object>({
   row,
   componentKey,
   CustomUpdateComponent,
   column,
+  detailUrl,
 }: DatatableRowActionProps<TData>) {
+  const router = useRouter();
+
   return (
-    <>
-      <div className="flex items-center justify-start gap-4">
+    <div className="flex items-center justify-start gap-4">
+      {detailUrl ? (
+        <Tooltip>
+          <TooltipTrigger
+            onClick={() => {
+              return router.push(`${detailUrl}/${(row.original as any).id}`);
+            }}
+            className="cursor-pointer"
+          >
+            <Info className="size-5" />
+          </TooltipTrigger>
+          <TooltipContent>Deneme</TooltipContent>
+        </Tooltip>
+      ) : (
         <UpdateComponent
-          CustomUpdateComponent={CustomUpdateComponent}
+          CustomUpdateComponent={
+            CustomUpdateComponent as React.ForwardRefExoticComponent<any>
+          }
           id={(row.original as any).id}
           componentKey={componentKey}
           column={column}
         />
-        <DeleteComponent row={row} componentKey={componentKey} />
-      </div>
-    </>
+      )}
+
+      <DeleteComponent row={row} componentKey={componentKey} />
+    </div>
   );
 }
 
@@ -73,7 +96,7 @@ function DeleteComponent<TData extends object>({
 }) {
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const { id } = row.original as any;
-  const { mutateAsync } = useCrudData<TData, object>(
+  const { mutateAsync, isPending } = useCrudData<TData, object>(
     `${ENDPOINTS[componentKey].url}/${id}`,
     "DELETE",
     ENDPOINTS[componentKey].validateKey,
@@ -106,8 +129,9 @@ function DeleteComponent<TData extends object>({
               await mutateAsync(undefined);
               setIsOpened(false);
             }}
+            disabled={isPending}
           >
-            Sil
+            {isPending ? "Siliniyor" : "Sil"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -124,8 +148,13 @@ function UpdateComponent<TData extends object>({
   id: number;
   CustomUpdateComponent: React.ForwardRefExoticComponent<any>;
   componentKey: keyof typeof ENDPOINTS;
-  column: ColumnDef<TData>;
+  column: Column<TData>;
 }) {
+  const {
+    updateTitle,
+    updateDescription,
+  }: { updateTitle: string; updateDescription: string } = column.columnDef
+    .meta as any;
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const ref = useRef<UpdateComponentRef>(null);
 
@@ -148,19 +177,16 @@ function UpdateComponent<TData extends object>({
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>
-            <SheetTitle>Are you absolutely sure?</SheetTitle>
-            <SheetDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </SheetDescription>
+            <SheetTitle>{updateTitle}</SheetTitle>
+            <SheetDescription>{updateDescription}</SheetDescription>
           </SheetHeader>
 
           <CustomUpdateComponent
             ref={ref}
             id={id}
             setIsOpened={setIsOpened}
+            column={column}
             validateKey={ENDPOINTS[componentKey].validateKey}
-            meta={column.meta}
           />
           <SheetFooter>
             <Button
