@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { logOut } from "@/lib/auth";
 
 export default function UserInfo() {
   const [opened, setIsOpened] = React.useState<boolean>(false);
@@ -69,7 +70,14 @@ export default function UserInfo() {
           </Link>
         </div>
         <DropdownMenuSeparator />
-        <Link href={"/"} className="flex items-center gap-2 px-7 py-2">
+        <Link
+          href={"/"}
+          onClick={async (e) => {
+            e.preventDefault();
+            await logOut();
+          }}
+          className="flex items-center gap-2 px-7 py-2"
+        >
           <LogOut className="size-5" />
           <span>Çıkış</span>
         </Link>

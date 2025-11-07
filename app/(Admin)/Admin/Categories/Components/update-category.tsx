@@ -8,11 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  addCategorySchema,
-  AddCategoryType,
-  UpdateComponentType,
-} from "@/Types";
+import { AddCategoryType, UpdateComponentType } from "@/Types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Terminal } from "lucide-react";
 import React, { useEffect, useImperativeHandle } from "react";
@@ -21,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useCrudData, useSingleItemById } from "@/CustomHooks/useQueries";
 import { Category } from "@prisma/client";
 import { ENDPOINTS } from "@/lib/utils";
+import { addCategorySchema } from "@/lib/schemas";
 
 export type UpdateComponentRef = {
   submit: () => void;

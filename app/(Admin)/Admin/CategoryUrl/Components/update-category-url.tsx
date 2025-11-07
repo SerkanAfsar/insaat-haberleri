@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-  addCategorySourceSchema,
   AddCategorySourceType,
   OptionsType,
   UpdateComponentType,
@@ -25,6 +24,7 @@ import { Category, CategorySources } from "@prisma/client";
 import { ENDPOINTS, newsSourceArr } from "@/lib/utils";
 import { CustomSelect } from "@/components/ui/custom-select";
 import { NEWS_SOURCES } from "@/lib/admin.data";
+import { addCategorySourceSchema } from "@/lib/schemas";
 
 export type UpdateComponentRef = {
   submit: () => void;

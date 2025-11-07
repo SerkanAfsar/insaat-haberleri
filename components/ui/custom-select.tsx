@@ -30,22 +30,15 @@ export type CustomSelectType = {
 export function CustomSelect({
   value: defaultValue,
   options,
-  placeholder,
+  placeholder = "Seçiniz",
   onChange: customChange,
 }: CustomSelectType) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState<number | string>(defaultValue);
 
-  console.log(value, typeof value);
   React.useEffect(() => {
     setValue(defaultValue);
   }, [defaultValue]);
-
-  React.useEffect(() => {
-    if (value) {
-      customChange(value);
-    }
-  }, [value, customChange]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -56,9 +49,7 @@ export function CustomSelect({
           aria-expanded={open}
           className="w-full justify-between"
         >
-          {value
-            ? options.find((elem) => elem.value == value)?.label
-            : placeholder}
+          {options.find((a) => a.value == value)?.label ?? placeholder}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -71,12 +62,12 @@ export function CustomSelect({
               {options.map((item) => (
                 <CommandItem
                   key={item.value}
-                  value={item.value.toString()}
+                  value={item.label}
                   onSelect={(currentValue) => {
-                    setValue(
-                      typeof value == "number"
-                        ? Number(currentValue)
-                        : String(currentValue),
+                    setValue(currentValue);
+                    customChange(
+                      options.find((a) => a.label == currentValue)?.value ??
+                        defaultValue,
                     );
                     setOpen(false);
                   }}

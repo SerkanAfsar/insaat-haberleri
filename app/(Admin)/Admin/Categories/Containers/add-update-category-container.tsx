@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,12 +11,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { addCategorySchema, AddCategoryType } from "@/Types";
+import { AddCategoryType } from "@/Types";
 import { Input } from "@/components/ui/input";
 import { Category } from "@prisma/client";
-
 import { useCrudData } from "@/CustomHooks/useQueries";
 import { ENDPOINTS } from "@/lib/utils";
+import { addCategorySchema } from "@/lib/schemas";
 
 export default function AddUpdateCategoryContainer() {
   const form = useForm<AddCategoryType>({

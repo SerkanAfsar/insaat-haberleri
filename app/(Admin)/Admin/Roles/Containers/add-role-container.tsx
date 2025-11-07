@@ -1,6 +1,6 @@
 "use client";
 
-import { addRoleSchema, AddRoleType, ModuleType } from "@/Types";
+import { AddRoleType, ModuleType } from "@/Types";
 import {
   Form,
   FormControl,
@@ -19,6 +19,7 @@ import { cn, ENDPOINTS } from "@/lib/utils";
 import { useCrudData } from "@/CustomHooks/useQueries";
 import { Roles } from "@prisma/client";
 import { useParams, useRouter } from "next/navigation";
+import { addRoleSchema } from "@/lib/schemas";
 
 const defaultValues = {
   roleName: "",
@@ -64,7 +65,7 @@ const defaultValues = {
 
 export default function AddRoleContainer({
   type,
-  defaultDataValues,
+  defaultDataValues = defaultValues,
 }: {
   type: "ADD" | "UPDATE";
   defaultDataValues?: AddRoleType;
@@ -73,7 +74,7 @@ export default function AddRoleContainer({
   const router = useRouter();
   const form = useForm<AddRoleType>({
     resolver: zodResolver(addRoleSchema),
-    defaultValues: defaultDataValues ?? defaultValues,
+    defaultValues: defaultDataValues,
   });
 
   const endPointValues = ENDPOINTS.roles;

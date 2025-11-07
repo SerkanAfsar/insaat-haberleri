@@ -1,10 +1,10 @@
 "use server";
 
-import { LoginType } from "@/Schemas/auth.schemas";
-import { createSession, verifyPassword } from "@/lib/auth";
+import { createSession } from "@/lib/auth";
 import prisma from "@/lib/db";
+import { BcryptHelper } from "@/lib/utils";
+import { LoginType, SessionPayload } from "@/Types";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export async function AuthLogin(loginData: LoginType) {
   const cookieStore = await cookies();
@@ -14,23 +14,28 @@ export async function AuthLogin(loginData: LoginType) {
     },
   });
   if (!user) {
-    return {
-      error: "Kullanıcı Bulunamadı",
-    };
+    throw new Error("Kullanıcı Bulunamadı!");
   }
-  const passCompare = await verifyPassword(loginData.password, user.password);
+  const passCompare = await BcryptHelper.comparePassword(
+    loginData.password,
+    user.password,
+  );
   if (!passCompare) {
-    return {
-      error: "Şifre Yanlış",
-    };
+    throw new Error("Şifre Yanlış");
   }
+  const session: SessionPayload = {
+    userEmail: user.email,
+    userId: user.id.toString(),
+    userName: user.name,
+    userSurname: user.surname,
+  };
   const { token: accessToken, expiresAt: accessExpire } = await createSession(
-    user.email,
+    session,
     "accessToken",
   );
 
   const { token: refreshToken, expiresAt: refreshExpire } = await createSession(
-    user.email,
+    session,
     "refreshToken",
   );
 
@@ -45,6 +50,5 @@ export async function AuthLogin(loginData: LoginType) {
     secure: process.env.NODE_ENV === "production",
     expires: refreshExpire,
   });
-
-  redirect("/Admin/Dashboard");
+  return true;
 }

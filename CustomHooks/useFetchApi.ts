@@ -2,6 +2,13 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { toast } from "react-toastify";
 
+async function getContent(response: Response) {
+  const contentHeader = response.headers.get("Content-Type");
+  return contentHeader && contentHeader == "application/json"
+    ? await response.json()
+    : null;
+}
+
 export default function useFetchApi<T, K>(
   url: string,
   method: "GET" | "POST" | "PUT" | "DELETE",
@@ -21,28 +28,25 @@ export default function useFetchApi<T, K>(
       }
 
       const response = await fetch(url, request);
+      const result = await getContent(response);
 
       if (response.status === 401) {
-        toast.error("Yetkisiz erişim. Oturumunuz süresi dolmuş olabilir.", {
-          position: "top-right",
-        });
-
         setTimeout(() => {
           router.push("/Login");
         }, 3000);
-
-        throw new Error(
-          "Yetkisiz erişim. Oturumunuz süresi dolmuş olabilir.111",
-        );
       }
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Bilinmeyen hata");
+      if (response.ok) {
+        if (method != "GET") {
+          toast.success("İşlem Başarılı", { position: "top-right" });
+        }
+      } else {
+        toast.error(result?.message || "Bilinmeyen Hata", {
+          position: "top-right",
+        });
       }
 
-      const result = (await response.json()) as T;
-      return result;
+      return result as T;
     },
     [url, router, method],
   );

@@ -14,22 +14,32 @@ datasource db {
 }
 
 model Users {
-  id        Int      @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   name      String
   surname   String
-  email     String   @unique
+  email     String      @unique
   password  String
   picture   String?
-  lastLogin DateTime @default(now())
-  roles     Roles[]
+  lastLogin DateTime    @default(now())
+  UserRoles UserRoles[]
 }
 
 model Roles {
-  id       Int    @id @default(autoincrement())
-  roleName String
-  claims   String
-  Users    Users? @relation(fields: [usersId], references: [id])
-  usersId  Int?
+  id        Int         @id @default(autoincrement())
+  roleName  String
+  claims    String
+  UserRoles UserRoles[]
+}
+
+model UserRoles {
+  id Int @id @default(autoincrement())
+
+  user    Users @relation(fields: [usersId], references: [id], onDelete: Cascade)
+  usersId Int
+  role    Roles @relation(fields: [rolesId], references: [id], onDelete: Cascade)
+  rolesId Int
+
+  @@unique([usersId, rolesId])
 }
 
 model Category {

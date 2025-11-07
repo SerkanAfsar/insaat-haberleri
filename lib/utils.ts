@@ -1,8 +1,9 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import bcrypt from "bcryptjs";
 import { AdminMenuList, NEWS_SOURCES } from "./admin.data";
-import { EnvData } from "@/Types/common.types";
-import { AdminDataType, OptionsType } from "@/Types";
+
+import { AdminDataType, EnvData, OptionsType } from "@/Types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -68,6 +69,10 @@ export const ENDPOINTS = {
     url: "/api/roles",
     validateKey: "roles",
   },
+  users: {
+    url: "/api/users",
+    validateKey: "users",
+  },
 } as const;
 
 export function ConvertData<
@@ -90,3 +95,13 @@ export const newsSourceArr: OptionsType[] = Object.entries(NEWS_SOURCES).reduce<
   });
   return acc;
 }, []);
+
+export const BcryptHelper = {
+  hashPassword: async (plain: string, saltRounds = 10): Promise<string> => {
+    return await bcrypt.hash(plain, saltRounds);
+  },
+
+  comparePassword: async (plain: string, hashed: string): Promise<boolean> => {
+    return await bcrypt.compare(plain, hashed);
+  },
+};

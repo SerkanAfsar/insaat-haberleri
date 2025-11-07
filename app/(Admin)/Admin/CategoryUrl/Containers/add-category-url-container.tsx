@@ -11,16 +11,19 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  addCategorySourceSchema,
-  AddCategorySourceType,
-  OptionsType,
-} from "@/Types";
+import { AddCategorySourceType, OptionsType } from "@/Types";
 import { Input } from "@/components/ui/input";
 import { CategorySources } from "@prisma/client";
 import { useCrudData } from "@/CustomHooks/useQueries";
 import { ENDPOINTS, newsSourceArr } from "@/lib/utils";
 import { CustomSelect } from "@/components/ui/custom-select";
+import { addCategorySourceSchema } from "@/lib/schemas";
+
+const defaultValues = {
+  categoryId: 0,
+  sourceSiteName: "0",
+  sourceUrl: "",
+};
 
 export default function AddCategoryUrlContainer({
   categoryList,
@@ -29,11 +32,7 @@ export default function AddCategoryUrlContainer({
 }) {
   const form = useForm<AddCategorySourceType>({
     resolver: zodResolver(addCategorySourceSchema),
-    defaultValues: {
-      categoryId: 0,
-      sourceSiteName: "0",
-      sourceUrl: "",
-    },
+    defaultValues,
   });
 
   const { mutateAsync } = useCrudData<CategorySources, AddCategorySourceType>(
@@ -44,9 +43,8 @@ export default function AddCategoryUrlContainer({
 
   async function onSubmit(values: AddCategorySourceType) {
     const result = await mutateAsync(values);
-    if (result) {
-      form.reset();
-    }
+    console.log(result);
+    form.reset();
   }
 
   return (
@@ -69,6 +67,10 @@ export default function AddCategoryUrlContainer({
                       options={categoryList}
                       placeholder="Kategori Seçiniz"
                       {...field}
+                      value={field.value}
+                      onChange={(elem) => {
+                        form.setValue("categoryId", elem as number);
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
@@ -86,6 +88,10 @@ export default function AddCategoryUrlContainer({
                       options={newsSourceArr}
                       placeholder="Kaynak Seçiniz"
                       {...field}
+                      value={field.value}
+                      onChange={(elem) => {
+                        form.setValue("sourceSiteName", elem as any);
+                      }}
                     />
                   </FormControl>
                   <FormMessage />

@@ -1,31 +1,20 @@
-"server only";
+"use server";
 import { SignJWT, jwtVerify } from "jose";
-
-import bcrypt from "bcrypt";
 import { envData } from "./utils";
 import { SessionPayload, TokenTypes } from "@/Types";
-
-const saltRounds = 12;
-export async function hashPassword(plainPassword: string): Promise<string> {
-  const hash = await bcrypt.hash(plainPassword, saltRounds);
-  return hash;
-}
-
-export async function verifyPassword(
-  plainPassword: string,
-  hash: string,
-): Promise<boolean> {
-  return bcrypt.compare(plainPassword, hash);
-}
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const tokenTypes: TokenTypes = {
   accessToken: {
-    expiresAt: "1000",
-    tokenKey: new TextEncoder().encode(envData.ACCESS_TOKEN_SECRET_KEY),
+    expiresAt: "5m",
+    encodedTokenKey: new TextEncoder().encode(envData.ACCESS_TOKEN_SECRET_KEY),
+    tokenKey: envData.ACCESS_TOKEN_SECRET_KEY,
   },
   refreshToken: {
-    expiresAt: "2000",
-    tokenKey: new TextEncoder().encode(envData.REFRESH_TOKEN_SECRET_KEY),
+    expiresAt: "60d",
+    encodedTokenKey: new TextEncoder().encode(envData.REFRESH_TOKEN_SECRET_KEY),
+    tokenKey: envData.REFRESH_TOKEN_SECRET_KEY,
   },
 };
 
@@ -36,8 +25,8 @@ export async function encrypt(
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime(`${tokenTypes[keyValue].expiresAt}s`)
-    .sign(tokenTypes[keyValue].tokenKey);
+    .setExpirationTime(`${tokenTypes[keyValue].expiresAt}`)
+    .sign(tokenTypes[keyValue].encodedTokenKey);
 }
 
 export async function decrypt(
@@ -47,27 +36,34 @@ export async function decrypt(
   try {
     const { payload } = await jwtVerify(
       session,
-      tokenTypes[keyValue].tokenKey,
+      tokenTypes[keyValue].encodedTokenKey,
       {
         algorithms: ["HS256"],
       },
     );
-    return payload;
+    return payload as SessionPayload;
   } catch (error: any) {
     console.log("Failed to verify session", error);
   }
 }
 
 export async function createSession(
-  userName: string,
+  payload: SessionPayload,
   tokenType: keyof TokenTypes,
 ) {
   const time = 60 * 60 * Number(tokenTypes[tokenType].expiresAt);
   const expiresAt = new Date(Date.now() + time);
-  const token = await encrypt({ userName, expiresAt }, tokenType);
+  const token = await encrypt(payload, tokenType);
 
   return {
     token,
     expiresAt,
   };
+}
+
+export async function logOut() {
+  const cookieStore = await cookies();
+  cookieStore.delete("accessToken");
+  cookieStore.delete("refreshToken");
+  redirect("/Login");
 }

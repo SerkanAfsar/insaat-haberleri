@@ -1,7 +1,6 @@
 import useFetchApi from "@/CustomHooks/useFetchApi";
 import { GetAllServiceType } from "@/Types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import { useTopLoader } from "nextjs-toploader";
 
 export function useSingleItemById<T>(
@@ -26,6 +25,7 @@ export function useSingleItemById<T>(
     refetchOnWindowFocus: false,
     retry: false,
   });
+
   return { data, error, isLoading };
 }
 
@@ -84,10 +84,9 @@ export function useCrudData<T extends object, K extends object>(
       return result as T;
     },
     onError: (error) => {
-      toast.error(error.message, { position: "top-right" });
+      return error;
     },
     onSuccess: (data: T) => {
-      toast.success("İşlem Başarılı", { position: "top-right" });
       return data;
     },
     onSettled: async () => {

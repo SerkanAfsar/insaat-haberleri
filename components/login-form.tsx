@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,7 +9,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-
 import {
   Form,
   FormControl,
@@ -18,15 +18,22 @@ import {
   FormMessage,
 } from "./ui/form";
 import { useForm } from "react-hook-form";
-import { loginSchema, LoginType } from "@/Schemas/auth.schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AuthLogin } from "@/Services/Auth.service";
+
 import Link from "next/link";
+import { loginSchema } from "@/lib/schemas";
+import { LoginType } from "@/Types";
+
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export function LoginForm({
   className,
+  expired,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div"> & { expired?: string }) {
+  const router = useRouter();
   const form = useForm<LoginType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -35,10 +42,26 @@ export function LoginForm({
     },
   });
 
+  useEffect(() => {
+    if (expired && Boolean(expired) == true) {
+      toast.error("Oturum Süresi Dolmuştur", { position: "top-right" });
+    }
+  }, [expired]);
+
   async function onSubmit(values: LoginType) {
-    const result = await AuthLogin(values);
-    if (result.error) {
-      form.setError("root", { message: result.error });
+    const response = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify(values),
+    });
+    const contentType = response.headers.get("Content-Type");
+    if (contentType && contentType == "application/json") {
+      const result = await response.json();
+      if (!response.ok) {
+        form.reset();
+        return toast.error(result.message, { position: "top-right" });
+      } else {
+        return router.push("/Admin/Dashboard");
+      }
     }
   }
   return (
