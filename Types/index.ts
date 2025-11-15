@@ -24,6 +24,7 @@ export type SessionPayload = {
   userId: string;
   userEmail: string;
   userSurname: string;
+  claims?: string[];
 };
 
 export type TokenTypes = Record<
@@ -91,3 +92,5 @@ export type ContentType = Readonly<{
 export type AddUserType = z.infer<typeof addUserSchema>;
 
 export type UpdateUserType = z.infer<typeof updateUserSchema>;
+
+

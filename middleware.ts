@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "./lib/auth";
 import { cookies } from "next/headers";
+import { ApiCheckValue, ApiRoleType, MethodType } from "./lib/admin.data";
 
 export default async function middleware(req: NextRequest) {
   const cookieStore = await cookies();
@@ -13,6 +14,22 @@ export default async function middleware(req: NextRequest) {
   const apiUrl = pathName.includes("/api");
 
   const userSession = await decrypt(accessToken, "accessToken");
+
+  if (accessToken && userSession && apiUrl) {
+    const claims = userSession.claims;
+
+    const pathExist =
+      ApiCheckValue[
+        req.nextUrl.pathname.replace(/\/\d+$/, "") as keyof ApiRoleType
+      ][req.method.toLowerCase() as keyof MethodType];
+
+    if (claims?.indexOf(pathExist) == -1) {
+      return NextResponse.json(
+        { message: "Bu İşlemi Yapmak İçin İzniniz Bulunmamaktadır!" },
+        { status: 403 },
+      );
+    }
+  }
 
   if (
     (!accessToken || !userSession) &&

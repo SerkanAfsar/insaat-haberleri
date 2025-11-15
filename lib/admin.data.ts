@@ -116,3 +116,61 @@ export const ModuleClaimsData = {
     update: false,
   },
 } as const satisfies ModuleClaimType;
+
+export const apiUrl = {
+  Categories: "/api/category",
+  CategoryUrl: "/api/categorysources",
+  Users: "/api/users",
+  Roles: "/api/roles",
+} as const;
+
+export const methodTypes = {
+  get: "GET",
+  post: "POST",
+  put: "PUT",
+  delete: "DELETE",
+} as const;
+
+export type ApiUrlType = typeof apiUrl;
+
+export type MethodType = typeof methodTypes;
+
+export type CrudType = {
+  read: boolean;
+  create: boolean;
+  update: boolean;
+  delete: boolean;
+};
+
+export type ApiRoleType = {
+  [K in keyof ApiUrlType as ApiUrlType[K]]: {
+    [M in keyof MethodType]: `${K}.${keyof CrudType}`;
+  };
+};
+
+export const ApiCheckValue: ApiRoleType = {
+  "/api/category": {
+    delete: "Categories.delete",
+    get: "Categories.read",
+    post: "Categories.create",
+    put: "Categories.update",
+  },
+  "/api/categorysources": {
+    delete: "CategoryUrl.delete",
+    get: "CategoryUrl.read",
+    post: "CategoryUrl.create",
+    put: "CategoryUrl.update",
+  },
+  "/api/roles": {
+    delete: "Roles.delete",
+    get: "Roles.read",
+    post: "Roles.create",
+    put: "Roles.update",
+  },
+  "/api/users": {
+    delete: "Users.delete",
+    get: "Users.read",
+    post: "Users.create",
+    put: "Users.update",
+  },
+};

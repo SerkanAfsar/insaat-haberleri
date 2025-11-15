@@ -5,7 +5,11 @@ import { AddUserType } from "@/Types";
 import { GetUserById } from "@/Services/Users.service";
 import { notFound } from "next/navigation";
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const roleList = await prisma.roles.findMany({
     orderBy: { id: "asc" },

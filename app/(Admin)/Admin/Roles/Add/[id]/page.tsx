@@ -2,7 +2,11 @@ import { GetSingleRoleById } from "@/Services/Role.service";
 import AddRoleContainer from "../../Containers/add-role-container";
 import { AddRoleType, ModuleClaimType } from "@/Types";
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
 
   const role = await GetSingleRoleById(Number(id));
@@ -10,5 +14,6 @@ export default async function Page({ params }: { params: { id: string } }) {
     claims: JSON.parse(role.claims) as ModuleClaimType,
     roleName: role.roleName,
   };
+
   return <AddRoleContainer defaultDataValues={data} type="UPDATE" />;
 }

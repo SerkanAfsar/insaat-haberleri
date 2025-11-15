@@ -12,6 +12,22 @@ export async function AuthLogin(loginData: LoginType) {
     where: {
       email: loginData.email,
     },
+    select: {
+      password: true,
+      email: true,
+      name: true,
+      surname: true,
+      id: true,
+      UserRoles: {
+        select: {
+          role: {
+            select: {
+              claims: true,
+            },
+          },
+        },
+      },
+    },
   });
   if (!user) {
     throw new Error("Kullanıcı Bulunamadı!");
@@ -28,7 +44,13 @@ export async function AuthLogin(loginData: LoginType) {
     userId: user.id.toString(),
     userName: user.name,
     userSurname: user.surname,
+    claims: [
+      ...new Set(user.UserRoles.flatMap((a) => JSON.parse(a.role.claims))),
+    ],
   };
+
+  console.log("session is", session);
+
   const { token: accessToken, expiresAt: accessExpire } = await createSession(
     session,
     "accessToken",

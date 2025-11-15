@@ -8,10 +8,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const result = await DeleteRoleService(Number(id));
     return NextResponse.json({ result }, { status: 200 });
   } catch (error: any) {
@@ -22,11 +22,11 @@ export async function DELETE(
   }
 }
 export async function GET(
-  req: NextResponse,
-  { params }: { params: { id: string } },
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const result = await GetSingleRoleById(Number(id));
     return NextResponse.json({ result }, { status: 200 });
   } catch (error: any) {
@@ -38,11 +38,11 @@ export async function GET(
 }
 
 export async function PUT(
-  req: NextResponse,
-  { params }: { params: { id: string } },
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const data: AddRoleType = await req.json();
     const result = await UpdateRoleService(Number(id), data);
     return NextResponse.json({ result }, { status: 200 });
