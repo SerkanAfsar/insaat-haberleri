@@ -9,10 +9,12 @@ export async function POST(req: NextRequest) {
   if (!verifiedRefresh) {
     return NextResponse.json({ message: "UnAuthorized" }, { status: 401 });
   }
+
   const { token: accessTokenResult } = await createSession(
     verifiedRefresh,
     "accessToken",
   );
+
   const { token: refreshTokenResult } = await createSession(
     verifiedRefresh,
     "refreshToken",

@@ -1,18 +1,12 @@
+import { encodeClaims } from "@/lib/admin.data";
 import prisma from "@/lib/db";
 import { AddRoleType, GetAllServiceType } from "@/Types";
 import { Prisma } from "@prisma/client";
 import { ColumnFiltersState, SortingState } from "@tanstack/react-table";
 
 export async function AddRoleService(role: AddRoleType) {
-  const arr: string[] = [];
-  Object.entries(role.claims).forEach(([key, permissions]) => {
-    Object.entries(permissions).forEach(([permKey, value]) => {
-      if (value) arr.push(`${key}.${permKey}`);
-    });
-  });
-
   return await prisma.roles.create({
-    data: { roleName: role.roleName, claims: JSON.stringify(arr) },
+    data: { roleName: role.roleName, claims: encodeClaims(role.claims) },
   });
 }
 
@@ -148,7 +142,7 @@ export async function UpdateRoleService(id: number, role: AddRoleType) {
     },
     data: {
       roleName: role.roleName,
-      claims: JSON.stringify(role.claims),
+      claims: encodeClaims(role.claims),
     },
   });
   if (!result) {

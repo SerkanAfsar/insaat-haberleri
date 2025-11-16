@@ -49,8 +49,6 @@ export async function AuthLogin(loginData: LoginType) {
     ],
   };
 
-  console.log("session is", session);
-
   const { token: accessToken, expiresAt: accessExpire } = await createSession(
     session,
     "accessToken",

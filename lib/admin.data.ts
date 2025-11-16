@@ -174,3 +174,43 @@ export const ApiCheckValue: ApiRoleType = {
     put: "Users.update",
   },
 };
+
+export const convertToClaimData = (data: string[]) => {
+  if (data.length == 0) return;
+
+  const arrList = [
+    "Categories",
+    "CategoryUrl",
+    "Dashboard",
+    "Roles",
+    "Settings",
+    "Users",
+  ];
+
+  return arrList.reduce((acc, next) => {
+    const readAction = `${next}.read`;
+    const createAction = `${next}.create`;
+    const updateAction = `${next}.update`;
+    const deleteAction = `${next}.delete`;
+
+    return {
+      ...acc,
+      [next]: {
+        create: data.indexOf(createAction) > -1,
+        read: data.indexOf(readAction) > -1,
+        update: data.indexOf(updateAction) > -1,
+        delete: data.indexOf(deleteAction) > -1,
+      },
+    };
+  }, {});
+};
+
+export const encodeClaims = <T extends object>(claims: T) => {
+  const arr: string[] = [];
+  Object.entries(claims).forEach(([key, permissions]) => {
+    Object.entries(permissions).forEach(([permKey, value]) => {
+      if (value) arr.push(`${key}.${permKey}`);
+    });
+  });
+  return JSON.stringify(arr);
+};

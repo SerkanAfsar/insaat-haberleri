@@ -51,13 +51,17 @@ export async function createSession(
   payload: SessionPayload,
   tokenType: keyof TokenTypes,
 ) {
-  const time = 60 * 60 * Number(tokenTypes[tokenType].expiresAt);
-  const expiresAt = new Date(Date.now() + time);
-  const token = await encrypt(payload, tokenType);
+  const expires = new Date();
+  if (tokenType == "accessToken") {
+    expires.setTime(expires.getTime() + 5 * 60 * 1000);
+  } else {
+    expires.setTime(expires.getTime() + 60 * 60 * 1000 * 24 * 50);
+  }
 
+  const token = await encrypt(payload, tokenType);
   return {
     token,
-    expiresAt,
+    expiresAt: expires,
   };
 }
 
