@@ -3,7 +3,7 @@
 import { cn, isCurrentItem } from "@/lib/utils";
 import { AdminMenuList } from "@/lib/admin.data";
 import { ChevronDown, TextAlignJustify } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AdminTopWrapper from "./admin-top-wrapper";
@@ -56,12 +56,13 @@ function Item({
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const innerDiv = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setIsOpened(activeItem == item.title);
-  }, [activeItem, setIsOpened, item.title]);
+  const isCurrent = isCurrentItem(item, pathName);
+
+  // useEffect(() => {
+  //   setIsOpened(activeItem == item.title);
+  // }, [activeItem, setIsOpened, item.title]);
 
   const height = isOpened ? innerDiv.current?.scrollHeight + "px" : "0px";
-  const isCurrent = isCurrentItem(item, pathName);
 
   const ComponentItem = ({ item }: { item: AdminDataType }) => {
     const Component = item.subItems ? "div" : Link;

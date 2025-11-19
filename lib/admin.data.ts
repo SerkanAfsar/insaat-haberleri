@@ -74,8 +74,26 @@ export const AdminMenuList: AdminDataType[] = [
 ];
 
 export const NEWS_SOURCES = {
-  HUKUKI_HABER: "Hukuki Haber",
-  ADALET_BIZ: "Adalet Biz",
+  INSAAT_DERYASI: {
+    title: "İnşaat Deryası",
+    url: "https://www.insaatderyasi.com/",
+    categoryNodeKey: ".col-xs-12.col-ms-6.col-md-4 a",
+    newsDetail: {
+      title: ".content-title",
+      subTitle: ".content-description summary",
+      content: ".text-content",
+    },
+  },
+  YAPI_COMTR: {
+    title: "Yapı Com Tr",
+    url: "https://www.yapi.com.tr/",
+    categoryNodeKey: ".mid-news-bar a",
+    newsDetail: {
+      title: ".news-detail-title",
+      subTitle: ".subinfo",
+      content: ".news_detail_paged_content",
+    },
+  },
 } as const;
 
 export const ModuleClaimsData = {

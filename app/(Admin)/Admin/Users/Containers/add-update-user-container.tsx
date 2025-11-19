@@ -147,6 +147,7 @@ export default function AddUpdateUserContainer({
               <FormControl>
                 <CustomMultiSelect
                   isMulti
+                  noOptionsMessage={() => "Rol Bulunamadı..."}
                   options={roleList}
                   placeholder="Rolleri Seçiniz"
                   {...field}

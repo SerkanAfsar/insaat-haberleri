@@ -2,7 +2,6 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import bcrypt from "bcryptjs";
 import { AdminMenuList, NEWS_SOURCES } from "./admin.data";
-
 import { AdminDataType, EnvData, OptionsType } from "@/Types";
 
 export function cn(...inputs: ClassValue[]) {
@@ -90,7 +89,7 @@ export const newsSourceArr: OptionsType[] = Object.entries(NEWS_SOURCES).reduce<
   OptionsType[]
 >((acc, [key, value]) => {
   acc.push({
-    label: value,
+    label: value.title,
     value: key,
   });
   return acc;
@@ -104,4 +103,12 @@ export const BcryptHelper = {
   comparePassword: async (plain: string, hashed: string): Promise<boolean> => {
     return await bcrypt.compare(plain, hashed);
   },
+};
+
+export const createNewUrl = (url: string, sourceUrl: string) => {
+  if (!url.startsWith("http://") && !url.startsWith("https://")) {
+    const newUrl = new URL(url, new URL(sourceUrl).origin);
+    return newUrl.toString();
+  }
+  return url;
 };

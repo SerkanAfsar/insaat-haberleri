@@ -65,15 +65,18 @@ model CategorySources {
 }
 
 model Newses {
-  id             Int      @id @default(autoincrement())
-  title          String
+  id             Int       @id @default(autoincrement())
+  title          String    @unique
   subDescription String
-  content        String
+  content        String    @db.Text
   imageId        String
   seoTitle       String
   seoDescription String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime
-  category       Category @relation(fields: [categoryId], references: [id])
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime?
+  category       Category  @relation(fields: [categoryId], references: [id])
   categoryId     Int
+  readedCount    Int       @default(1)
+
+  @@index([title])
 }

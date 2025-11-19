@@ -11,6 +11,7 @@ import { OptionsType } from "@/Types";
 
 import { ENDPOINTS } from "@/lib/utils";
 import AddUpdateCategoryUrl from "../Components/update-category-url";
+import { NEWS_SOURCES } from "@/lib/admin.data";
 
 export default function CategoryUrlListContainer({
   categoryList,
@@ -68,19 +69,13 @@ export default function CategoryUrlListContainer({
         enableHiding: false,
       },
       {
-        id: "categoryId",
-        accessorKey: "categoryId",
+        id: "categoryName",
+        accessorKey: "category.categoryName",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Kategori" />
         ),
         cell: ({ row }) => {
-          const categoryId = row.original.categoryId;
-          return (
-            <div>
-              {categoryList.find((a) => a.value == categoryId)?.value ||
-                "Not Found"}
-            </div>
-          );
+          return <div>{(row.original as any).category.categoryName}</div>;
         },
         enableSorting: true,
         enableHiding: false,
@@ -92,7 +87,9 @@ export default function CategoryUrlListContainer({
           <DataTableColumnHeader column={column} title="Kaynak" />
         ),
         cell: ({ row }) => {
-          return <div>{row.getValue("sourceSiteName")}</div>;
+          const value = row.original
+            .sourceSiteName as keyof typeof NEWS_SOURCES;
+          return <div>{NEWS_SOURCES[value]?.title ?? ""}</div>;
         },
         enableSorting: true,
         enableHiding: false,

@@ -1,5 +1,4 @@
 "use client";
-
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +22,7 @@ import { logOut } from "@/lib/auth";
 
 export default function UserInfo() {
   const [opened, setIsOpened] = React.useState<boolean>(false);
+
   return (
     <DropdownMenu defaultOpen={opened} onOpenChange={setIsOpened}>
       <DropdownMenuTrigger asChild>
@@ -35,7 +35,7 @@ export default function UserInfo() {
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <span className="flex items-center gap-1 text-sm">
-            Serkan Afşar{" "}
+            Serkan Afşar
             <ChevronDown
               size={50}
               className={cn(

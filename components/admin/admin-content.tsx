@@ -19,7 +19,7 @@ export default function AdminContent({
   const { isMenuOpened, setIsMenuOpened } = useAdminContext();
   return (
     <section className="flex h-full w-full flex-auto flex-col overflow-auto">
-      <AdminTopWrapper className="sticky top-0 right-0 left-0 w-full justify-between border-b bg-white px-4 py-10">
+      <AdminTopWrapper className="sticky top-0 right-0 left-0 z-50 w-full justify-between border-b bg-white px-4 py-10">
         <div className="flex items-center justify-between gap-4">
           <button
             type="button"

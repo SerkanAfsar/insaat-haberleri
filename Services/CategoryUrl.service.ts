@@ -98,6 +98,16 @@ export async function GetAllCategoryUrlService({
       skip: offset,
       take: count,
       orderBy: orderByCondition,
+      select: {
+        sourceSiteName: true,
+        id: true,
+        sourceUrl: true,
+        category: {
+          select: {
+            categoryName: true,
+          },
+        },
+      },
     }),
     prisma.categorySources.count({ where: query }),
   ]);

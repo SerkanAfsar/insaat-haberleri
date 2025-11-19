@@ -15,7 +15,7 @@ export default async function middleware(req: NextRequest) {
 
   const userSession = await decrypt(accessToken, "accessToken");
 
-  if (accessToken && userSession && apiUrl) {
+  if (accessToken && userSession && apiUrl && pathName != "/api/registernews") {
     const claims = userSession.claims;
 
     const pathExist =

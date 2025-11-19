@@ -47,7 +47,7 @@ const AddUpdateCategoryUrlComponent = React.forwardRef<
     resolver: zodResolver(addCategorySourceSchema),
     defaultValues: {
       categoryId: 0,
-      sourceSiteName: NEWS_SOURCES.ADALET_BIZ,
+      sourceSiteName: NEWS_SOURCES.INSAAT_DERYASI.title,
       sourceUrl: "",
     },
   });

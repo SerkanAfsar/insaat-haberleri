@@ -20,10 +20,10 @@ export type AdminDataType = {
 };
 
 export type SessionPayload = {
-  userName: string;
+  userName?: string;
   userId: string;
-  userEmail: string;
-  userSurname: string;
+  userEmail?: string;
+  userSurname?: string;
   claims?: string[];
 };
 

@@ -39,7 +39,7 @@ export async function AuthLogin(loginData: LoginType) {
   if (!passCompare) {
     throw new Error("Şifre Yanlış");
   }
-  const session: SessionPayload = {
+  const accessTokenSession: SessionPayload = {
     userEmail: user.email,
     userId: user.id.toString(),
     userName: user.name,
@@ -50,12 +50,12 @@ export async function AuthLogin(loginData: LoginType) {
   };
 
   const { token: accessToken, expiresAt: accessExpire } = await createSession(
-    session,
+    accessTokenSession,
     "accessToken",
   );
 
   const { token: refreshToken, expiresAt: refreshExpire } = await createSession(
-    session,
+    { userId: accessTokenSession.userId },
     "refreshToken",
   );
 
