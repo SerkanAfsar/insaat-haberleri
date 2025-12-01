@@ -31,6 +31,15 @@ import { GetAllServiceType } from "@/Types";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { Terminal } from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
+import CustomGlobalFilter from "./custom-global-filter";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
+import { Button } from "../ui/button";
+import { DropdownMenuCheckboxItem } from "../ui/dropdown-menu";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -43,6 +52,7 @@ export function CustomDataTable<TData, TValue>({
   validateKey,
   fetchUrl,
 }: DataTableProps<TData, TValue>) {
+  const [globalFilter, setGlobalFilter] = React.useState<string>("");
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -57,7 +67,7 @@ export function CustomDataTable<TData, TValue>({
   const filterOptions: GetAllServiceType = {
     count: pagination.pageSize,
     filters: JSON.stringify(columnFilters ?? []),
-    globalFilter: "",
+    globalFilter,
     offset: pagination.pageIndex * pagination.pageSize,
     sorting: JSON.stringify(sorting ?? []),
   };
@@ -76,6 +86,7 @@ export function CustomDataTable<TData, TValue>({
       rowSelection,
       columnFilters,
       pagination,
+      globalFilter,
     },
     initialState: {
       pagination: {
@@ -87,6 +98,9 @@ export function CustomDataTable<TData, TValue>({
     manualFiltering: true,
     manualPagination: true,
     enableRowSelection: true,
+    enableGlobalFilter: true,
+
+    onGlobalFilterChange: setGlobalFilter,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
@@ -112,6 +126,44 @@ export function CustomDataTable<TData, TValue>({
 
   return (
     <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-start gap-4">
+        <CustomGlobalFilter
+          value={(table.getState().globalFilter as string) ?? ""}
+          onChange={table.setGlobalFilter}
+          clearFilter={table.resetGlobalFilter}
+        />
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button variant={"default"} className="cursor-pointer" size={"lg"}>
+              Kolon Gösterimi
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="start"
+            className="z-10 w-[200px] rounded-md bg-white shadow"
+          >
+            {table
+              .getAllColumns()
+              .filter((a) => a.getCanHide())
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {(column.columnDef.meta as any)?.title ??
+                      column.columnDef.id}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>

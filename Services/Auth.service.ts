@@ -49,12 +49,12 @@ export async function AuthLogin(loginData: LoginType) {
     ],
   };
 
-  const { token: accessToken, expiresAt: accessExpire } = await createSession(
+  const { token: accessToken, expires: accessExpire } = await createSession(
     accessTokenSession,
     "accessToken",
   );
 
-  const { token: refreshToken, expiresAt: refreshExpire } = await createSession(
+  const { token: refreshToken, expires: refreshExpire } = await createSession(
     { userId: accessTokenSession.userId },
     "refreshToken",
   );

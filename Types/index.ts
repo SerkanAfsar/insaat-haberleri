@@ -69,6 +69,7 @@ export const ModuleTypes = [
   "Roles",
   "Users",
   "Settings",
+  "Newses",
 ] as const;
 
 export type ModuleType = (typeof ModuleTypes)[number];

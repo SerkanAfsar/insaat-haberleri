@@ -1,19 +1,29 @@
 "use client";
+
 import { CustomDataTable } from "@/components/datatable";
 import DataTableColumnHeader from "@/components/datatable/datatable-column-header";
 import DatatableRowActions from "@/components/datatable/datatable-row-actions";
-import { Users } from "@prisma/client";
+import { Newses } from "@prisma/client";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 
 import { ENDPOINTS } from "@/lib/utils";
 
-export default function UserListContainer() {
-  const columns = useMemo<ColumnDef<Users>[]>(
+import { NEWS_SOURCES } from "@/lib/admin.data";
+
+export type NewsListContainerType = Newses & {
+  select: string;
+  categoryName: string;
+  sourceUrl: string;
+};
+
+export default function NewsListContainer() {
+  const columns = useMemo<ColumnDef<NewsListContainerType>[]>(
     () => [
       {
         id: "select",
+        accessorKey: "select",
         header: ({ table }) => (
           <Checkbox
             checked={
@@ -37,6 +47,9 @@ export default function UserListContainer() {
         ),
         enableSorting: false,
         enableHiding: false,
+        meta: {
+          title: "Select",
+        },
       },
       {
         id: "id",
@@ -52,48 +65,49 @@ export default function UserListContainer() {
         },
       },
       {
-        id: "name",
-        accessorKey: "name",
+        id: "title",
+        accessorKey: "title",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Ad" />
+          <DataTableColumnHeader column={column} title="Haber Başlık" />
         ),
         cell: ({ row }) => {
-          return <div>{row.getValue("name")}</div>;
+          return <div>{row.getValue("title")}</div>;
         },
         enableSorting: true,
         enableHiding: true,
         meta: {
-          title: "Adı",
+          title: "Haber Başlık",
         },
       },
       {
-        id: "surname",
-        accessorKey: "surname",
+        id: "category.categoryName",
+        accessorKey: "categoryName",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Soyad" />
+          <DataTableColumnHeader column={column} title="Kategori" />
         ),
         cell: ({ row }) => {
-          return <div>{row.getValue("surname")}</div>;
+          return <div>{(row.original as any).categoryName}</div>;
         },
         enableSorting: true,
         enableHiding: true,
         meta: {
-          title: "Soyadı",
+          title: "Kategori Adı",
         },
       },
       {
-        id: "email",
-        accessorKey: "email",
+        id: "sourceUrl",
+        accessorKey: "sourceUrl",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Email" />
+          <DataTableColumnHeader column={column} title="Kaynak" />
         ),
         cell: ({ row }) => {
-          return <div>{row.getValue("email")}</div>;
+          const value = row.original.sourceUrl as keyof typeof NEWS_SOURCES;
+          return <div>{NEWS_SOURCES[value]?.title ?? ""}</div>;
         },
         enableSorting: true,
         enableHiding: true,
         meta: {
-          title: "E-Posta Adresi",
+          title: "Kaynak Url",
         },
       },
       {
@@ -105,17 +119,19 @@ export default function UserListContainer() {
           return (
             <DatatableRowActions
               row={row}
-              componentKey="users"
+              componentKey={ENDPOINTS.newses.validateKey}
               column={column}
-              detailUrl="/Admin/Users/Add"
+              detailUrl="/Admin/News/Add"
             />
           );
         },
         enableSorting: false,
         enableHiding: false,
-        meta: {
-          title: "E-Posta Adresi",
-        },
+        // meta: {
+        //   categoryList,
+        //   updateTitle: "Kategori Url Güncelleme",
+        //   updateDescription: "Kategori Url Güncelleme İşlemleri",
+        // },
       },
     ],
     [],
@@ -123,8 +139,8 @@ export default function UserListContainer() {
   return (
     <CustomDataTable
       columns={columns}
-      validateKey={ENDPOINTS.users.validateKey}
-      fetchUrl={ENDPOINTS.users.url}
+      validateKey={ENDPOINTS.newses.validateKey}
+      fetchUrl={ENDPOINTS.newses.url}
     />
   );
 }

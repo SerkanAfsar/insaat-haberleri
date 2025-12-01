@@ -84,11 +84,22 @@ export async function GetAllCategoryUrlService({
     if (parsedSorting?.length) {
       const sort = parsedSorting[0];
       const { id, desc } = sort;
-      orderByCondition = [
-        {
-          [id]: desc ? "desc" : "asc",
-        },
-      ];
+      const subId = id.split(".");
+      if (subId.length == 1) {
+        orderByCondition = [
+          {
+            [subId[0]]: desc ? "desc" : "asc",
+          },
+        ];
+      } else {
+        orderByCondition = [
+          {
+            [subId[0]]: {
+              [subId[1]]: desc ? "desc" : "asc",
+            },
+          },
+        ];
+      }
     }
   }
 
@@ -105,6 +116,7 @@ export async function GetAllCategoryUrlService({
         category: {
           select: {
             categoryName: true,
+            id: true,
           },
         },
       },

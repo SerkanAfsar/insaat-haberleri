@@ -35,7 +35,7 @@ export default function CategoryListContainer() {
             className="translate-y-[2px]"
           />
         ),
-        enableSorting: true,
+        enableSorting: false,
         enableHiding: false,
       },
       {
@@ -46,7 +46,10 @@ export default function CategoryListContainer() {
         ),
         cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
         enableSorting: true,
-        enableHiding: false,
+        enableHiding: true,
+        meta: {
+          title: "Id Numarası",
+        },
       },
       {
         id: "categoryName",
@@ -58,7 +61,10 @@ export default function CategoryListContainer() {
           return <div>{row.getValue("categoryName")}</div>;
         },
         enableSorting: true,
-        enableHiding: false,
+        enableHiding: true,
+        meta: {
+          title: "Kategori Adı",
+        },
       },
       {
         id: "actions",
@@ -75,6 +81,8 @@ export default function CategoryListContainer() {
             />
           );
         },
+        enableSorting: false,
+        enableHiding: false,
         meta: {
           updateTitle: "Kategori Güncelleme",
           updateDescription: "Kategori Güncelleme İşlemleri",

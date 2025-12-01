@@ -36,7 +36,7 @@ export default function RoleListContainer() {
             className="translate-y-[2px]"
           />
         ),
-        enableSorting: true,
+        enableSorting: false,
         enableHiding: false,
       },
       {
@@ -47,7 +47,10 @@ export default function RoleListContainer() {
         ),
         cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
         enableSorting: true,
-        enableHiding: false,
+        enableHiding: true,
+        meta: {
+          title: "Id Numarası",
+        },
       },
       {
         id: "roleName",
@@ -59,7 +62,10 @@ export default function RoleListContainer() {
           return <div>{row.getValue("roleName")}</div>;
         },
         enableSorting: true,
-        enableHiding: false,
+        enableHiding: true,
+        meta: {
+          title: "Rol Adı",
+        },
       },
 
       {
@@ -77,6 +83,8 @@ export default function RoleListContainer() {
             />
           );
         },
+        enableHiding: false,
+        enableSorting: false,
       },
     ],
     [],

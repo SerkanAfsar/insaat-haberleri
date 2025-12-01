@@ -43,7 +43,7 @@ export default function CategoryUrlListContainer({
             className="translate-y-[2px]"
           />
         ),
-        enableSorting: true,
+        enableSorting: false,
         enableHiding: false,
       },
       {
@@ -54,7 +54,10 @@ export default function CategoryUrlListContainer({
         ),
         cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
         enableSorting: true,
-        enableHiding: false,
+        enableHiding: true,
+        meta: {
+          title: "Id Numarası",
+        },
       },
       {
         id: "sourceUrl",
@@ -66,10 +69,13 @@ export default function CategoryUrlListContainer({
           return <div>{row.getValue("sourceUrl")}</div>;
         },
         enableSorting: true,
-        enableHiding: false,
+        enableHiding: true,
+        meta: {
+          title: "Kaynak Url",
+        },
       },
       {
-        id: "categoryName",
+        id: "category.id",
         accessorKey: "category.categoryName",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Kategori" />
@@ -77,8 +83,12 @@ export default function CategoryUrlListContainer({
         cell: ({ row }) => {
           return <div>{(row.original as any).category.categoryName}</div>;
         },
+
         enableSorting: true,
-        enableHiding: false,
+        enableHiding: true,
+        meta: {
+          title: "Kategori Adı",
+        },
       },
       {
         id: "sourceSiteName",
@@ -92,7 +102,10 @@ export default function CategoryUrlListContainer({
           return <div>{NEWS_SOURCES[value]?.title ?? ""}</div>;
         },
         enableSorting: true,
-        enableHiding: false,
+        enableHiding: true,
+        meta: {
+          title: "Kaynak Adı",
+        },
       },
       {
         id: "actions",
@@ -109,6 +122,8 @@ export default function CategoryUrlListContainer({
             />
           );
         },
+        enableSorting: false,
+        enableHiding: false,
         meta: {
           categoryList,
           updateTitle: "Kategori Url Güncelleme",

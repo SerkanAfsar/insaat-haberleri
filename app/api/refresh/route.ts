@@ -46,17 +46,17 @@ export async function POST(req: NextRequest) {
     ],
   };
 
-  const { token: accessTokenResult } = await createSession(
-    session,
-    "accessToken",
-  );
+  const acccessToken = await createSession(session, "accessToken");
 
-  const { token: refreshTokenResult } = await createSession(
-    verifiedRefresh,
-    "refreshToken",
-  );
+  const refreshToken = await createSession(verifiedRefresh, "refreshToken");
+
   return NextResponse.json(
-    { accessTokenResult, refreshTokenResult },
+    {
+      result: {
+        acccessToken,
+        refreshToken,
+      },
+    },
     { status: 201 },
   );
 }

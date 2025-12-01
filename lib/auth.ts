@@ -59,9 +59,10 @@ export async function createSession(
   }
 
   const token = await encrypt(payload, tokenType);
+
   return {
     token,
-    expiresAt: expires,
+    expires,
   };
 }
 

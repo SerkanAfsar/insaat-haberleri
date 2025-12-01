@@ -72,6 +72,10 @@ export const ENDPOINTS = {
     url: "/api/users",
     validateKey: "users",
   },
+  newses: {
+    url: "/api/newses",
+    validateKey: "newses",
+  },
 } as const;
 
 export function ConvertData<

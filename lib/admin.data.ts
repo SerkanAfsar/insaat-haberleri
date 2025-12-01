@@ -46,6 +46,22 @@ export const AdminMenuList: AdminDataType[] = [
     ],
   },
   {
+    title: "Haberler",
+    icon: ChartBarStacked,
+    subItems: [
+      {
+        icon: Plus,
+        title: "Haber Ekle",
+        href: "/Admin/News/Add",
+      },
+      {
+        icon: List,
+        title: "Haber Listesi",
+        href: "/Admin/News",
+      },
+    ],
+  },
+  {
     title: "Kullanıcılar ve Roller",
     icon: User,
     subItems: [
@@ -115,6 +131,12 @@ export const ModuleClaimsData = {
     read: false,
     update: false,
   },
+  Newses: {
+    create: false,
+    delete: false,
+    read: false,
+    update: false,
+  },
   Roles: {
     create: false,
     delete: false,
@@ -140,6 +162,7 @@ export const apiUrl = {
   CategoryUrl: "/api/categorysources",
   Users: "/api/users",
   Roles: "/api/roles",
+  Newses: "/api/newses",
 } as const;
 
 export const methodTypes = {
@@ -191,6 +214,12 @@ export const ApiCheckValue: ApiRoleType = {
     post: "Users.create",
     put: "Users.update",
   },
+  "/api/newses": {
+    delete: "Newses.delete",
+    get: "Newses.read",
+    post: "Newses.create",
+    put: "Newses.update",
+  },
 };
 
 export const convertToClaimData = (data: string[]) => {
@@ -203,6 +232,7 @@ export const convertToClaimData = (data: string[]) => {
     "Roles",
     "Settings",
     "Users",
+    "Newses",
   ];
 
   return arrList.reduce((acc, next) => {

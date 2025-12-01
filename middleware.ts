@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "./lib/auth";
-import { cookies } from "next/headers";
+
 import { ApiCheckValue, ApiRoleType, MethodType } from "./lib/admin.data";
+import { cookies } from "next/headers";
 
 export default async function middleware(req: NextRequest) {
   const cookieStore = await cookies();
   const accessToken = req.cookies.get("accessToken")?.value;
+
   const refreshToken = req.cookies.get("refreshToken")?.value;
 
   const pathName = req.nextUrl.pathname;
@@ -46,9 +48,22 @@ export default async function middleware(req: NextRequest) {
     });
 
     if (response.ok) {
-      const { accessTokenResult, refreshTokenResult } = await response.json();
-      cookieStore.set("accessToken", accessTokenResult);
-      cookieStore.set("refreshToken", refreshTokenResult);
+      const {
+        result: { acccessToken, refreshToken },
+      } = await response.json();
+
+      cookieStore.set("accessToken", acccessToken.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        expires: new Date(acccessToken.expires),
+      });
+
+      cookieStore.set("refreshToken", refreshToken.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        expires: new Date(refreshToken.expires),
+      });
+
       return NextResponse.next();
     }
 

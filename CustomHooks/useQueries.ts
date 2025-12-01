@@ -57,7 +57,6 @@ export function useGetAllData<T>(
         };
       }
     },
-
     refetchOnWindowFocus: true,
     retry: false,
   });
