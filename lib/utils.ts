@@ -2,7 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import bcrypt from "bcryptjs";
 import { AdminMenuList, NEWS_SOURCES } from "./admin.data";
-import { AdminDataType, EnvData, OptionsType } from "@/Types";
+import { AdminDataType, EnvData, EnvType, OptionsType } from "@/Types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -115,4 +115,48 @@ export const createNewUrl = (url: string, sourceUrl: string) => {
     return newUrl.toString();
   }
   return url;
+};
+
+export const envVariables: EnvType = {
+  DATABASE_URL: process.env.DATABASE_URL!,
+  ACCESS_TOKEN_SECRET_KEY: process.env.NEXT_PUBLIC_ACCESS_TOKEN_SECRET_KEY!,
+  REFRESH_TOKEN_SECRET_KEY: process.env.NEXT_PUBLIC_REFRESH_TOKEN_SECRET_KEY!,
+  NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL!,
+  NEXT_PUBLIC_CDN_ACCOUNT_ID: process.env.NEXT_PUBLIC_CDN_ACCOUNT_ID!,
+  NEXT_PUBLIC_CDN_ACCOUNT_TOKEN: process.env.NEXT_PUBLIC_CDN_ACCOUNT_TOKEN!,
+  NEXT_PUBLIC_ACCOUNT_KEY: process.env.NEXT_PUBLIC_ACCOUNT_KEY!,
+  NEXT_PUBLIC_PAGINATION_ITEM_COUNT: Number(
+    process.env.NEXT_PUBLIC_PAGINATION_ITEM_COUNT!,
+  ),
+};
+
+export const slugUrl = (value: string): string => {
+  if (value) {
+    value = value.replace("'", "-");
+    return value
+      .toLowerCase()
+      .normalize("NFD") // ü -> u + ¨
+      .replace("'", "-")
+      .replace(/&#039;/g, "")
+      .replace(/&039;/g, "")
+      .replace(/['"]/g, "")
+      .replace(/[\u0300-\u036f]/g, "") // ¨ gibi işaretleri sil
+      .replace(/ç/g, "c")
+      .replace(/ğ/g, "g")
+      .replace(/ı/g, "i")
+      .replace(/ö/g, "o")
+      .replace(/ş/g, "s")
+      .replace(/ü/g, "u")
+      .replace(/[’‘“”'"`´]/g, "") // tüm tırnak çeşitlerini kaldır
+      .replace(/[^a-z0-9\s-]/g, "") // harf, sayı, boşluk ve tire dışındakileri sil
+      .replace(/\s+/g, "-") // boşlukları - yap
+      .replace(/-+/g, "-") // birden fazla - varsa sadeleştir
+      .replace(/^-+|-+$/g, ""); // baş/son tireleri sil
+  }
+  return "";
+};
+
+export const getImageTypeFromPath = (path: string) => {
+  const match = path.match(/\.(\w+)(?:\?.*)?$/);
+  return match ? match[1].toLowerCase() : "jpeg";
 };

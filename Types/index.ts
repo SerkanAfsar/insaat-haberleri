@@ -93,3 +93,27 @@ export type ContentType = Readonly<{
 export type AddUserType = z.infer<typeof addUserSchema>;
 
 export type UpdateUserType = z.infer<typeof updateUserSchema>;
+
+export type EnvType = {
+  DATABASE_URL: string;
+  ACCESS_TOKEN_SECRET_KEY: string;
+  REFRESH_TOKEN_SECRET_KEY: string;
+  NEXT_PUBLIC_BASE_URL: string;
+  NEXT_PUBLIC_CDN_ACCOUNT_ID: string;
+  NEXT_PUBLIC_CDN_ACCOUNT_TOKEN: string;
+  NEXT_PUBLIC_ACCOUNT_KEY: string;
+  NEXT_PUBLIC_PAGINATION_ITEM_COUNT: number;
+};
+
+export type CloudFlareResponseType = {
+  result: {
+    id: string;
+    filename: string;
+    uploaded: string;
+    requireSignedURLs: boolean;
+    variants: string[];
+  };
+  success: boolean;
+  errors: any[];
+  messages: any[];
+};

@@ -98,6 +98,7 @@ export const NEWS_SOURCES = {
       title: ".content-title",
       subTitle: ".content-description summary",
       content: ".text-content",
+      imageSourceNode: ".imgc.image img",
     },
   },
   YAPI_COMTR: {
@@ -108,6 +109,7 @@ export const NEWS_SOURCES = {
       title: ".news-detail-title",
       subTitle: ".subinfo",
       content: ".news_detail_paged_content",
+      imageSourceNode: ".detay-poster",
     },
   },
 } as const;

@@ -1,6 +1,12 @@
 import { NEWS_SOURCES } from "@/lib/admin.data";
 import prisma from "@/lib/db";
-import { createNewUrl } from "@/lib/utils";
+import {
+  createNewUrl,
+  envVariables,
+  getImageTypeFromPath,
+  slugUrl,
+} from "@/lib/utils";
+import { CloudFlareResponseType } from "@/Types";
 import { CategorySources } from "@prisma/client";
 import { parse } from "node-html-parser";
 
@@ -53,6 +59,9 @@ export class NewsClass {
       const title = nodeRoot.querySelector(source.newsDetail.title);
       const subDescription = nodeRoot.querySelector(source.newsDetail.subTitle);
       const content = nodeRoot.querySelector(source.newsDetail.content);
+      const imagePath = nodeRoot.querySelector(
+        source.newsDetail.imageSourceNode,
+      );
 
       content?.querySelectorAll("iframe").forEach((iframe) => iframe.remove());
       content?.querySelectorAll(".banner").forEach((iframe) => iframe.remove());
@@ -68,7 +77,11 @@ export class NewsClass {
           title: title.innerText,
           categoryId: this.node.categoryId,
           subDescription: subDescription?.innerText ?? "",
-          imageId: "",
+          imageId:
+            (await this.uploadImage(
+              title.innerText,
+              imagePath?.getAttribute("src") ?? "",
+            )) ?? "",
           updatedAt: new Date(),
         },
       });
@@ -81,4 +94,44 @@ export class NewsClass {
       },
     });
   };
+
+  private async uploadImage(title: string, imagePath: string) {
+    if (!imagePath) {
+      return null;
+    }
+
+    const imageFetchResponse = await fetch(imagePath);
+
+    if (!imageFetchResponse.ok) {
+      return null;
+    }
+
+    const type = getImageTypeFromPath(imagePath);
+    const result = await imageFetchResponse.blob();
+    const form = new FormData();
+    const file = new File([result], `${slugUrl(title)}.${type}`, {
+      type: type,
+    });
+    form.append("file", file);
+    form.append("requireSignedURLs", "false");
+
+    const url = `https://api.cloudflare.com/client/v4/accounts/${envVariables.NEXT_PUBLIC_CDN_ACCOUNT_ID}/images/v1`;
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${envVariables.NEXT_PUBLIC_CDN_ACCOUNT_TOKEN}`,
+      },
+      body: form,
+    });
+
+    if (response.ok) {
+      const data: CloudFlareResponseType = await response.json();
+      if (!data.success) {
+        return null;
+      }
+      return data.result.id;
+    }
+    return null;
+  }
 }
