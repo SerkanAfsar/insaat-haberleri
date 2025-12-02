@@ -35,6 +35,7 @@ import CustomGlobalFilter from "./custom-global-filter";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { Button } from "../ui/button";
@@ -218,13 +219,40 @@ export function CustomDataTable<TData, TValue>({
         </Table>
       </div>
 
-      {/* <DataTablePagination table={table} /> */}
       <div className="mt-4 flex items-center justify-between">
-        <TableFooter
-          pageIndex={table.getState().pagination.pageIndex}
-          pageSize={table.getState().pagination.pageSize}
-          totalCount={mainData?.rowCount || 0}
-        />
+        <div className="flex max-w-md items-center justify-center gap-4 text-sm">
+          <TableFooter
+            pageIndex={table.getState().pagination.pageIndex}
+            pageSize={table.getState().pagination.pageSize}
+            totalCount={mainData?.rowCount || 0}
+          />
+          Sayfalama
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant={"outline"}>
+                {table.getState().pagination.pageSize}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="start"
+              className="w-full space-y-2 rounded-md bg-white p-4 shadow"
+            >
+              {[10, 20, 30, 50].map((page) => {
+                return (
+                  <DropdownMenuItem
+                    key={page}
+                    className="cursor-pointer"
+                    onSelect={() => {
+                      table.setPageSize(page);
+                    }}
+                  >
+                    {page}
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
         <ReactPaginate
           breakLabel="..."
           nextLabel="Sonraki >"

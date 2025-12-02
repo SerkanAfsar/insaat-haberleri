@@ -1,6 +1,7 @@
 import {
   addCategorySchema,
   addCategorySourceSchema,
+  addNewsSchema,
   addRoleSchema,
   addUserSchema,
   claimSchema,
@@ -117,3 +118,5 @@ export type CloudFlareResponseType = {
   errors: any[];
   messages: any[];
 };
+
+export type AddNewsType = z.infer<typeof addNewsSchema>;

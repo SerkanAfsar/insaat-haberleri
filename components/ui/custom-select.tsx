@@ -25,6 +25,7 @@ export type CustomSelectType = {
   options: OptionsType[];
   placeholder: string;
   onChange: (item: string | number) => void;
+  error?: string;
 };
 
 export function CustomSelect({
@@ -32,6 +33,7 @@ export function CustomSelect({
   options,
   placeholder = "Seçiniz",
   onChange: customChange,
+  error,
 }: CustomSelectType) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState<number | string>(defaultValue);
@@ -40,6 +42,8 @@ export function CustomSelect({
     setValue(defaultValue);
   }, [defaultValue]);
 
+  console.log(error);
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger className="w-full" asChild>
@@ -47,10 +51,15 @@ export function CustomSelect({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between"
+          className={cn(
+            "w-full justify-between",
+            error && "border-destructive right-1",
+          )}
         >
           {options.find((a) => a.value == value)?.label ?? placeholder}
-          <ChevronsUpDown className="opacity-50" />
+          <ChevronsUpDown
+            className={cn("opacity-50", error && "text-destructive")}
+          />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">

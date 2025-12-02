@@ -137,3 +137,30 @@ export const updateUserSchema = z
       path: ["rePassword"],
     },
   );
+
+export const addNewsSchema = z.object({
+  categoryId: z
+    .number({ error: "Kategori Seçiniz" })
+    .min(1, { error: "Kategori Seçmelisiniz" }),
+  title: z.string({ error: "Haber Başlık Girmelisiniz" }).min(1, {
+    error: "Haber Başlık Girmelisiniz",
+  }),
+  subDescription: z.string({ error: "Haber Açıklama Girmelisiniz" }).min(1, {
+    error: "Haber Açıklama Girmelisiniz",
+  }),
+  content: z.string({ error: "Haber İçerik Girmelisiniz" }).min(1, {
+    error: "Haber İçerik Girmelisiniz",
+  }),
+  image: z
+    .file()
+    .mime(["image/jpeg", "image/png", "image/webp"], {
+      error: "Resim Formatı Uymuyor",
+    })
+    .nullable(),
+  seoTitle: z
+    .string({ error: "Seo Title Girmelisiniz" })
+    .min(1, { error: "Seo Title Girmelisiniz" }),
+  seoDescription: z
+    .string({ error: "Seo Description Girmelisiniz" })
+    .min(1, { error: "Seo Description Girmelisiniz" }),
+});

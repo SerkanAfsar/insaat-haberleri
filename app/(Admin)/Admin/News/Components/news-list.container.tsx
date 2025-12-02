@@ -7,10 +7,9 @@ import { Newses } from "@prisma/client";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
-
-import { ENDPOINTS } from "@/lib/utils";
-
+import { ENDPOINTS, envVariables } from "@/lib/utils";
 import { NEWS_SOURCES } from "@/lib/admin.data";
+import NewsItemImage from "./news-item-image";
 
 export type NewsListContainerType = Newses & {
   select: string;
@@ -77,6 +76,30 @@ export default function NewsListContainer() {
         enableHiding: true,
         meta: {
           title: "Haber Başlık",
+        },
+      },
+      {
+        id: "imageId",
+        accessorKey: "imageId",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Resim" />
+        ),
+        cell: ({ row }) => {
+          const { imageId } = row.original;
+          const url = {
+            large: `https://imagedelivery.net/${envVariables.NEXT_PUBLIC_ACCOUNT_KEY}/${imageId}/Big`,
+            medium: `https://imagedelivery.net/${envVariables.NEXT_PUBLIC_ACCOUNT_KEY}/${imageId}/Medium`,
+            small: `https://imagedelivery.net/${envVariables.NEXT_PUBLIC_ACCOUNT_KEY}/${imageId}/Small`,
+            ExtraLarge: `https://imagedelivery.net/${envVariables.NEXT_PUBLIC_ACCOUNT_KEY}/${imageId}/ExtraLarge`,
+          } as const;
+          return (
+            <NewsItemImage bigImage={url.ExtraLarge} thumbnail={url.small} />
+          );
+        },
+        enableSorting: false,
+        enableHiding: true,
+        meta: {
+          title: "Resim",
         },
       },
       {
