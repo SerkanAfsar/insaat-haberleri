@@ -42,8 +42,6 @@ export function CustomSelect({
     setValue(defaultValue);
   }, [defaultValue]);
 
-  console.log(error);
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger className="w-full" asChild>

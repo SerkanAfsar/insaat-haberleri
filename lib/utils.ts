@@ -2,7 +2,13 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import bcrypt from "bcryptjs";
 import { AdminMenuList, NEWS_SOURCES } from "./admin.data";
-import { AdminDataType, EnvData, EnvType, OptionsType } from "@/Types";
+import {
+  AdminDataType,
+  CloudFlareResponseType,
+  EnvData,
+  EnvType,
+  OptionsType,
+} from "@/Types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -160,3 +166,32 @@ export const getImageTypeFromPath = (path: string) => {
   const match = path.match(/\.(\w+)(?:\?.*)?$/);
   return match ? match[1].toLowerCase() : "jpeg";
 };
+
+export async function RegisterImageToCdn(
+  file: File,
+  fileName: string,
+): Promise<string | null> {
+  const form = new FormData();
+
+  form.append("file", file, fileName);
+  form.append("requireSignedURLs", "false");
+
+  const url = `https://api.cloudflare.com/client/v4/accounts/${envVariables.NEXT_PUBLIC_CDN_ACCOUNT_ID}/images/v1`;
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${envVariables.NEXT_PUBLIC_CDN_ACCOUNT_TOKEN}`,
+    },
+    body: form,
+  });
+
+  if (response.ok) {
+    const data: CloudFlareResponseType = await response.json();
+    if (!data.success) {
+      return null;
+    }
+    return data.result.id;
+  }
+  return null;
+}

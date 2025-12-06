@@ -1,23 +1,30 @@
 "use client";
+
+import { SessionPayload } from "@/Types";
 import React, { createContext, use, useState } from "react";
 
 export type AdminContextType = {
   isMenuOpened: boolean;
   setIsMenuOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  currentUser: SessionPayload | undefined;
 };
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 export default function AdminContextWrapper({
   children,
+  currentUserData,
 }: {
   children: React.ReactNode;
+  currentUserData: SessionPayload | undefined;
 }) {
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>(true);
+
   return (
     <AdminContext.Provider
       value={{
         isMenuOpened,
         setIsMenuOpened,
+        currentUser: currentUserData,
       }}
     >
       {children}

@@ -69,7 +69,7 @@ model Newses {
   title          String    @unique
   subDescription String
   content        String    @db.Text
-  imageId        String
+  imageId        String?
   seoTitle       String
   seoDescription String
   createdAt      DateTime  @default(now())

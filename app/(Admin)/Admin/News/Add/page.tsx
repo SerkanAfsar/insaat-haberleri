@@ -9,7 +9,7 @@ export default async function Page() {
     },
   });
   const categoryResult = ConvertData(categories, "id", "categoryName");
-  console.log(categoryResult);
+
   return (
     <AddUpdateNewsContainer
       categoryList={categoryResult}

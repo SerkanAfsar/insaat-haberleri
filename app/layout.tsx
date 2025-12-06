@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Outfit, Roboto_Slab, Oswald } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
@@ -7,6 +7,16 @@ import "./globals.css";
 const outFit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
+});
+
+const robotoFont = Roboto_Slab({
+  variable: "--roboto--font",
+  subsets: ["latin-ext"],
+});
+
+const oswaldFont = Oswald({
+  variable: "--oswald--font",
+  subsets: ["latin-ext"],
 });
 
 export const metadata: Metadata = {
@@ -21,7 +31,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${outFit.variable} antialiased`}>
+      <body
+        className={`${outFit.variable} ${robotoFont.variable} ${oswaldFont.variable} antialiased`}
+      >
         {children}
         <ToastContainer />
         <NextTopLoader

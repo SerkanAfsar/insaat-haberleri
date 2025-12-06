@@ -19,9 +19,11 @@ import {
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { logOut } from "@/lib/auth";
+import { useAdminContext } from "@/Providers/AdminContext";
 
 export default function UserInfo() {
   const [opened, setIsOpened] = React.useState<boolean>(false);
+  const { currentUser } = useAdminContext();
 
   return (
     <DropdownMenu defaultOpen={opened} onOpenChange={setIsOpened}>
@@ -35,7 +37,7 @@ export default function UserInfo() {
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <span className="flex items-center gap-1 text-sm">
-            Serkan Afşar
+            {currentUser?.userName} {currentUser?.userSurname}
             <ChevronDown
               size={50}
               className={cn(
@@ -49,14 +51,17 @@ export default function UserInfo() {
       <DropdownMenuContent align="end" className="w-[260px]">
         <DropdownMenuLabel className="flex flex-col">
           <span className="text-theme-sm block font-medium text-gray-700 dark:text-gray-400">
-            Serkan Afşar
+            {currentUser?.userName} {currentUser?.userSurname}
           </span>
           <span className="mt-0.5 block text-xs text-gray-500 dark:text-gray-400">
-            serkanafsar84@gmail.com
+            {currentUser?.userEmail}
           </span>
         </DropdownMenuLabel>
         <div className="m-6 mt-6 ml-6 flex w-full flex-col gap-6 text-sm">
-          <Link href={"/"} className="flex items-center gap-2">
+          <Link
+            href={`/Admin/Users/Add/${currentUser?.userId}`}
+            className="flex items-center gap-2"
+          >
             <UserRoundPen className="size-5" />
             <span>Profili Güncelle</span>
           </Link>

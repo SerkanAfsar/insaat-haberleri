@@ -15,17 +15,16 @@ import {
   InputGroupAddon,
   InputGroupButton,
 } from "@/components/ui/input-group";
-import { useCrudData } from "@/CustomHooks/useQueries";
 import { addNewsSchema } from "@/lib/schemas";
 import { ENDPOINTS } from "@/lib/utils";
 import { AddNewsType, OptionsType } from "@/Types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Newses } from "@prisma/client";
 import { File, Trash } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
-
 import Editor from "react-simple-wysiwyg";
+import { toast } from "react-toastify";
 
 export default function AddUpdateNewsContainer({
   type,
@@ -36,13 +35,15 @@ export default function AddUpdateNewsContainer({
   categoryList: OptionsType[];
   defaultDataValues?: AddNewsType;
 }) {
+  const router = useRouter();
+  const fileRef = useRef<HTMLInputElement | null>(null);
   const { id } = useParams();
   const form = useForm<AddNewsType>({
     resolver: zodResolver(addNewsSchema),
     defaultValues: defaultDataValues ?? {
       categoryId: 0,
       content: "",
-      image: undefined,
+      image: null,
       seoDescription: "",
       seoTitle: "",
       subDescription: "",
@@ -54,21 +55,27 @@ export default function AddUpdateNewsContainer({
   const url =
     type == "ADD" ? endPointValues.url : `${endPointValues.url}/${id}`;
 
-  const { mutateAsync } = useCrudData<Newses, AddNewsType>(
-    url,
-    type == "ADD" ? "POST" : "PUT",
-    endPointValues.validateKey,
-  );
-
   async function onSubmit(values: AddNewsType) {
-    const result = await mutateAsync(values);
-    console.log(result);
+    const formData = new FormData();
+    Object.entries(values).forEach(([key, value]) => {
+      formData.append(key, value as any);
+    });
 
-    form.reset();
+    const response = await fetch(url, {
+      method: type == "ADD" ? "POST" : "PUT",
+      body: formData,
+    });
+    const result = await response.json();
+    if (response.ok) {
+      if (fileRef.current) {
+        fileRef.current.value = "";
+      }
+      toast.success("İşlem Başarılı", { position: "top-right" });
+      return router.push("/Admin/News");
+    } else {
+      return toast.error(result.message, { position: "top-right" });
+    }
   }
-
-  const deneme = form.watch("image");
-  console.log("deneme is ", deneme);
 
   return (
     <>
@@ -138,9 +145,10 @@ export default function AddUpdateNewsContainer({
                   <FormControl>
                     <InputGroup className="max-w-sm">
                       <Input
-                        className="border-none"
+                        className="cursor-pointer border-none"
                         type="file"
                         {...field}
+                        ref={fileRef}
                         value={undefined}
                         onChange={(e) => field.onChange(e.target.files?.[0])}
                       />
@@ -152,6 +160,9 @@ export default function AddUpdateNewsContainer({
                           className="relative z-10"
                           onClick={() => {
                             form.setValue("image", null);
+                            if (fileRef.current) {
+                              fileRef.current.value = "";
+                            }
                           }}
                         >
                           <Trash />

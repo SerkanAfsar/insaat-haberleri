@@ -1,4 +1,6 @@
+import { AddNewsService } from "@/Services/News.service";
 import { GetAllNewsesService } from "@/Services/Newses.service";
+import { AddNewsType } from "@/Types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -18,6 +20,22 @@ export async function GET(req: NextRequest) {
       sorting,
     });
     return NextResponse.json(result, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json(
+      { message: error.message || (error as string) },
+      { status: 400 },
+    );
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const formData = await req.formData();
+    const data = formData.entries().reduce((acc, [key, value]) => {
+      return { ...acc, [key]: value };
+    }, {});
+    const result = await AddNewsService(data as AddNewsType);
+    return NextResponse.json({ result }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(
       { message: error.message || (error as string) },
