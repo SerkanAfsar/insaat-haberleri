@@ -60,8 +60,14 @@ const defaultValues = {
       read: false,
       update: false,
     },
+    Newses: {
+      create: false,
+      delete: false,
+      read: false,
+      update: false,
+    },
   },
-};
+} satisfies AddRoleType;
 
 export default function AddRoleContainer({
   type,

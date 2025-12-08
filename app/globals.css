@@ -144,8 +144,9 @@
 }
 
 .container {
+  @apply mx-auto max-w-[90%];
   @variant xl {
-    @apply mx-auto max-w-6xl;
+    @apply max-w-6xl;
   }
 }
 
@@ -160,4 +161,18 @@
     opacity: 1;
     top: 100%;
   }
+}
+
+.swiper-pagination-bullet {
+  @apply !h-3 !w-3 !rounded-none !bg-white !opacity-100;
+}
+.swiper-pagination-bullet-active {
+  @apply !bg-theme-primary !rounded-none;
+}
+.swiper {
+  @apply relative;
+}
+
+.swiper-pagination {
+  @apply invisible absolute !top-2 !left-2 w-auto! opacity-0 transition-all duration-300 group-hover:visible group-hover:opacity-100;
 }

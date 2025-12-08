@@ -21,3 +21,12 @@ export async function getCategoryListClientService() {
     },
   });
 }
+
+export async function getLastNewsClientService() {
+  return prisma.newses.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 6,
+  });
+}

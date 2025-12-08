@@ -77,6 +77,7 @@ model Newses {
   category       Category  @relation(fields: [categoryId], references: [id])
   categoryId     Int
   readedCount    Int       @default(1)
+  sourceUrl      String?
 
   @@index([title])
 }

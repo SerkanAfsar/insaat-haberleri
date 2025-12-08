@@ -10,12 +10,12 @@ const outFit = Outfit({
 });
 
 const robotoFont = Roboto_Slab({
-  variable: "--roboto--font",
+  variable: "--font-roboto",
   subsets: ["latin-ext"],
 });
 
 const oswaldFont = Oswald({
-  variable: "--oswald--font",
+  variable: "--font-oswald",
   subsets: ["latin-ext"],
 });
 

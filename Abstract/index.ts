@@ -28,8 +28,9 @@ export class NewsClass {
       const result = await response.text();
       const nodeRoot = parse(result);
       const items = nodeRoot.querySelectorAll(this.categoryNode);
-      for (let i = 0; i < items.length; i++) {
-        const newsList = items[i];
+      const reversedItems = items.reverse();
+      for (let i = 0; i < reversedItems.length; i++) {
+        const newsList = reversedItems[i];
         const url = newsList.getAttribute("href");
         if (url) {
           const newUrl = createNewUrl(url, this.node.sourceUrl);
@@ -72,7 +73,7 @@ export class NewsClass {
               title.innerText,
               imagePath?.getAttribute("src") ?? "",
             )) ?? "",
-          updatedAt: new Date(),
+          sourceUrl: newsUrl,
         },
       });
     }

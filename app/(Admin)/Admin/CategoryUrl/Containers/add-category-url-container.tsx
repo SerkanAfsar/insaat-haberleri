@@ -44,6 +44,8 @@ export default function AddCategoryUrlContainer({
   async function onSubmit(values: AddCategorySourceType) {
     const result = await mutateAsync(values);
 
+    console.log(result);
+
     form.reset();
   }
 

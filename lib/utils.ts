@@ -195,3 +195,14 @@ export async function RegisterImageToCdn(
   }
   return null;
 }
+
+export const getImageFromCdn = (imageId: string) => {
+  if (!imageId) return;
+  const url = {
+    large: `https://imagedelivery.net/${envVariables.NEXT_PUBLIC_ACCOUNT_KEY}/${imageId}/Big`,
+    medium: `https://imagedelivery.net/${envVariables.NEXT_PUBLIC_ACCOUNT_KEY}/${imageId}/Medium`,
+    small: `https://imagedelivery.net/${envVariables.NEXT_PUBLIC_ACCOUNT_KEY}/${imageId}/Small`,
+    ExtraLarge: `https://imagedelivery.net/${envVariables.NEXT_PUBLIC_ACCOUNT_KEY}/${imageId}/ExtraLarge`,
+  } as const;
+  return url;
+};
