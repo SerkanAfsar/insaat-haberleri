@@ -52,6 +52,5 @@ async function deleteNewsImageService(imageId: string) {
       Authorization: `Bearer ${envVariables.NEXT_PUBLIC_CDN_ACCOUNT_TOKEN}`,
     },
   });
-  const result = await response.json();
-  console.log(result);
+  await response.json();
 }

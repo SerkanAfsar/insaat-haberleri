@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import bcrypt from "bcryptjs";
 import { AdminMenuList, NEWS_SOURCES } from "./admin.data";
+
 import {
   AdminDataType,
   CloudFlareResponseType,
@@ -196,13 +197,29 @@ export async function RegisterImageToCdn(
   return null;
 }
 
-export const getImageFromCdn = (imageId: string) => {
-  if (!imageId) return;
+export const getImageFromCdn = (imageId: string | null) => {
+  if (!imageId) {
+    return {
+      large: "../public/default-news-image.jpg",
+      medium: "../public/default-news-image.jpg",
+      small: "../public/default-news-image.jpg",
+      ExtraLarge: "../public/default-news-image.jpg",
+    };
+  }
   const url = {
     large: `https://imagedelivery.net/${envVariables.NEXT_PUBLIC_ACCOUNT_KEY}/${imageId}/Big`,
     medium: `https://imagedelivery.net/${envVariables.NEXT_PUBLIC_ACCOUNT_KEY}/${imageId}/Medium`,
     small: `https://imagedelivery.net/${envVariables.NEXT_PUBLIC_ACCOUNT_KEY}/${imageId}/Small`,
     ExtraLarge: `https://imagedelivery.net/${envVariables.NEXT_PUBLIC_ACCOUNT_KEY}/${imageId}/ExtraLarge`,
   } as const;
+
   return url;
+};
+
+export const dateTimeConvert = (date: Date | null) => {
+  if (!date) return;
+  const dateTime = new Intl.DateTimeFormat("tr-TR", {
+    dateStyle: "full",
+  }).format();
+  return dateTime;
 };

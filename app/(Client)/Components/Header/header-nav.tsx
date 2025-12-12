@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { HeaderContainerProps } from "./header-container";
-import { getImageFromCdn } from "@/lib/utils";
+import { dateTimeConvert, getImageFromCdn } from "@/lib/utils";
 import Image from "next/image";
 
 export type HeaderNavProps = {
@@ -32,19 +32,30 @@ export default function HeaderNav({ categories }: HeaderNavProps) {
                 {category.categoryName} Son Haberler
               </h3>
               {category.Newses.map((newsItem, index) => {
-                const url = getImageFromCdn(newsItem.imageId ?? "");
+                const url = getImageFromCdn(newsItem.imageId).small;
                 return (
-                  <Link href={"#"} key={index} title={newsItem.title}>
+                  <Link
+                    href={"#"}
+                    key={index}
+                    title={newsItem.title}
+                    className="flex h-full flex-col"
+                  >
                     <Image
-                      src={url ? url.small : ""}
+                      src={url}
                       width={200}
                       height={150}
                       className="border-theme-secodary h-[150px] w-full border-2 object-center"
                       alt={newsItem.title}
                     />
-                    <h4 className="mt-2 line-clamp-2 font-semibold">
+                    <h4 className="my-2 line-clamp-2 text-sm font-semibold">
                       {newsItem.title}
                     </h4>
+                    <time
+                      className="mt-auto text-xs text-gray-600"
+                      dateTime={newsItem.createdAt.toISOString()}
+                    >
+                      {dateTimeConvert(newsItem.createdAt)}
+                    </time>
                   </Link>
                 );
               })}

@@ -1,44 +1,37 @@
-import { getImageFromCdn } from "@/lib/utils";
+import { dateTimeConvert, getImageFromCdn } from "@/lib/utils";
 import { SliderProps } from "./swiper-slide-list";
 import Image from "next/image";
 
 export type SlideNewsItemProps = {
   news: SliderProps["newses"][number];
-  slideType: "first" | "second";
 };
-export default function SlideNewsItem({
-  news,
-  slideType = "first",
-}: SlideNewsItemProps) {
-  const imgUrl = getImageFromCdn(news.imageId!);
-  const dateTime = new Intl.DateTimeFormat("tr-TR", {
-    dateStyle: "full",
-  }).format(news.createdAt);
+export default function SlideNewsItem({ news }: SlideNewsItemProps) {
+  const imgUrl = getImageFromCdn(news.imageId);
+  const dateTime = dateTimeConvert(news.createdAt);
+
   return (
-    <article className="flex w-full flex-col gap-2">
+    <article className="relative flex h-full w-full flex-col gap-2">
+      <div className="bg-theme-primary font-oswald absolute top-0 left-0 p-4 text-white uppercase">
+        {news.category.categoryName}
+      </div>
       <Image
-        src={imgUrl?.ExtraLarge || "deneme"}
+        src={imgUrl.ExtraLarge}
         alt={news.title}
         width={500}
         height={400}
-        className="m-0 w-full object-cover object-center"
+        className="m-0 h-full w-full object-cover object-center"
       />
-      {slideType == "first" ? (
-        <>
-          <h3 className="font-roboto m-0 text-3xl font-semibold">
-            {news.title}
-          </h3>
-          <time
-            dateTime={`${news.createdAt}`}
-            className="text-xs text-gray-500"
-          >
-            {dateTime}
-          </time>
-          <p className="line-clamp-4 text-sm">{news.subDescription}</p>
-        </>
-      ) : (
-        <div></div>
-      )}
+      <div className="absolute right-0 bottom-0 left-0 flex w-full flex-col space-y-10 bg-black/60 p-4 text-white">
+        <h3 className="font-roboto m-0 block text-2xl font-semibold">
+          {news.title}
+        </h3>
+        <time
+          dateTime={`${news.createdAt.toISOString()}`}
+          className="mt-2 block text-sm"
+        >
+          {dateTime}
+        </time>
+      </div>
     </article>
   );
 }
