@@ -1,10 +1,8 @@
 import { dateTimeConvert, getImageFromCdn } from "@/lib/utils";
-import { SliderProps } from "./swiper-slide-list";
 import Image from "next/image";
+import NewsLink from "./news-link";
+import { SlideNewsItemProps } from "../types";
 
-export type SlideNewsItemProps = {
-  news: SliderProps["newses"][number];
-};
 export default function SlideNewsItem({ news }: SlideNewsItemProps) {
   const imgUrl = getImageFromCdn(news.imageId);
   const dateTime = dateTimeConvert(news.createdAt);
@@ -22,9 +20,15 @@ export default function SlideNewsItem({ news }: SlideNewsItemProps) {
         className="m-0 h-full w-full object-cover object-center"
       />
       <div className="absolute right-0 bottom-0 left-0 flex w-full flex-col space-y-10 bg-black/60 p-4 text-white">
-        <h3 className="font-roboto m-0 block text-2xl font-semibold">
-          {news.title}
-        </h3>
+        <NewsLink
+          categoryName={news.category.categoryName}
+          newsId={news.id}
+          title={news.title}
+        >
+          <h3 className="font-roboto m-0 block font-semibold lg:text-2xl">
+            {news.title}
+          </h3>
+        </NewsLink>
         <time
           dateTime={`${news.createdAt.toISOString()}`}
           className="mt-2 block text-sm"

@@ -1,10 +1,6 @@
 import { cn } from "@/lib/utils";
+import { CustomWrapperProps } from "../types";
 
-export type CustomWrapperProps = {
-  children: React.ReactNode;
-  component?: React.HTMLElementType;
-  className?: string;
-};
 export default function CustomWrapper({
   children,
   component,

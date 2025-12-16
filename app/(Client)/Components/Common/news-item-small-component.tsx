@@ -1,11 +1,7 @@
 import Image from "next/image";
 import { dateTimeConvert, getImageFromCdn } from "@/lib/utils";
-export type SmallNewsComponentProps = {
-  imageId: string | null;
-  title: string;
-  subDescription: string;
-  createdAt: Date;
-};
+import NewsLink from "./news-link";
+import { SmallNewsComponentProps } from "../types";
 
 export default function NewsItemSmallComponent({
   item,
@@ -26,9 +22,15 @@ export default function NewsItemSmallComponent({
         className="h-[60px] w-[70px] shrink-0 grow-0 object-cover object-center"
       />
       <div className="flex h-full flex-col gap-1">
-        <h3 className="font-roboto -mt-1 text-sm font-bold text-black">
-          {item.title}
-        </h3>
+        <NewsLink
+          categoryName={item.categoryName}
+          newsId={item.id}
+          title={item.title}
+        >
+          <h3 className="font-roboto -mt-1 text-sm font-bold text-black">
+            {item.title}
+          </h3>
+        </NewsLink>
         <time
           className="mt-auto font-sans text-xs font-semibold text-[#333]"
           dateTime={item.createdAt.toISOString()}

@@ -1,7 +1,5 @@
 import dynamic from "next/dynamic";
 
-import { MainPageContainerProps } from "../../Containers/main-page-container";
-
 const NewsItemSmallComponent = dynamic(
   () => import("../../Components/Common/news-item-small-component"),
 );
@@ -11,7 +9,7 @@ const NewsItemMiddleComponent = dynamic(
 );
 
 export type MainPageLastNewsSkippedProps = {
-  newsList: MainPageContainerProps["lastSkippedNews"][number];
+  newsList: any;
 };
 export default function MainPageLastNewsSkipped({
   newsList,
@@ -20,7 +18,7 @@ export default function MainPageLastNewsSkipped({
   const restItems = newsList.category.Newses.slice(
     1,
     newsList.category.Newses.length,
-  );
+  ) as any[];
   return (
     <section className="flex w-full flex-col space-y-4">
       <NewsItemMiddleComponent
@@ -30,9 +28,19 @@ export default function MainPageLastNewsSkipped({
           type: "first",
         }}
       />
-      {restItems.map((newsItem, index) => {
-        return <NewsItemSmallComponent item={newsItem} key={index} />;
-      })}
+      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-1">
+        {restItems.map((newsItem, index) => {
+          return (
+            <NewsItemSmallComponent
+              item={{
+                ...newsItem,
+                categoryName: newsList.category.categoryName,
+              }}
+              key={index}
+            />
+          );
+        })}
+      </div>
     </section>
   );
 }

@@ -2,10 +2,7 @@
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
-
-type HeaderSeachProps = {
-  className: string;
-};
+import { HeaderSeachProps } from "../types";
 
 export default function HeaderSearch({ className }: HeaderSeachProps) {
   const [isActive, setIsActive] = useState<boolean>(false);

@@ -1,5 +1,6 @@
+import dynamic from "next/dynamic";
 import { getCategoryListClientService } from "@/ClientServices/news.clientservice";
-import HeaderContainer from "./header-container";
+const HeaderContainer = dynamic(() => import("./header-container"));
 
 export default async function Header() {
   const result = await getCategoryListClientService();

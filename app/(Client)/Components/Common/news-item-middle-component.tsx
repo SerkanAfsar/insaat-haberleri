@@ -1,6 +1,8 @@
 import { cn, dateTimeConvert, getImageFromCdn } from "@/lib/utils";
 import Image from "next/image";
-import { SmallNewsComponentProps } from "./news-item-small-component";
+
+import NewsLink from "./news-link";
+import { SmallNewsComponentProps } from "../types";
 
 export default function NewsItemMiddleComponent({
   item,
@@ -18,7 +20,7 @@ export default function NewsItemMiddleComponent({
     <article
       className={cn(
         "relative mb-8 flex w-full items-start space-y-2",
-        item.type == "first" ? "flex-col" : "flex-row space-x-6",
+        item.type == "first" ? "flex-col" : "flex-col space-x-6 xl:flex-row",
       )}
     >
       <h2 className="bg-theme-primary font-oswald absolute top-0 mb-0 inline-block w-auto -translate-y-full p-3 text-white uppercase">
@@ -32,9 +34,15 @@ export default function NewsItemMiddleComponent({
         className="h-[200px] shrink-0 grow-0 object-cover object-center"
       />
       <div className="flex flex-col space-y-2">
-        <h3 className="font-roboto line-clamp-1 text-lg font-bold text-black">
-          {item.title}
-        </h3>
+        <NewsLink
+          categoryName={item.categoryName}
+          newsId={item.id}
+          title={item.title}
+        >
+          <h3 className="font-roboto line-clamp-1 text-lg font-bold text-black">
+            {item.title}
+          </h3>
+        </NewsLink>
         <p className="font-openSans line-clamp-3 text-[13px] text-[#333]">
           {item.subDescription}
         </p>

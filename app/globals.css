@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -176,4 +177,14 @@
 
 .swiper-pagination {
   @apply invisible absolute !top-2 !left-2 w-auto! opacity-0 transition-all duration-300 group-hover:visible group-hover:opacity-100;
+}
+
+.customNews span,
+.customNews p {
+  @apply font-openSans text-[16px];
+}
+
+.MsoNoSpacing:has("&nbsp"),
+.MsoNoSpacing:empty {
+  display: none;
 }

@@ -1,17 +1,15 @@
 import Link from "next/link";
-import { HeaderContainerProps } from "./header-container";
+
 import { dateTimeConvert, getImageFromCdn } from "@/lib/utils";
 import Image from "next/image";
-
-export type HeaderNavProps = {
-  categories: HeaderContainerProps["categories"];
-};
+import NewsLink from "../Common/news-link";
+import { HeaderNavProps } from "../types";
 
 export default function HeaderNav({ categories }: HeaderNavProps) {
   return (
     <nav className="font-oswald hidden items-center xl:flex">
       <Link
-        href={"#"}
+        href={"/"}
         title="Anasayfa"
         className="hover:bg-theme-primary p-4 text-[18px] font-medium uppercase transition-all duration-200 ease-in-out"
       >
@@ -34,11 +32,11 @@ export default function HeaderNav({ categories }: HeaderNavProps) {
               {category.Newses.map((newsItem, index) => {
                 const url = getImageFromCdn(newsItem.imageId).small;
                 return (
-                  <Link
-                    href={"#"}
+                  <NewsLink
                     key={index}
+                    categoryName={category.categoryName}
+                    newsId={newsItem.id}
                     title={newsItem.title}
-                    className="flex h-full flex-col"
                   >
                     <Image
                       src={url}
@@ -56,7 +54,7 @@ export default function HeaderNav({ categories }: HeaderNavProps) {
                     >
                       {dateTimeConvert(newsItem.createdAt)}
                     </time>
-                  </Link>
+                  </NewsLink>
                 );
               })}
             </div>

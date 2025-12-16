@@ -1,14 +1,12 @@
 "use client";
 
-import HeaderSearch from "./header-seach";
-
-import { getCategoryListClientService } from "@/ClientServices/news.clientservice";
-import HeaderNav from "./header-nav";
-import HeaderMobileMenuAside from "./header-mobile-menu-aside";
-
-export type HeaderContainerProps = {
-  categories: Awaited<ReturnType<typeof getCategoryListClientService>>;
-};
+import dynamic from "next/dynamic";
+const HeaderSearch = dynamic(() => import("./header-seach"));
+const HeaderNav = dynamic(() => import("./header-nav"));
+const HeaderMobileMenuAside = dynamic(
+  () => import("./header-mobile-menu-aside"),
+);
+import { HeaderContainerProps } from "../types";
 
 export default function HeaderContainer({ categories }: HeaderContainerProps) {
   return (

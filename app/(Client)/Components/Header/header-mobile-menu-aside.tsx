@@ -1,11 +1,10 @@
 import { Menu } from "lucide-react";
-import { HeaderContainerProps } from "./header-container";
+
 import { useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-export type HeaderAsideProps = {
-  categories: HeaderContainerProps["categories"];
-};
+import { HeaderAsideProps } from "../types";
+
 export default function HeaderMobileMenuAside({
   categories,
 }: HeaderAsideProps) {

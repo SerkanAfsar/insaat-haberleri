@@ -5,25 +5,21 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 
 const SlideNewsItem = dynamic(() => import("./slide-news-item"));
-import { MainPageContainerProps } from "../../Containers/main-page-container";
+
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SliderProps } from "../types";
 
-export type SliderProps = {
-  newses: MainPageContainerProps["lastNews"];
-  nextClass?: string;
-  prevClass?: string;
-};
 export default function SwiperSlideList({
   newses,
   nextClass,
   prevClass,
 }: SliderProps) {
   return (
-    <div className="group relative w-full overflow-hidden xl:h-[400px]">
+    <div className="group relative h-[350px] w-full overflow-hidden">
       <div className="invisible absolute top-0 right-0 z-10 text-white opacity-0 transition-all duration-300 group-hover:visible group-hover:opacity-100">
         <button
           type="button"
@@ -59,10 +55,10 @@ export default function SwiperSlideList({
           nextEl: `.${nextClass}`,
           prevEl: `.${prevClass}`,
         }}
-        className="h-full"
+        className="block h-full"
       >
         {newses.map((item, index) => (
-          <SwiperSlide key={index} className="h-full">
+          <SwiperSlide key={index} className="block h-full">
             <SlideNewsItem news={item} />
           </SwiperSlide>
         ))}
