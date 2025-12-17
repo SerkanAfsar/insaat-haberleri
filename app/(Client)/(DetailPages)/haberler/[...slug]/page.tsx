@@ -48,7 +48,7 @@ export default async function Page({
         title={newsDetailData.title}
         content={newsDetailData.content}
       />
-      <Slider3Section newses={relatedNews} title="Benzer Haberler" />,
+      <Slider3Section newses={relatedNews} title="Benzer Haberler" />
     </>
   );
 }

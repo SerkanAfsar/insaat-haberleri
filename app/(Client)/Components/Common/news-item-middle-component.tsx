@@ -10,6 +10,7 @@ export default function NewsItemMiddleComponent({
   item: SmallNewsComponentProps & {
     categoryName: string;
     type: "first" | "second";
+    hideHeader?: boolean;
   };
 }) {
   const imageSrc = getImageFromCdn(item.imageId).small;
@@ -23,9 +24,12 @@ export default function NewsItemMiddleComponent({
         item.type == "first" ? "flex-col" : "flex-col space-x-6 xl:flex-row",
       )}
     >
-      <h2 className="bg-theme-primary font-oswald absolute top-0 mb-0 inline-block w-auto -translate-y-full p-3 text-white uppercase">
-        {item.categoryName}
-      </h2>
+      {!item.hideHeader && (
+        <h2 className="bg-theme-primary font-oswald absolute top-0 mb-0 inline-block w-auto -translate-y-full p-3 text-white uppercase">
+          {item.categoryName}
+        </h2>
+      )}
+
       <Image
         src={imageSrc}
         alt={item.title}
@@ -39,15 +43,15 @@ export default function NewsItemMiddleComponent({
           newsId={item.id}
           title={item.title}
         >
-          <h3 className="font-roboto line-clamp-1 text-lg font-bold text-black">
+          <h3 className="font-roboto line-clamp-1 text-lg font-bold">
             {item.title}
           </h3>
         </NewsLink>
-        <p className="font-openSans line-clamp-3 text-[13px] text-[#333]">
+        <p className="font-openSans line-clamp-3 text-[13px]">
           {item.subDescription}
         </p>
         <time
-          className="mt-auto font-sans text-xs font-semibold text-[#333]"
+          className="mt-auto font-sans text-xs font-semibold"
           dateTime={item.createdAt.toISOString()}
         >
           {dateTime}

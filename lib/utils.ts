@@ -223,3 +223,25 @@ export const dateTimeConvert = (date: Date | null) => {
   }).format();
   return dateTime;
 };
+
+export const categorySlugUrl = ({
+  categoryName,
+  categoryId,
+}: {
+  categoryName: string;
+  categoryId: number;
+}) => {
+  return `/kategori/${slugUrl(categoryName)}/${categoryId}`;
+};
+
+export const newsSlugUrl = ({
+  newsTitle,
+  categoryName,
+  id,
+}: {
+  newsTitle: string;
+  categoryName: string;
+  id: number;
+}) => {
+  return `/haberler/${slugUrl(categoryName)}/${slugUrl(newsTitle)}/${id}`;
+};

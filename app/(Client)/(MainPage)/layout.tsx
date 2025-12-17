@@ -7,6 +7,7 @@ import ContainerWrapper from "../Components/Common/container-wrapper";
 import NewsLetter from "../Components/Common/newsletter";
 import SocialLinksSection from "../Components/Common/social-links-section";
 import TabList from "../Components/Common/tablist";
+import SpecialNews from "../Components/Common/special-news";
 
 export default async function Layout({
   children,
@@ -30,6 +31,7 @@ export default async function Layout({
           />
           <NewsLetter />
           <SocialLinksSection />
+          <SpecialNews />
         </div>
       </div>
     </ContainerWrapper>

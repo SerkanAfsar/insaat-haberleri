@@ -2,7 +2,7 @@ import { Menu } from "lucide-react";
 
 import { useLayoutEffect, useState } from "react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { categorySlugUrl, cn } from "@/lib/utils";
 import { HeaderAsideProps } from "../types";
 
 export default function HeaderMobileMenuAside({
@@ -42,7 +42,10 @@ export default function HeaderMobileMenuAside({
           </Link>
           {categories.map((item, index) => (
             <Link
-              href={"/"}
+              href={categorySlugUrl({
+                categoryName: item.categoryName,
+                categoryId: item.id,
+              })}
               className="block border-b border-[#111] py-2 text-sm text-[#999] uppercase"
               title={item.categoryName}
               key={index}

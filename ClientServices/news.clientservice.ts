@@ -203,3 +203,15 @@ export async function relatedNewsList(categoryId: number, newsId: number) {
     take: 3,
   });
 }
+
+export async function mostReadede3NewsList() {
+  return prisma.newses.findMany({
+    orderBy: {
+      readedCount: "desc",
+    },
+    include: {
+      category: true,
+    },
+    take: 3,
+  });
+}

@@ -3,35 +3,33 @@ import NewsLetter from "@/app/(Client)/Components/Common/newsletter";
 import SocialLinksSection from "@/app/(Client)/Components/Common/social-links-section";
 import TabList from "@/app/(Client)/Components/Common/tablist";
 import {
-  getNewsById,
   LatestTabListNews,
   PopularTabListNews,
   RandomTabListNews,
 } from "@/ClientServices/news.clientservice";
 import { notFound } from "next/navigation";
 
-import { DetailPageLayoutProps } from "../types/news.types";
 import SpecialNews from "@/app/(Client)/Components/Common/special-news";
+import { DetailPageLayoutProps } from "../../haberler/types/news.types";
+import { GetCategoryByIdService } from "@/Services/Category.service";
 
 export default async function Layout({
   children,
   params,
 }: DetailPageLayoutProps) {
   const { slug } = await params;
-  const id = Number(slug[2]);
+  const id = Number(slug[1]);
 
-  const newsDetailData = await getNewsById(id);
+  const categoryDetailData = await GetCategoryByIdService(id);
 
-  if (!newsDetailData) {
+  if (!categoryDetailData) {
     return notFound();
   }
 
-  const categoryId = newsDetailData.categoryId;
-
   const [latestNews, popularNews, randomNews] = await Promise.all([
-    LatestTabListNews(categoryId),
-    PopularTabListNews(categoryId),
-    RandomTabListNews(categoryId),
+    LatestTabListNews(categoryDetailData.id),
+    PopularTabListNews(categoryDetailData.id),
+    RandomTabListNews(categoryDetailData.id),
   ]);
 
   return (

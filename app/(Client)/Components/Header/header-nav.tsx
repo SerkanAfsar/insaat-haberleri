@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { dateTimeConvert, getImageFromCdn } from "@/lib/utils";
+import { categorySlugUrl, dateTimeConvert, getImageFromCdn } from "@/lib/utils";
 import Image from "next/image";
 import NewsLink from "../Common/news-link";
 import { HeaderNavProps } from "../types";
@@ -16,10 +16,14 @@ export default function HeaderNav({ categories }: HeaderNavProps) {
         Anasayfa
       </Link>
       {categories.slice(0, 6).map((category) => {
+        const categoryUrl = categorySlugUrl({
+          categoryName: category.categoryName,
+          categoryId: category.id,
+        });
         return (
           <div key={category.id} className="group">
             <Link
-              href={"#"}
+              href={categoryUrl}
               title={category.categoryName}
               className="hover:bg-theme-primary group-hover:bg-theme-primary block p-4 text-[18px] font-medium uppercase transition-all duration-200 ease-in-out"
             >
