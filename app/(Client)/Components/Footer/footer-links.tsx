@@ -5,7 +5,7 @@ import Link from "next/link";
 export default async function FooterLinks() {
   const categories = await getCategoryListClientService();
   return (
-    <section className="block w-[60%]">
+    <section className="block w-full xl:w-[60%]">
       <h3 className="font-oswald mb-2 block text-xl font-bold text-white uppercase">
         Hızlı Menü
       </h3>

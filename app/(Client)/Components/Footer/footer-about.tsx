@@ -1,6 +1,6 @@
 export default function FooterAbout() {
   return (
-    <section className="block w-[40%]">
+    <section className="block w-full xl:w-[40%]">
       <h3 className="font-oswald mb-2 block text-xl font-bold text-white uppercase">
         Hakkımızda
       </h3>

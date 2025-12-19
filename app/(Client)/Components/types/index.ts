@@ -1,3 +1,4 @@
+import { getCategoryDetailWithPaginatitedNews } from "@/ClientServices/category.clientservice";
 import {
   getCategoryListClientService,
   LatestTabListNews,
@@ -70,3 +71,7 @@ export type HeaderNavProps = {
 export type HeaderSeachProps = {
   className: string;
 };
+
+export type CategoryDetailNewsItemProps = NonNullable<
+  Awaited<ReturnType<typeof getCategoryDetailWithPaginatitedNews>>
+>["Newses"][number];

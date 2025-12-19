@@ -1,8 +1,22 @@
-import dynamic from "next/dynamic";
 import { getCategoryListClientService } from "@/ClientServices/news.clientservice";
-const HeaderContainer = dynamic(() => import("./header-container"));
+import ContainerWrapper from "../Common/container-wrapper";
+import HeaderMobileMenuAside from "./header-mobile-menu-aside";
+import HeaderNav from "./header-nav";
+import HeaderSearch from "./header-seach";
 
 export default async function Header() {
-  const result = await getCategoryListClientService();
-  return <HeaderContainer categories={result} />;
+  const categories = await getCategoryListClientService();
+
+  return (
+    <header className="relative z-10 block w-full">
+      <ContainerWrapper className="text-theme-primary font-openSans text-2xl font-bold uppercase">
+        İnşaat Haberleri
+      </ContainerWrapper>
+      <ContainerWrapper className="font-roboto bg-theme-secodary relative mt-5 flex items-center text-white">
+        <HeaderMobileMenuAside categories={categories} />
+        <HeaderNav categories={categories} />
+        <HeaderSearch className="ml-auto transition-all duration-300 hover:cursor-pointer hover:bg-gray-700" />
+      </ContainerWrapper>
+    </header>
+  );
 }

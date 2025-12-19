@@ -65,6 +65,11 @@ export default function HeaderNav({ categories }: HeaderNavProps) {
           </div>
         );
       })}
+      <div className="group">
+        <span className="hover:bg-theme-primary group-hover:bg-theme-primary block cursor-pointer p-4 text-[18px] font-medium uppercase transition-all duration-200 ease-in-out">
+          Diğer Kategoriler
+        </span>
+      </div>
     </nav>
   );
 }

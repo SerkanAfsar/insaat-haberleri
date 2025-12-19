@@ -1,5 +1,5 @@
+"use client";
 import { Menu } from "lucide-react";
-
 import { useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { categorySlugUrl, cn } from "@/lib/utils";
@@ -9,7 +9,6 @@ export default function HeaderMobileMenuAside({
   categories,
 }: HeaderAsideProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
   useLayoutEffect(() => {
     const overFlow = isOpen ? "hidden" : "auto";
     document.body.style.overflow = overFlow;

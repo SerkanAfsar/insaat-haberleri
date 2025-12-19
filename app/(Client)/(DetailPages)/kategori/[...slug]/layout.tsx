@@ -7,11 +7,9 @@ import {
   PopularTabListNews,
   RandomTabListNews,
 } from "@/ClientServices/news.clientservice";
-import { notFound } from "next/navigation";
 
 import SpecialNews from "@/app/(Client)/Components/Common/special-news";
 import { DetailPageLayoutProps } from "../../haberler/types/news.types";
-import { GetCategoryByIdService } from "@/Services/Category.service";
 
 export default async function Layout({
   children,
@@ -20,16 +18,10 @@ export default async function Layout({
   const { slug } = await params;
   const id = Number(slug[1]);
 
-  const categoryDetailData = await GetCategoryByIdService(id);
-
-  if (!categoryDetailData) {
-    return notFound();
-  }
-
   const [latestNews, popularNews, randomNews] = await Promise.all([
-    LatestTabListNews(categoryDetailData.id),
-    PopularTabListNews(categoryDetailData.id),
-    RandomTabListNews(categoryDetailData.id),
+    LatestTabListNews(id),
+    PopularTabListNews(id),
+    RandomTabListNews(id),
   ]);
 
   return (

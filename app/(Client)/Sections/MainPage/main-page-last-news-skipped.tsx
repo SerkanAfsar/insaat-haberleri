@@ -20,7 +20,7 @@ export default function MainPageLastNewsSkipped({
     newsList.category.Newses.length,
   ) as any[];
   return (
-    <section className="flex w-full flex-col space-y-4">
+    <section className="flex w-full flex-col space-y-4 first:mb-10 xl:first:mb-0">
       <NewsItemMiddleComponent
         item={{
           ...firstNewsItem,
