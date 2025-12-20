@@ -7,7 +7,6 @@ import {
 } from "react-share";
 
 export default function ShareArticle() {
-  console.log(window.location.href);
   return (
     <section className="font-oswald flex w-full items-center justify-start gap-4">
       <h5 className="font-bold">Haberi Paylaş:</h5>

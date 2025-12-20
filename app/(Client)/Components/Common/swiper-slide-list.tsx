@@ -48,8 +48,6 @@ export default function SwiperSlideList({
           disableOnInteraction: false,
         }}
         loop
-        // onSlideChange={() => console.log("slide change")}
-        // onSwiper={(swiper) => console.log(swiper)}
         pagination={{ clickable: true }}
         navigation={{
           nextEl: `.${nextClass}`,

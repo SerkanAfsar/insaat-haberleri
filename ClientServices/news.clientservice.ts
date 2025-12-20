@@ -215,3 +215,19 @@ export async function mostReadede3NewsList() {
     take: 3,
   });
 }
+
+export async function updateReadedCountNewsClientServe(newsId: number) {
+  return await prisma.newses.update({
+    where: {
+      id: Number(newsId),
+    },
+    data: {
+      readedCount: {
+        increment: 1,
+      },
+    },
+    select: {
+      readedCount: true,
+    },
+  });
+}

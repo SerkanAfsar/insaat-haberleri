@@ -1,6 +1,7 @@
 import {
   getNewsById,
   relatedNewsList,
+  updateReadedCountNewsClientServe,
 } from "@/ClientServices/news.clientservice";
 
 import dynamicImport from "next/dynamic";
@@ -34,6 +35,8 @@ export default async function Page({
     return notFound();
   }
 
+  const readedCountResult = await updateReadedCountNewsClientServe(id);
+
   const relatedNews = await relatedNewsList(
     newsDetailData.categoryId,
     newsDetailData.id,
@@ -47,6 +50,8 @@ export default async function Page({
         subDescription={newsDetailData.subDescription}
         title={newsDetailData.title}
         content={newsDetailData.content}
+        readedCount={readedCountResult.readedCount}
+        id={newsDetailData.id}
       />
       <Slider3Section newses={relatedNews} title="Benzer Haberler" />
     </>

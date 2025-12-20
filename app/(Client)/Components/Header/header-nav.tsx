@@ -1,9 +1,7 @@
 import Link from "next/link";
-
-import { categorySlugUrl, dateTimeConvert, getImageFromCdn } from "@/lib/utils";
-import Image from "next/image";
-import NewsLink from "../Common/news-link";
+import { categorySlugUrl } from "@/lib/utils";
 import { HeaderNavProps } from "../types";
+import HeaderNavItem from "./header-nav-item";
 
 export default function HeaderNav({ categories }: HeaderNavProps) {
   return (
@@ -16,59 +14,33 @@ export default function HeaderNav({ categories }: HeaderNavProps) {
         Anasayfa
       </Link>
       {categories.slice(0, 6).map((category) => {
-        const categoryUrl = categorySlugUrl({
-          categoryName: category.categoryName,
-          categoryId: category.id,
-        });
-        return (
-          <div key={category.id} className="group">
-            <Link
-              href={categoryUrl}
-              title={category.categoryName}
-              className="hover:bg-theme-primary group-hover:bg-theme-primary block p-4 text-[18px] font-medium uppercase transition-all duration-200 ease-in-out"
-            >
-              {category.categoryName}
-            </Link>
-            <div className="group-hover:animate-fadeUp absolute top-full right-0 left-0 hidden grid-cols-4 gap-4 border bg-white p-4 text-black shadow group-hover:grid">
-              <h3 className="col-span-4 block text-lg font-bold uppercase">
-                {category.categoryName} Son Haberler
-              </h3>
-              {category.Newses.map((newsItem, index) => {
-                const url = getImageFromCdn(newsItem.imageId).small;
-                return (
-                  <NewsLink
-                    key={index}
-                    categoryName={category.categoryName}
-                    newsId={newsItem.id}
-                    title={newsItem.title}
-                  >
-                    <Image
-                      src={url}
-                      width={200}
-                      height={150}
-                      className="border-theme-secodary h-[150px] w-full border-2 object-center"
-                      alt={newsItem.title}
-                    />
-                    <h4 className="my-2 line-clamp-2 text-sm font-semibold">
-                      {newsItem.title}
-                    </h4>
-                    <time
-                      className="mt-auto text-xs text-gray-600"
-                      dateTime={newsItem.createdAt.toISOString()}
-                    >
-                      {dateTimeConvert(newsItem.createdAt)}
-                    </time>
-                  </NewsLink>
-                );
-              })}
-            </div>
-          </div>
-        );
+        return <HeaderNavItem key={category.id} category={category} />;
       })}
       <div className="group">
         <span className="hover:bg-theme-primary group-hover:bg-theme-primary block cursor-pointer p-4 text-[18px] font-medium uppercase transition-all duration-200 ease-in-out">
           Diğer Kategoriler
         </span>
+        <div className="group-hover:animate-fadeUp absolute top-full right-0 left-0 hidden w-full grid-cols-4 gap-4 border bg-white p-4 text-black shadow group-hover:grid">
+          <h3 className="col-span-4 block text-lg font-bold uppercase">
+            Diğer Kategoriler
+          </h3>
+          {categories.slice(6, categories.length).map((item) => {
+            const url = categorySlugUrl({
+              categoryName: item.categoryName,
+              categoryId: item.id,
+            });
+            return (
+              <Link
+                href={url}
+                className="underline"
+                key={item.id}
+                title={item.categoryName}
+              >
+                {item.categoryName} Haberleri
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </nav>
   );

@@ -4,6 +4,8 @@ export type NewsDetailProps = {
   imageId: string | null;
   createdAt: Date;
   content: any;
+  readedCount: number;
+  id: number;
 };
 
 export type DetailPageLayoutProps = {
