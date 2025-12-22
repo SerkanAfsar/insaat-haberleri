@@ -3,6 +3,7 @@ import {
   relatedNewsList,
   updateReadedCountNewsClientServe,
 } from "@/ClientServices/news.clientservice";
+import { Metadata } from "next";
 
 import dynamicImport from "next/dynamic";
 import { notFound } from "next/navigation";
@@ -11,6 +12,51 @@ const NewsDetail = dynamicImport(() => import("../Components/news-detail"));
 const Slider3Section = dynamicImport(
   () => import("../../../Sections/MainPage/slider-3-section"),
 );
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string[] }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const id = Number(slug[2]);
+
+  const result = await getNewsById(id);
+
+  return {
+    title: result?.seoTitle,
+    description: result?.seoDescription,
+    robots: "index,follow",
+    publisher: "İnşaat Haberleri",
+    authors: [
+      {
+        name: "İnşaat Haberleri",
+        url: process.env.NEXT_PUBLIC_BASE_URL,
+      },
+    ],
+
+    openGraph: {
+      title: result?.seoTitle ?? "İnşaat Haberleri",
+      description: result?.seoDescription ?? "İnşaat Haberleri",
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/${slug.join("/")}`,
+      locale: "tr_TR",
+      siteName: "İnşaat Haberleri",
+      authors: ["İnşaat Haberleri"],
+      emails: ["info@insaathaberleri.org"],
+    },
+
+    twitter: {
+      card: "summary",
+      description: result?.seoDescription ?? "İnşaat Haberleri",
+      title: result?.seoTitle ?? "İnşaat Haberleri",
+      creator: "@insaathaberleri",
+    },
+
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/${slug.join("/")}`,
+    },
+  };
+}
 
 export default async function Page({
   params,

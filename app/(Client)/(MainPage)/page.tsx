@@ -4,7 +4,42 @@ import {
   getSkipped12NewsClientService,
   mostReadedNewsClientService,
 } from "@/ClientServices/news.clientservice";
+import { Metadata } from "next";
 import dynamic from "next/dynamic";
+
+export const metadata: Metadata = {
+  title: "Güncel İnşaat Haberleri | İnşaat Haberleri",
+  description: "Güncel İnşaat Haberleri | İnşaat Haberleri",
+  robots: "index,follow",
+  publisher: "İnşaat Haberleri",
+  authors: [
+    {
+      name: "İnşaat Haberleri",
+      url: process.env.NEXT_PUBLIC_BASE_URL,
+    },
+  ],
+
+  openGraph: {
+    title: "Güncel İnşaat Haberleri | İnşaat Haberleri",
+    description: "Güncel İnşaat Haberleri | İnşaat Haberleri",
+    url: process.env.NEXT_PUBLIC_BASE_URL,
+    locale: "tr_TR",
+    siteName: "İnşaat Haberleri",
+    authors: ["İnşaat Haberleri"],
+    emails: ["info@insaathaberleri.org"],
+  },
+
+  twitter: {
+    card: "summary",
+    description: "Güncel İnşaat Haberleri | İnşaat Haberleri",
+    title: "Güncel İnşaat Haberleri | İnşaat Haberleri",
+    creator: "@insaathaberleri",
+  },
+
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_BASE_URL,
+  },
+};
 
 const SwiperSlideList = dynamic(
   () => import("../Components/Common/swiper-slide-list"),
