@@ -231,3 +231,20 @@ export async function updateReadedCountNewsClientServe(newsId: number) {
     },
   });
 }
+
+export async function getAllNewsWithCategoryNameClientService() {
+  return await prisma.newses.findMany({
+    orderBy: {
+      id: "asc",
+    },
+    select: {
+      title: true,
+      id: true,
+      category: {
+        select: {
+          categoryName: true,
+        },
+      },
+    },
+  });
+}

@@ -34,3 +34,20 @@ export async function getCategoryDetailWithPaginatitedNews(
     },
   });
 }
+
+export async function getCategoryListWithNewsCount() {
+  return await prisma.category.findMany({
+    orderBy: {
+      id: "asc",
+    },
+    select: {
+      categoryName: true,
+      id: true,
+      _count: {
+        select: {
+          Newses: true,
+        },
+      },
+    },
+  });
+}

@@ -10,7 +10,7 @@ export default function ShareArticle() {
   return (
     <section className="font-oswald flex w-full items-center justify-start gap-4">
       <h5 className="font-bold">Haberi Paylaş:</h5>
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap gap-2">
         <FacebookShareButton url={window.location.href}>
           <div className="rounded-full bg-blue-600 p-2 text-white">
             <Facebook size={20} />
