@@ -1,8 +1,5 @@
 import { getCategoryListWithNewsCount } from "@/ClientServices/category.clientservice";
-import {
-  getAllNewsWithCategoryNameClientService,
-  getLastNewsClientService,
-} from "@/ClientServices/news.clientservice";
+import { getAllNewsWithCategoryNameClientService } from "@/ClientServices/news.clientservice";
 
 import { categorySlugUrl, newsSlugUrl } from "@/lib/utils";
 import type { MetadataRoute } from "next";

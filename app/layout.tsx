@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Outfit, Roboto_Slab, Oswald, Open_Sans } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import NextTopLoader from "nextjs-toploader";
