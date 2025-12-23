@@ -60,7 +60,7 @@ async function getData(categoryId: number, page: number) {
         tags: ["categories", `category_${categoryId}`],
         revalidate: 10,
       },
-      cache: "no-store",
+      cache: "force-cache",
     },
   );
   if (!response.ok) {
