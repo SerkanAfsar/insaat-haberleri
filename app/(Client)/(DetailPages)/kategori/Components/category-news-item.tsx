@@ -1,6 +1,6 @@
 import NewsLink from "@/app/(Client)/Components/Common/news-link";
 import { CategoryDetailNewsItemProps } from "@/app/(Client)/Components/types";
-import { dateTimeConvert, getImageFromCdn } from "@/lib/utils";
+import { getImageFromCdn } from "@/lib/utils";
 import Image from "next/image";
 
 export default function CategoryNewsItem({
@@ -13,7 +13,7 @@ export default function CategoryNewsItem({
   const imageUrl = getImageFromCdn(item.imageId);
 
   return (
-    <article className="flex w-full flex-row items-start gap-4 border-b border-[#eee] pb-6 last:border-none">
+    <article className="flex w-full flex-col items-start gap-4 border-b border-[#eee] pb-6 last:border-none md:flex-row">
       <Image
         src={imageUrl.medium}
         width={300}
@@ -27,16 +27,16 @@ export default function CategoryNewsItem({
           newsId={item.id}
           title={item.title}
         >
-          <h4 className="font-oswald text-lg font-bold text-black">
+          <h4 className="font-oswald -mt-1 text-lg font-bold text-black">
             {item.title}
           </h4>
         </NewsLink>
-        <time
+        {/* <time
           className="text-xs text-gray-400"
           dateTime={item.createdAt.toISOString()}
         >
           {dateTimeConvert(item.createdAt)}
-        </time>
+        </time> */}
         <p className="font-openSans text-sm text-[#333]">
           {item.subDescription}
         </p>

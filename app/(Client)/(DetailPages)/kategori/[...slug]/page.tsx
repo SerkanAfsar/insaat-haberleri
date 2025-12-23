@@ -51,6 +51,26 @@ export async function generateMetadata({
   };
 }
 
+async function getData(categoryId: number, page: number) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SITE_NAME}/api/categorydetail?id=${categoryId}&page=${page}`,
+    {
+      method: "GET",
+      next: {
+        tags: ["categories", `category_${categoryId}`],
+        revalidate: 1,
+      },
+      cache: "no-store",
+    },
+  );
+  if (!response.ok) {
+    throw new Error("Error Accoured");
+  }
+  const result = await response.json();
+  return result as Awaited<
+    ReturnType<typeof getCategoryDetailWithPaginatitedNews>
+  >;
+}
 export default async function Page({
   params,
   searchParams,
@@ -67,10 +87,7 @@ export default async function Page({
     return notFound();
   }
 
-  const categoryItem = await getCategoryDetailWithPaginatitedNews(
-    categoryId,
-    page ? page : 1,
-  );
+  const categoryItem = await getData(categoryId, page ? page : 1);
 
   if (!categoryItem) {
     return notFound();
@@ -79,7 +96,7 @@ export default async function Page({
   return (
     <section className="flex flex-col space-y-6">
       <SmallSectionTitle title={`${categoryItem.categoryName} Haberleri`} />
-      {categoryItem.Newses.map((item) => (
+      {categoryItem?.Newses.map((item) => (
         <CategoryNewsItem
           key={item.id}
           item={{ ...item, categoryName: categoryItem.categoryName }}

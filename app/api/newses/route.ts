@@ -1,6 +1,7 @@
 import { AddNewsService } from "@/Services/News.service";
 import { GetAllNewsesService } from "@/Services/Newses.service";
 import { AddNewsType } from "@/Types";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -35,6 +36,7 @@ export async function POST(req: NextRequest) {
       return { ...acc, [key]: value };
     }, {});
     const result = await AddNewsService(data as AddNewsType);
+    revalidateTag("categories", "max");
     return NextResponse.json({ result }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(

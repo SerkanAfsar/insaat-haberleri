@@ -36,7 +36,8 @@ export default async function middleware(req: NextRequest) {
   if (
     (!accessToken || !userSession) &&
     pathName != "/api/login" &&
-    pathName != "/api/refresh"
+    pathName != "/api/refresh" &&
+    pathName != "/api/categorydetail"
   ) {
     const url = new URL(req.url);
     const response = await fetch(`${url.origin}/api/refresh`, {
