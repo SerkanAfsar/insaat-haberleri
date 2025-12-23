@@ -58,7 +58,7 @@ async function getData(categoryId: number, page: number) {
       method: "GET",
       next: {
         tags: ["categories", `category_${categoryId}`],
-        revalidate: 1,
+        revalidate: 10,
       },
       cache: "no-store",
     },
