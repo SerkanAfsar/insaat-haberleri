@@ -1,34 +1,11 @@
 import ContainerWrapper from "@/app/(Client)/Components/Common/container-wrapper";
 import NewsLetter from "@/app/(Client)/Components/Common/newsletter";
 import SocialLinksSection from "@/app/(Client)/Components/Common/social-links-section";
-import TabList from "@/app/(Client)/Components/Common/tablist";
-// import {
-//   LatestTabListNews,
-//   PopularTabListNews,
-//   RandomTabListNews,
-// } from "@/ClientServices/news.clientservice";
 
 import SpecialNews from "@/app/(Client)/Components/Common/special-news";
 import { DetailPageLayoutProps } from "../../haberler/types/news.types";
-
-export async function getMostReadedData(id?: number) {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_SITE_NAME}/api/newses/tab-list?id=${id}`,
-    {
-      next: {
-        revalidate: 3000,
-        tags: ["tabsList"],
-      },
-      cache: "default",
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error("Tabs List Error");
-  }
-  const result = await response.json();
-  return result;
-}
+import { getMostReaded3Data, getTabsListData } from "@/app/(Client)/Functions";
+import TabList from "@/app/(Client)/Components/Common/tab-list";
 
 export default async function Layout({
   children,
@@ -37,9 +14,9 @@ export default async function Layout({
   const { slug } = await params;
   const id = Number(slug[1]);
 
-  const { latestNews, popularNews, randomNews } = await getMostReadedData(id);
+  const { latestNews, popularNews, randomNews } = await getTabsListData(id);
 
-  // const [latestNews, popularNews, randomNews] = await Promise.all([]);
+  const most3NewsData = await getMostReaded3Data();
 
   return (
     <ContainerWrapper>
@@ -53,7 +30,7 @@ export default async function Layout({
           />
           <NewsLetter />
           <SocialLinksSection />
-          <SpecialNews />
+          <SpecialNews data={most3NewsData} />
         </div>
       </div>
     </ContainerWrapper>

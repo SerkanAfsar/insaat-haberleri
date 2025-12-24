@@ -1,24 +1,25 @@
 import {
   LatestTabListNews,
+  mostReadede3NewsList,
+  mostReadedNewsClientService,
   PopularTabListNews,
   RandomTabListNews,
 } from "@/ClientServices/news.clientservice";
 import ContainerWrapper from "../Components/Common/container-wrapper";
 import NewsLetter from "../Components/Common/newsletter";
 import SocialLinksSection from "../Components/Common/social-links-section";
-import TabList from "../Components/Common/tablist";
+
 import SpecialNews from "../Components/Common/special-news";
+import TabList from "../Components/Common/tab-list";
+import { getTabsListData } from "../Functions";
 
 export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [latestNews, popularNews, randomNews] = await Promise.all([
-    LatestTabListNews(undefined),
-    PopularTabListNews(undefined),
-    RandomTabListNews(undefined),
-  ]);
+  const { latestNews, popularNews, randomNews } = await getTabsListData();
+  const mostReaded3Data = await mostReadede3NewsList();
   return (
     <ContainerWrapper>
       <div className="flex flex-col gap-8 xl:flex-row">
@@ -31,9 +32,11 @@ export default async function Layout({
           />
           <NewsLetter />
           <SocialLinksSection />
-          <SpecialNews />
+          <SpecialNews data={mostReaded3Data} />
         </div>
       </div>
     </ContainerWrapper>
   );
 }
+
+export const revalidate = 60;

@@ -1,7 +1,7 @@
 import ContainerWrapper from "@/app/(Client)/Components/Common/container-wrapper";
 import NewsLetter from "@/app/(Client)/Components/Common/newsletter";
 import SocialLinksSection from "@/app/(Client)/Components/Common/social-links-section";
-import TabList from "@/app/(Client)/Components/Common/tablist";
+
 import {
   getNewsById,
   LatestTabListNews,
@@ -11,7 +11,8 @@ import {
 import { notFound } from "next/navigation";
 
 import { DetailPageLayoutProps } from "../types/news.types";
-import SpecialNews from "@/app/(Client)/Components/Common/special-news";
+
+import TabList from "@/app/(Client)/Components/Common/tab-list";
 
 export default async function Layout({
   children,
@@ -46,7 +47,7 @@ export default async function Layout({
           />
           <NewsLetter />
           <SocialLinksSection />
-          <SpecialNews />
+          {/* <SpecialNews /> */}
         </div>
       </div>
     </ContainerWrapper>

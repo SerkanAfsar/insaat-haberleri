@@ -5,13 +5,9 @@ import {
 } from "@/ClientServices/news.clientservice";
 import { Metadata } from "next";
 
-import dynamicImport from "next/dynamic";
 import { notFound } from "next/navigation";
-
-const NewsDetail = dynamicImport(() => import("../Components/news-detail"));
-const Slider3Section = dynamicImport(
-  () => import("../../../Sections/MainPage/slider-3-section"),
-);
+import NewsDetail from "../Components/news-detail";
+import Slider3Section from "@/app/(Client)/Sections/MainPage/slider-3-section";
 
 export async function generateMetadata({
   params,

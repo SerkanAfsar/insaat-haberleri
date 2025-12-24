@@ -10,7 +10,6 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const categoryId = Number(searchParams.get("id"));
 
-    console.log(categoryId, "deneme");
     const id = isNaN(categoryId) ? undefined : categoryId;
 
     const [latestNews, popularNews, randomNews] = await Promise.all([

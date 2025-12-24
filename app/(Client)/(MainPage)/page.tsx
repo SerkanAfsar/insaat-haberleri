@@ -5,7 +5,11 @@ import {
   mostReadedNewsClientService,
 } from "@/ClientServices/news.clientservice";
 import { Metadata } from "next";
-import dynamic from "next/dynamic";
+import SwiperSlideList from "../Components/Common/swiper-slide-list";
+import Slider3Section from "../Sections/MainPage/slider-3-section";
+import CustomWrapper from "../Components/Common/custom-wrapper";
+import MainPageLastNewsSkipped from "../Sections/MainPage/main-page-last-news-skipped";
+import MainPageSkipped12 from "../Sections/MainPage/main-page-skipped-12";
 
 export const metadata: Metadata = {
   title: "Güncel İnşaat Haberleri | İnşaat Haberleri",
@@ -40,26 +44,6 @@ export const metadata: Metadata = {
     canonical: process.env.NEXT_PUBLIC_BASE_URL,
   },
 };
-
-const SwiperSlideList = dynamic(
-  () => import("../Components/Common/swiper-slide-list"),
-);
-
-const Slider3Section = dynamic(
-  () => import("../Sections/MainPage/slider-3-section"),
-);
-
-const CustomWrapper = dynamic(
-  () => import("../Components/Common/custom-wrapper"),
-);
-
-const MainPageLastNewsSkipped = dynamic(
-  () => import("../Sections/MainPage/main-page-last-news-skipped"),
-);
-
-const MainPageSkipped12 = dynamic(
-  () => import("../Sections/MainPage/main-page-skipped-12"),
-);
 
 export default async function Home() {
   const [lastNewsResult, lastNewsSkipped, mostReaded, mostReaded12Skipped] =
@@ -100,5 +84,3 @@ export default async function Home() {
     </>
   );
 }
-
-export const revalidate = 5;
