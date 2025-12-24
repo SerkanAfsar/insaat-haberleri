@@ -1,10 +1,3 @@
-import {
-  LatestTabListNews,
-  mostReadede3NewsList,
-  mostReadedNewsClientService,
-  PopularTabListNews,
-  RandomTabListNews,
-} from "@/ClientServices/news.clientservice";
 import ContainerWrapper from "../Components/Common/container-wrapper";
 import NewsLetter from "../Components/Common/newsletter";
 import SocialLinksSection from "../Components/Common/social-links-section";
