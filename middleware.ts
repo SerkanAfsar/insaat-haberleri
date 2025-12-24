@@ -4,6 +4,15 @@ import { decrypt } from "./lib/auth";
 import { ApiCheckValue, ApiRoleType, MethodType } from "./lib/admin.data";
 import { cookies } from "next/headers";
 
+const allowedApiRoutes = [
+  "/api/login",
+  "/api/refresh",
+  "/api/categorydetail",
+  "/api/registernews",
+  "/api/newses/most-readed",
+  "/api/newses/tab-list",
+];
+
 export default async function middleware(req: NextRequest) {
   const cookieStore = await cookies();
   const accessToken = req.cookies.get("accessToken")?.value;
@@ -17,7 +26,11 @@ export default async function middleware(req: NextRequest) {
 
   const userSession = await decrypt(accessToken, "accessToken");
 
-  if (accessToken && userSession && apiUrl && pathName != "/api/registernews") {
+  if (apiUrl && allowedApiRoutes.includes(pathName)) {
+    return NextResponse.next();
+  }
+
+  if (accessToken && userSession && apiUrl) {
     const claims = userSession.claims;
 
     const pathExist =
@@ -33,12 +46,7 @@ export default async function middleware(req: NextRequest) {
     }
   }
 
-  if (
-    (!accessToken || !userSession) &&
-    pathName != "/api/login" &&
-    pathName != "/api/refresh" &&
-    pathName != "/api/categorydetail"
-  ) {
+  if (!accessToken || !userSession) {
     const url = new URL(req.url);
     const response = await fetch(`${url.origin}/api/refresh`, {
       method: "POST",

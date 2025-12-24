@@ -2,8 +2,30 @@ import { mostReadede3NewsList } from "@/ClientServices/news.clientservice";
 import SmallSectionTitle from "./small-section-title";
 import NewsItemMiddleComponent from "./news-item-middle-component";
 
+type MostReadedResultType = Awaited<ReturnType<typeof mostReadede3NewsList>>;
+
+async function getData() {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SITE_NAME}/api/newses/most-readed`,
+    {
+      method: "GET",
+      next: {
+        tags: ["mostReaded"],
+        revalidate: 300,
+      },
+      cache: "default",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Most Readed Error");
+  }
+  const result = await response.json();
+  return result as MostReadedResultType;
+}
+
 export default async function SpecialNews() {
-  const result = await mostReadede3NewsList();
+  const result = await getData();
   return (
     <section className="flex flex-col">
       <SmallSectionTitle title="En Çok Okunanlar" />

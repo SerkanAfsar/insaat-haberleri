@@ -18,7 +18,7 @@ export default function CategoryNewsItem({
         src={imageUrl.medium}
         width={300}
         height={200}
-        className="h-auto object-contain object-center"
+        className="h-auto w-full object-contain object-center md:w-auto"
         alt={item.title}
       />
       <header className="flex w-full flex-col gap-2">

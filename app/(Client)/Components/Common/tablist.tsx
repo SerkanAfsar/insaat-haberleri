@@ -1,13 +1,8 @@
 "use client";
-import dynamic from "next/dynamic";
-
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { ItemsType, TabListItemType, TabListProps } from "../types";
-
-const NewsItemSmallComponent = dynamic(
-  () => import("./news-item-small-component"),
-);
+import NewsItemSmallComponent from "./news-item-small-component";
 
 export default function TabList({
   latestNews,

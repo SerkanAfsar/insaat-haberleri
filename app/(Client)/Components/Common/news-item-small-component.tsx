@@ -9,7 +9,6 @@ export default function NewsItemSmallComponent({
   item: SmallNewsComponentProps;
 }) {
   const imageSrc = getImageFromCdn(item.imageId).small;
-
   const dateTime = dateTimeConvert(item.createdAt);
 
   return (
@@ -33,7 +32,7 @@ export default function NewsItemSmallComponent({
         </NewsLink>
         <time
           className="mt-auto font-sans text-xs font-semibold text-[#333]"
-          dateTime={item.createdAt.toISOString()}
+          // dateTime={item.createdAt.toISOString()}
         >
           {dateTime}
         </time>

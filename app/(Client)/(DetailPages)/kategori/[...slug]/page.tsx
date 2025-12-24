@@ -58,7 +58,7 @@ async function getData(categoryId: number, page: number) {
       method: "GET",
       next: {
         tags: ["categories", `category_${categoryId}`],
-        revalidate: 10,
+        revalidate: 3000,
       },
       cache: "force-cache",
     },
@@ -87,7 +87,7 @@ export default async function Page({
     return notFound();
   }
 
-  const categoryItem = await getData(categoryId, page ? page : 1);
+  const categoryItem = await getData(categoryId, page ?? 1);
 
   if (!categoryItem) {
     return notFound();

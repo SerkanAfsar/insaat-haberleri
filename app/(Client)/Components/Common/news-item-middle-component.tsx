@@ -52,7 +52,7 @@ export default function NewsItemMiddleComponent({
         </p>
         <time
           className="mt-auto font-sans text-xs font-semibold"
-          dateTime={item.createdAt.toISOString()}
+          // dateTime={item.createdAt.toISOString()}
         >
           {dateTime}
         </time>
