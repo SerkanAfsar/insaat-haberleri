@@ -42,4 +42,4 @@ export default async function Layout({
   );
 }
 
-export const revalidate = 60;
+export const revalidate = 3600;
