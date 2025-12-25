@@ -1,10 +1,8 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
-import dynamic from "next/dynamic";
+
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
-
-const SlideNewsItem = dynamic(() => import("./slide-news-item"));
 
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -12,6 +10,7 @@ import "swiper/css/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SliderProps } from "../types";
+import SlideNewsItem from "./slide-news-item";
 
 export default function SwiperSlideList({
   newses,

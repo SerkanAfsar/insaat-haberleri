@@ -17,6 +17,8 @@ export default function SlideNewsItem({ news }: SlideNewsItemProps) {
         alt={news.title}
         width={500}
         height={400}
+        priority
+        fetchPriority="high"
         className="m-0 h-full w-full object-cover object-center"
       />
       <div className="absolute right-0 bottom-0 left-0 flex w-full flex-col space-y-10 bg-black/60 p-4 text-white">

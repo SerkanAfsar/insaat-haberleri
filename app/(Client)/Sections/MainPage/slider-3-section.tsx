@@ -1,9 +1,5 @@
-import dynamic from "next/dynamic";
+import NewsItemComponentOne from "../../Components/Common/news-item-component-one";
 import { SliderProps } from "../../Components/types";
-
-const NewsItemComponentOne = dynamic(
-  () => import("../../Components/Common/news-item-component-one"),
-);
 
 export default function Slider3Section({
   newses,

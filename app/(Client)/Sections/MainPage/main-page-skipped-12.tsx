@@ -1,13 +1,6 @@
 import { cn } from "@/lib/utils";
-import dynamic from "next/dynamic";
-
-const NewsItemMiddleComponent = dynamic(
-  () => import("../../Components/Common/news-item-middle-component"),
-);
-
-const NewsItemSmallComponent = dynamic(
-  () => import("../../Components/Common/news-item-small-component"),
-);
+import NewsItemMiddleComponent from "../../Components/Common/news-item-middle-component";
+import NewsItemSmallComponent from "../../Components/Common/news-item-small-component";
 
 export type MainPageSkipped12Props = {
   items: any;

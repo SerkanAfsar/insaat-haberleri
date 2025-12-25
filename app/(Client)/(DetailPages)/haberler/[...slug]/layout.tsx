@@ -1,18 +1,16 @@
 import ContainerWrapper from "@/app/(Client)/Components/Common/container-wrapper";
 import NewsLetter from "@/app/(Client)/Components/Common/newsletter";
 import SocialLinksSection from "@/app/(Client)/Components/Common/social-links-section";
-
-import {
-  getNewsById,
-  LatestTabListNews,
-  PopularTabListNews,
-  RandomTabListNews,
-} from "@/ClientServices/news.clientservice";
 import { notFound } from "next/navigation";
-
 import { DetailPageLayoutProps } from "../types/news.types";
 
 import TabList from "@/app/(Client)/Components/Common/tab-list";
+import {
+  getMostReaded3CacheService,
+  getNewsDetailCacheService,
+  getTabsListCacheService,
+} from "@/app/(Client)/Functions";
+import SpecialNews from "@/app/(Client)/Components/Common/special-news";
 
 export default async function Layout({
   children,
@@ -21,19 +19,17 @@ export default async function Layout({
   const { slug } = await params;
   const id = Number(slug[2]);
 
-  const newsDetailData = await getNewsById(id);
+  const newsDetailData = await getNewsDetailCacheService(id);
 
   if (!newsDetailData) {
     return notFound();
   }
 
-  const categoryId = newsDetailData.categoryId;
+  const { latestNews, popularNews, randomNews } = await getTabsListCacheService(
+    newsDetailData.categoryId,
+  );
 
-  const [latestNews, popularNews, randomNews] = await Promise.all([
-    LatestTabListNews(categoryId),
-    PopularTabListNews(categoryId),
-    RandomTabListNews(categoryId),
-  ]);
+  const most3NewsData = await getMostReaded3CacheService();
 
   return (
     <ContainerWrapper>
@@ -47,7 +43,7 @@ export default async function Layout({
           />
           <NewsLetter />
           <SocialLinksSection />
-          {/* <SpecialNews /> */}
+          <SpecialNews data={most3NewsData} />
         </div>
       </div>
     </ContainerWrapper>

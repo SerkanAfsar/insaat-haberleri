@@ -4,8 +4,12 @@ import SocialLinksSection from "@/app/(Client)/Components/Common/social-links-se
 
 import SpecialNews from "@/app/(Client)/Components/Common/special-news";
 import { DetailPageLayoutProps } from "../../haberler/types/news.types";
-import { getMostReaded3Data, getTabsListData } from "@/app/(Client)/Functions";
+
 import TabList from "@/app/(Client)/Components/Common/tab-list";
+import {
+  getMostReaded3CacheService,
+  getTabsListCacheService,
+} from "@/app/(Client)/Functions";
 
 export default async function Layout({
   children,
@@ -14,9 +18,10 @@ export default async function Layout({
   const { slug } = await params;
   const id = Number(slug[1]);
 
-  const { latestNews, popularNews, randomNews } = await getTabsListData(id);
+  const { latestNews, popularNews, randomNews } =
+    await getTabsListCacheService(id);
 
-  const most3NewsData = await getMostReaded3Data();
+  const most3NewsData = await getMostReaded3CacheService();
 
   return (
     <ContainerWrapper>

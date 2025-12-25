@@ -11,6 +11,7 @@ const allowedApiRoutes = [
   "/api/registernews",
   "/api/newses/most-readed",
   "/api/newses/tab-list",
+  "/api/newses",
 ];
 
 export default async function middleware(req: NextRequest) {
@@ -26,7 +27,11 @@ export default async function middleware(req: NextRequest) {
 
   const userSession = await decrypt(accessToken, "accessToken");
 
-  if (apiUrl && allowedApiRoutes.includes(pathName)) {
+  const isAllowed = allowedApiRoutes.some(
+    (route) => pathName === route || pathName.startsWith(route + "/"),
+  );
+
+  if (apiUrl && isAllowed) {
     return NextResponse.next();
   }
 

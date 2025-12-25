@@ -1,10 +1,10 @@
-import { getCategoryDetailWithPaginatitedNews } from "@/ClientServices/category.clientservice";
 import { notFound } from "next/navigation";
 import CategoryNewsItem from "../Components/category-news-item";
 import SmallSectionTitle from "@/app/(Client)/Components/Common/small-section-title";
 import CategoryPagination from "../Components/category-pagination";
 import { Metadata } from "next";
 import { GetCategoryByIdService } from "@/Services/Category.service";
+import { getCategoryDetailCacheService } from "@/app/(Client)/Functions";
 
 export async function generateMetadata({
   params,
@@ -51,26 +51,6 @@ export async function generateMetadata({
   };
 }
 
-async function getData(categoryId: number, page: number) {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_SITE_NAME}/api/categorydetail?id=${categoryId}&page=${page}`,
-    {
-      method: "GET",
-      next: {
-        tags: ["categories", `category_${categoryId}`],
-        revalidate: 3000,
-      },
-      cache: "force-cache",
-    },
-  );
-  if (!response.ok) {
-    throw new Error("Error Accoured");
-  }
-  const result = await response.json();
-  return result as Awaited<
-    ReturnType<typeof getCategoryDetailWithPaginatitedNews>
-  >;
-}
 export default async function Page({
   params,
   searchParams,
@@ -87,7 +67,10 @@ export default async function Page({
     return notFound();
   }
 
-  const categoryItem = await getData(categoryId, page ?? 1);
+  const categoryItem = await getCategoryDetailCacheService(
+    categoryId,
+    page ?? 1,
+  );
 
   if (!categoryItem) {
     return notFound();

@@ -5,9 +5,8 @@ import {
   Twitter,
   Youtube,
 } from "lucide-react";
-import dynamic from "next/dynamic";
 
-const SmallSectionTitle = dynamic(() => import("./small-section-title"));
+import SmallSectionTitle from "./small-section-title";
 
 export default function SocialLinksSection() {
   const items = [Facebook, Twitter, Youtube, MessageCircleHeart, Rss];

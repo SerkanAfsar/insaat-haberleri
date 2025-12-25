@@ -24,6 +24,8 @@ export default function NewsDetail({
           height={400}
           className="h-auto w-full object-cover object-center"
           alt={title}
+          fetchPriority="high"
+          priority
         />
         <h2 className="leading-8 font-bold">{subDescription}</h2>
         <div className="flex w-full items-center justify-between">
