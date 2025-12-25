@@ -4,12 +4,16 @@ import {
   getSkipped12NewsClientService,
   mostReadedNewsClientService,
 } from "@/ClientServices/news.clientservice";
+import dynamicImport from "next/dynamic";
 import { Metadata } from "next";
-import SwiperSlideList from "../Components/Common/swiper-slide-list";
+
 import Slider3Section from "../Sections/MainPage/slider-3-section";
 import CustomWrapper from "../Components/Common/custom-wrapper";
 import MainPageLastNewsSkipped from "../Sections/MainPage/main-page-last-news-skipped";
 import MainPageSkipped12 from "../Sections/MainPage/main-page-skipped-12";
+const SwiperSlideList = dynamicImport(
+  () => import("../Components/Common/swiper-slide-list"),
+);
 
 export const metadata: Metadata = {
   title: "Güncel İnşaat Haberleri | İnşaat Haberleri",
