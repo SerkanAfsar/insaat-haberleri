@@ -1,4 +1,5 @@
 import { getNewsById } from "@/ClientServices/news.clientservice";
+import { CACHE_KEYS } from "@/lib/utils";
 import { DeleteNewsService } from "@/Services/News.service";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
@@ -28,7 +29,9 @@ export async function DELETE(
   try {
     const { id } = await params;
     const result = await DeleteNewsService(Number(id));
-    revalidateTag("categories", "max");
+    revalidateTag(CACHE_KEYS.TAB_LIST, "default");
+    revalidateTag(CACHE_KEYS.CATEGORY_DETAIL, "default");
+    revalidateTag(`${CACHE_KEYS.NEWS_DETAIL}_${id}`, "default");
     return NextResponse.json(result, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 400 });

@@ -1,13 +1,14 @@
 import {
+  getAllNewsWithCategoryNameClientService,
   getNewsById,
   relatedNewsList,
-  updateReadedCountNewsClientServe,
 } from "@/ClientServices/news.clientservice";
 import { Metadata } from "next";
 
 import { notFound } from "next/navigation";
 import NewsDetail from "../Components/news-detail";
 import Slider3Section from "@/app/(Client)/Sections/MainPage/slider-3-section";
+import { slugUrl } from "@/lib/utils";
 
 export async function generateMetadata({
   params,
@@ -77,7 +78,7 @@ export default async function Page({
     return notFound();
   }
 
-  const readedCountResult = await updateReadedCountNewsClientServe(id);
+  // const readedCountResult = await updateReadedCountNewsClientServe(id);
 
   const relatedNews = await relatedNewsList(
     newsDetailData.categoryId,
@@ -92,7 +93,6 @@ export default async function Page({
         subDescription={newsDetailData.subDescription}
         title={newsDetailData.title}
         content={newsDetailData.content}
-        readedCount={readedCountResult.readedCount}
         id={newsDetailData.id}
       />
       <Slider3Section newses={relatedNews} title="Benzer Haberler" />
@@ -100,4 +100,14 @@ export default async function Page({
   );
 }
 
-export const dynamic = "force-dynamic";
+export async function generateStaticParams() {
+  const result = await getAllNewsWithCategoryNameClientService();
+
+  return result.map((item) => ({
+    slug: [
+      slugUrl(item.category.categoryName),
+      slugUrl(item.title),
+      item.id.toString(),
+    ],
+  }));
+}

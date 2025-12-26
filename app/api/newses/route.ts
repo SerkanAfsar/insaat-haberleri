@@ -1,7 +1,9 @@
+import { CACHE_KEYS } from "@/lib/utils";
 import { AddNewsService } from "@/Services/News.service";
 import { GetAllNewsesService } from "@/Services/Newses.service";
 import { AddNewsType } from "@/Types";
 import { revalidateTag } from "next/cache";
+
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -36,7 +38,8 @@ export async function POST(req: NextRequest) {
       return { ...acc, [key]: value };
     }, {});
     const result = await AddNewsService(data as AddNewsType);
-    revalidateTag("categories", "max");
+    revalidateTag(CACHE_KEYS.TAB_LIST, "default");
+    revalidateTag(CACHE_KEYS.CATEGORY_DETAIL, "default");
     return NextResponse.json({ result }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(

@@ -4,7 +4,7 @@ import SmallSectionTitle from "@/app/(Client)/Components/Common/small-section-ti
 import CategoryPagination from "../Components/category-pagination";
 import { Metadata } from "next";
 import { GetCategoryByIdService } from "@/Services/Category.service";
-import { getCategoryDetailCacheService } from "@/app/(Client)/Functions";
+import { getCategoryDetailCacheService } from "@/CacheFunctions";
 
 export async function generateMetadata({
   params,

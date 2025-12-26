@@ -3,14 +3,13 @@ import NewsLetter from "@/app/(Client)/Components/Common/newsletter";
 import SocialLinksSection from "@/app/(Client)/Components/Common/social-links-section";
 import { notFound } from "next/navigation";
 import { DetailPageLayoutProps } from "../types/news.types";
-
 import TabList from "@/app/(Client)/Components/Common/tab-list";
+import SpecialNews from "@/app/(Client)/Components/Common/special-news";
+import { getNewsById } from "@/ClientServices/news.clientservice";
 import {
   getMostReaded3CacheService,
-  getNewsDetailCacheService,
   getTabsListCacheService,
-} from "@/app/(Client)/Functions";
-import SpecialNews from "@/app/(Client)/Components/Common/special-news";
+} from "@/CacheFunctions";
 
 export default async function Layout({
   children,
@@ -19,7 +18,7 @@ export default async function Layout({
   const { slug } = await params;
   const id = Number(slug[2]);
 
-  const newsDetailData = await getNewsDetailCacheService(id);
+  const newsDetailData = await getNewsById(id);
 
   if (!newsDetailData) {
     return notFound();
@@ -29,7 +28,7 @@ export default async function Layout({
     newsDetailData.categoryId,
   );
 
-  const most3NewsData = await getMostReaded3CacheService();
+  const mostReaded3Data = await getMostReaded3CacheService();
 
   return (
     <ContainerWrapper>
@@ -43,9 +42,11 @@ export default async function Layout({
           />
           <NewsLetter />
           <SocialLinksSection />
-          <SpecialNews data={most3NewsData} />
+          <SpecialNews data={mostReaded3Data} />
         </div>
       </div>
     </ContainerWrapper>
   );
 }
+
+export const revalidate = 3600;

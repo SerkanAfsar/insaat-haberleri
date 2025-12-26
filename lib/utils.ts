@@ -245,3 +245,10 @@ export const newsSlugUrl = ({
 }) => {
   return `/haberler/${slugUrl(categoryName)}/${slugUrl(newsTitle)}/${id}`;
 };
+
+export const CACHE_KEYS = {
+  TAB_LIST: "TAB_LIST",
+  MOST_READED: "MOST_READED",
+  CATEGORY_DETAIL: "CATEGORY_DETAIL",
+  NEWS_DETAIL: "NEWS_DETAIL",
+};

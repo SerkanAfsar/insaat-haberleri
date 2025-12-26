@@ -9,7 +9,7 @@ import TabList from "@/app/(Client)/Components/Common/tab-list";
 import {
   getMostReaded3CacheService,
   getTabsListCacheService,
-} from "@/app/(Client)/Functions";
+} from "@/CacheFunctions";
 
 export default async function Layout({
   children,

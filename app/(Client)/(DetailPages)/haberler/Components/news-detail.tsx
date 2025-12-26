@@ -10,7 +10,6 @@ export default function NewsDetail({
   subDescription,
   content,
   title,
-  readedCount,
 }: NewsDetailProps) {
   const imageUrl = getImageFromCdn(imageId);
 
@@ -35,7 +34,7 @@ export default function NewsDetail({
           >
             {dateTimeConvert(createdAt)}
           </time>
-          <b className="text-xs">{readedCount} Okunma </b>
+          <b className="text-xs">1 Okunma </b>
         </div>
       </header>
       <div
