@@ -18,8 +18,8 @@ export async function getCategoryDetailWithPaginatitedNews(
         },
       },
       Newses: {
-        take: 10,
-        skip: (page - 1) * 10,
+        take: 12,
+        skip: (page - 1) * 12,
         select: {
           title: true,
           subDescription: true,

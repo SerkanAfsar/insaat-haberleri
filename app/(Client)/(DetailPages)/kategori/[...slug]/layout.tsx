@@ -41,3 +41,5 @@ export default async function Layout({
     </ContainerWrapper>
   );
 }
+
+export const revalidate = 3600;

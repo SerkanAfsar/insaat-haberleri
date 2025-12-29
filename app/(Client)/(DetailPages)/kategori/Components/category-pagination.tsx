@@ -1,33 +1,44 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import ReactPaginate from "react-paginate";
 
 export default function CategoryPagination({
   pageCount,
+  url,
 }: {
   pageCount: number;
+  url: string;
 }) {
   const router = useRouter();
+  const { slug }: { slug: string[] } = useParams();
 
-  const url = usePathname();
   const handlePageClick = (event: any) => {
     const page = Number(event.selected) + 1;
-    const newParams = new URLSearchParams();
-    newParams.set("page", page.toString());
-    return router.push(`${url}?${newParams.toString()}`);
+    return router.push(`${url}/${page}`);
   };
+
+  const currentPage =
+    slug.length && slug.length == 3 && Number(slug[2]) > 0
+      ? Number(slug[2]) - 1
+      : 0;
+
+  const goFirst = () => router.push(`${url}/1`);
+  const goLast = () => router.push(`${url}/${pageCount}`);
+
   return (
-    <div className="flex w-full items-center justify-center gap-4 bg-gray-100">
-      {/* <button
-        type="button"
-        className="bg-gray-800 px-4 py-3 text-sm font-medium text-white transition hover:bg-gray-700"
+    <div className="flex w-full items-center justify-center gap-2 bg-gray-100">
+      <button
+        onClick={goFirst}
+        disabled={currentPage === 0}
+        className="mt-[1px] cursor-pointer bg-gray-800 px-3 py-2 text-sm text-white disabled:opacity-50"
       >
-        <ChevronFirst size={15} />
-      </button> */}
+        « İlk
+      </button>
       <ReactPaginate
         breakLabel="..."
         nextLabel=">"
+        forcePage={currentPage}
         onPageChange={handlePageClick}
         pageRangeDisplayed={3}
         pageCount={pageCount}
@@ -45,6 +56,13 @@ export default function CategoryPagination({
         disabledClassName="opacity-50 cursor-not-allowed"
         breakLinkClassName="px-4 py-2 bg-gray-800 text-white"
       />
+      <button
+        onClick={goLast}
+        disabled={currentPage === pageCount - 1}
+        className="mt-[1px] cursor-pointer bg-gray-800 px-3 py-2 text-sm text-white disabled:opacity-50"
+      >
+        Son »
+      </button>
     </div>
   );
 }

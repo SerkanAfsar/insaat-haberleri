@@ -59,22 +59,15 @@ export async function getCategoryDetailCacheService(
   categoryId: number,
   page: number,
 ) {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_SITE_NAME}/api/categorydetail?id=${categoryId}&page=${page}`,
+  const result = cache(
+    async () => {
+      return await getCategoryDetailWithPaginatitedNews(categoryId, page);
+    },
+    [categoryId.toString(), page.toString()],
     {
-      method: "GET",
-      next: {
-        tags: [CACHE_KEYS.CATEGORY_DETAIL, `category_${categoryId}`],
-        revalidate: 3000,
-      },
-      cache: "force-cache",
+      revalidate: 3600,
+      tags: [CACHE_KEYS.CATEGORY_DETAIL],
     },
   );
-  if (!response.ok && response.status != 404) {
-    throw new Error("Error Accoured");
-  }
-  const result = await response.json();
-  return result as Awaited<
-    ReturnType<typeof getCategoryDetailWithPaginatitedNews>
-  >;
+  return await result();
 }

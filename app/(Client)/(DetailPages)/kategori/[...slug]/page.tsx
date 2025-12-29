@@ -5,6 +5,8 @@ import CategoryPagination from "../Components/category-pagination";
 import { Metadata } from "next";
 import { GetCategoryByIdService } from "@/Services/Category.service";
 import { getCategoryDetailCacheService } from "@/CacheFunctions";
+import { categorySlugUrl, slugUrl } from "@/lib/utils";
+import { getCategoryListWithNewsCount } from "@/ClientServices/category.clientservice";
 
 export async function generateMetadata({
   params,
@@ -53,15 +55,13 @@ export async function generateMetadata({
 
 export default async function Page({
   params,
-  searchParams,
 }: {
   params: Promise<{ slug: string[] }>;
-  searchParams: Promise<{ page: number }>;
 }) {
   const { slug } = await params;
-  const { page } = await searchParams;
 
   const categoryId = Number(slug[1]);
+  const page = slug[2];
 
   if (isNaN(categoryId)) {
     return notFound();
@@ -69,12 +69,17 @@ export default async function Page({
 
   const categoryItem = await getCategoryDetailCacheService(
     categoryId,
-    page ?? 1,
+    page ? Number(page) : 1,
   );
 
   if (!categoryItem) {
     return notFound();
   }
+
+  const categoryUrl = categorySlugUrl({
+    categoryName: categoryItem.categoryName,
+    categoryId: categoryId,
+  });
 
   return (
     <section className="flex flex-col space-y-6">
@@ -86,8 +91,25 @@ export default async function Page({
         />
       ))}
       <CategoryPagination
-        pageCount={Math.ceil(categoryItem._count.Newses / 10)}
+        url={categoryUrl}
+        pageCount={Math.ceil(categoryItem._count.Newses / 12)}
       />
     </section>
   );
+}
+
+export async function generateStaticParams() {
+  const result = await getCategoryListWithNewsCount();
+  const arr: any = [];
+  result.map((item) => {
+    const url = slugUrl(item.categoryName);
+    const newsPageCount = Math.ceil(item._count.Newses / 12);
+    arr.push({
+      slug: [url, item.id.toString()],
+    });
+    for (let i = 1; i < newsPageCount + 1; i++) {
+      arr.push([url, item.id.toString(), i.toString()]);
+    }
+  });
+  return arr;
 }
