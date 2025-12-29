@@ -66,7 +66,10 @@ export async function getCategoryDetailCacheService(
     [categoryId.toString(), page.toString()],
     {
       revalidate: 3600,
-      tags: [CACHE_KEYS.CATEGORY_DETAIL],
+      tags: [
+        CACHE_KEYS.CATEGORY_DETAIL,
+        `${CACHE_KEYS.CATEGORY_DETAIL}_${categoryId.toString()}`,
+      ],
     },
   );
   return await result();

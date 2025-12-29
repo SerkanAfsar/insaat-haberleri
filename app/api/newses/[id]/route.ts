@@ -30,7 +30,10 @@ export async function DELETE(
     const { id } = await params;
     const result = await DeleteNewsService(Number(id));
     revalidateTag(CACHE_KEYS.TAB_LIST, "default");
-    revalidateTag(CACHE_KEYS.CATEGORY_DETAIL, "default");
+    revalidateTag(
+      `${CACHE_KEYS.CATEGORY_DETAIL}_${result.categoryId}`,
+      "default",
+    );
     revalidateTag(`${CACHE_KEYS.NEWS_DETAIL}_${id}`, "default");
     return NextResponse.json(result, { status: 200 });
   } catch (error: any) {
