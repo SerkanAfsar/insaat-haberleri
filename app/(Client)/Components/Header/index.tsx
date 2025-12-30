@@ -1,11 +1,11 @@
-import { getCategoryListClientService } from "@/ClientServices/news.clientservice";
 import ContainerWrapper from "../Common/container-wrapper";
 import HeaderMobileMenuAside from "./header-mobile-menu-aside";
 import HeaderNav from "./header-nav";
 import HeaderSearch from "./header-seach";
+import { getCategoryListCacheFunction } from "@/CacheFunctions";
 
 export default async function Header() {
-  const categories = await getCategoryListClientService();
+  const categories = await getCategoryListCacheFunction();
 
   return (
     <header className="relative z-10 block w-full">

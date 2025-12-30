@@ -1,5 +1,6 @@
 import { getCategoryDetailWithPaginatitedNews } from "@/ClientServices/category.clientservice";
 import {
+  getCategoryListClientService,
   getNewsById,
   LatestTabListNews,
   mostReadede3NewsList,
@@ -71,6 +72,17 @@ export async function getCategoryDetailCacheService(
         `${CACHE_KEYS.CATEGORY_DETAIL}_${categoryId.toString()}`,
       ],
     },
+  );
+  return await result();
+}
+
+export async function getCategoryListCacheFunction() {
+  const result = cache(
+    async () => {
+      return await getCategoryListClientService();
+    },
+    [],
+    { revalidate: 3600, tags: [CACHE_KEYS.CATEGORY_LIST] },
   );
   return await result();
 }

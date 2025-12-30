@@ -40,10 +40,7 @@ export default function HeaderNavItem({ category }: { category: any }) {
               <h4 className="my-2 line-clamp-2 text-sm font-semibold">
                 {newsItem.title}
               </h4>
-              <time
-                className="mt-auto text-xs text-gray-600"
-                dateTime={newsItem.createdAt.toISOString()}
-              >
+              <time className="mt-auto text-xs text-gray-600">
                 {dateTimeConvert(newsItem.createdAt)}
               </time>
             </NewsLink>

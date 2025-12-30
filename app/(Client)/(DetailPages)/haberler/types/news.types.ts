@@ -5,6 +5,7 @@ export type NewsDetailProps = {
   createdAt: Date;
   content: any;
   id: number;
+  readedCount: number;
 };
 
 export type DetailPageLayoutProps = {

@@ -1,8 +1,10 @@
+import { CACHE_KEYS } from "@/lib/utils";
 import {
   AddCategoryService,
   GetAllCategoriesService,
 } from "@/Services/Category.service";
 import { AddCategoryType } from "@/Types";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -35,6 +37,8 @@ export async function POST(req: NextRequest) {
     const data: AddCategoryType = await req.json();
 
     const result = await AddCategoryService(data);
+    revalidateTag(CACHE_KEYS.CATEGORY_DETAIL, "default");
+    revalidateTag(CACHE_KEYS.CATEGORY_LIST, "default");
     return NextResponse.json(result, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(

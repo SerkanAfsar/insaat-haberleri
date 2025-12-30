@@ -1,8 +1,8 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import ReactPaginate from "react-paginate";
-
+import { useRouter } from "nextjs-toploader/app";
 export default function CategoryPagination({
   pageCount,
   url,
