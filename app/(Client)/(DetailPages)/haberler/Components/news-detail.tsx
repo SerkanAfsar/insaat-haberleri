@@ -3,8 +3,6 @@ import { dateTimeConvert, getImageFromCdn } from "@/lib/utils";
 import Image from "next/image";
 import { NewsDetailProps } from "../types/news.types";
 import ShareArticle from "./share-article";
-import { useEffect, useOptimistic, useTransition } from "react";
-import { ActionUpdateNewsCount } from "@/Actions/news.actions";
 
 export default function NewsDetail({
   createdAt,
@@ -15,30 +13,7 @@ export default function NewsDetail({
   readedCount,
   id,
 }: NewsDetailProps) {
-  const [isPending, startTransition] = useTransition();
-  const [readCount, setOptimisticRead] = useOptimistic(
-    readedCount,
-    (state, action: "increment" | "reset") => {
-      if (action == "increment") {
-        return state + 1;
-      }
-      if (action == "reset") {
-        return readedCount;
-      }
-      return state;
-    },
-  );
   const imageUrl = getImageFromCdn(imageId);
-
-  useEffect(() => {
-    setOptimisticRead("increment");
-
-    startTransition(() => {
-      ActionUpdateNewsCount(id).catch(() => {
-        setOptimisticRead("reset");
-      });
-    });
-  }, [id, setOptimisticRead]);
 
   return (
     <article className="font-openSans flex w-full flex-col gap-4 text-[#333]">
@@ -61,7 +36,7 @@ export default function NewsDetail({
           >
             {dateTimeConvert(createdAt)}
           </time>
-          <b className="text-xs">{isPending ? "..." : readCount} Okunma </b>
+          <b className="text-xs">{readedCount} Okunma </b>
         </div>
       </header>
       <div

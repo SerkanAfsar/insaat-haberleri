@@ -24,14 +24,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     });
 
-    const pageSize = Math.ceil(item._count.Newses / 10);
+    const pageSize = Math.ceil(item._count.Newses / 12);
 
     for (let i = 1; i < pageSize + 1; i++) {
       arr.push({
-        url: `${siteUrl}${categoryUrl}?page=${i}`,
+        url: `${siteUrl}${categoryUrl}/${i}`,
         lastModified: new Date(),
         changeFrequency: "daily",
-        priority: 1,
+        priority: 0.8,
       });
     }
   });
