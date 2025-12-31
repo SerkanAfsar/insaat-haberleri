@@ -3,7 +3,6 @@ import { NewsClass } from "@/Abstract";
 import prisma from "@/lib/db";
 import { envVariables, RegisterImageToCdn } from "@/lib/utils";
 import { AddNewsType } from "@/Types";
-import { revalidateTag } from "next/cache";
 
 export async function RegisterAllNewses() {
   const categorySources = await prisma.categorySources.findMany({
@@ -15,7 +14,6 @@ export async function RegisterAllNewses() {
     const categoruSource = new NewsClass(elem);
     await categoruSource.getNewsList();
   }
-  revalidateTag("categories", "max");
 }
 
 export async function DeleteNewsService(id: number) {
