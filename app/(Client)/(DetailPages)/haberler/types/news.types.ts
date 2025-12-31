@@ -4,7 +4,7 @@ export type NewsDetailProps = {
   imageId: string | null;
   createdAt: Date;
   content: any;
-  id: number;
+
   readedCount: number;
 };
 

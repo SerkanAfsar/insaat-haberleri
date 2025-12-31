@@ -11,7 +11,6 @@ export default function NewsDetail({
   content,
   title,
   readedCount,
-  id,
 }: NewsDetailProps) {
   const imageUrl = getImageFromCdn(imageId);
 
