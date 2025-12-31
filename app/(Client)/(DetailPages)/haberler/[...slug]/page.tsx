@@ -93,7 +93,6 @@ export default async function Page({
         subDescription={newsDetailData.subDescription}
         title={newsDetailData.title}
         content={newsDetailData.content}
-        id={newsDetailData.id}
         readedCount={newsDetailData.readedCount}
       />
       <Slider3Section newses={relatedNews} title="Benzer Haberler" />
