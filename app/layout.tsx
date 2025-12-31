@@ -2,6 +2,7 @@ import { Outfit, Roboto_Slab, Oswald, Open_Sans } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 const outFit = Outfit({
   variable: "--font-outfit",
@@ -41,6 +42,7 @@ export default function RootLayout({
           showSpinner={true}
           zIndex={1600}
         />
+        <Analytics />
       </body>
     </html>
   );
