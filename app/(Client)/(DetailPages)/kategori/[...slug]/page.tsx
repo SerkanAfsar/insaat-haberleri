@@ -61,18 +61,22 @@ export default async function Page({
   const { slug } = await params;
 
   const categoryId = Number(slug[1]);
-  const page = slug[2];
+  const page = Number(slug[2]);
 
-  if (isNaN(categoryId)) {
+  if (isNaN(categoryId) || (slug[2] && isNaN(page))) {
     return notFound();
   }
 
   const categoryItem = await getCategoryDetailCacheService(
     categoryId,
-    page ? Number(page) : 1,
+    slug[2] ? page : 1,
   );
 
-  if (!categoryItem) {
+  const pageCount = categoryItem
+    ? Math.ceil(categoryItem._count.Newses / 12)
+    : 1;
+
+  if (!categoryItem || page > pageCount) {
     return notFound();
   }
 
@@ -90,10 +94,7 @@ export default async function Page({
           item={{ ...item, categoryName: categoryItem.categoryName }}
         />
       ))}
-      <CategoryPagination
-        url={categoryUrl}
-        pageCount={Math.ceil(categoryItem._count.Newses / 12)}
-      />
+      <CategoryPagination url={categoryUrl} pageCount={pageCount} />
     </section>
   );
 }
