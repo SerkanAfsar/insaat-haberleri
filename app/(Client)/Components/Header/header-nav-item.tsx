@@ -41,7 +41,7 @@ export default function HeaderNavItem({ category }: { category: any }) {
                 {newsItem.title}
               </h4>
               <time className="mt-auto text-xs text-gray-600">
-                {dateTimeConvert(newsItem.createdAt)}
+                {dateTimeConvert(new Date(newsItem.createdAt))}
               </time>
             </NewsLink>
           );

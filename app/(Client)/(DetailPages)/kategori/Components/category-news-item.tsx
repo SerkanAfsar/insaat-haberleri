@@ -1,6 +1,6 @@
 import NewsLink from "@/app/(Client)/Components/Common/news-link";
 import { CategoryDetailNewsItemProps } from "@/app/(Client)/Components/types";
-import { getImageFromCdn } from "@/lib/utils";
+import { dateTimeConvert, getImageFromCdn } from "@/lib/utils";
 import Image from "next/image";
 
 export default function CategoryNewsItem({
@@ -31,12 +31,12 @@ export default function CategoryNewsItem({
             {item.title}
           </h4>
         </NewsLink>
-        {/* <time
+        <time
           className="text-xs text-gray-400"
-          dateTime={item.createdAt.toISOString()}
+          dateTime={new Date(item.createdAt).toISOString()}
         >
           {dateTimeConvert(item.createdAt)}
-        </time> */}
+        </time>
         <p className="font-openSans text-sm text-[#333]">
           {item.subDescription}
         </p>

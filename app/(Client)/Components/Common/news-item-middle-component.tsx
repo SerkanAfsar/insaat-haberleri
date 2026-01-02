@@ -15,13 +15,13 @@ export default function NewsItemMiddleComponent({
 }) {
   const imageSrc = getImageFromCdn(item.imageId).small;
 
-  const dateTime = dateTimeConvert(item.createdAt);
+  const dateTime = dateTimeConvert(new Date(item.createdAt));
 
   return (
     <article
       className={cn(
-        "relative mb-8 flex w-full items-start space-y-2",
-        item.type == "first" ? "flex-col" : "flex-col space-x-6 xl:flex-row",
+        "relative mb-8 flex w-full flex-col items-start space-y-2 md:flex-row md:gap-4 xl:flex-col xl:gap-0",
+        // item.type == "first" ? "" : "flex-col space-x-6 xl:flex-row",
       )}
     >
       {!item.hideHeader && (
@@ -35,9 +35,12 @@ export default function NewsItemMiddleComponent({
         alt={item.title}
         width={360}
         height={200}
-        className="h-[200px] shrink-0 grow-0 object-cover object-center"
+        className={cn(
+          "w-full shrink-0 grow-0 object-cover object-center md:w-[300px] xl:w-full",
+          item.type === "first" && "xl:h-[200px]",
+        )}
       />
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-1 flex-col space-y-2">
         <NewsLink
           categoryName={item.categoryName}
           newsId={item.id}

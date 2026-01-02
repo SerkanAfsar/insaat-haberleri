@@ -11,6 +11,7 @@ export default function NewsDetail({
   content,
   title,
   readedCount,
+  sourceUrl,
 }: NewsDetailProps) {
   const imageUrl = getImageFromCdn(imageId);
 
@@ -31,7 +32,7 @@ export default function NewsDetail({
         <div className="flex w-full items-center justify-between">
           <time
             className="text-xs text-gray-500"
-            dateTime={createdAt.toISOString()}
+            dateTime={new Date(createdAt).toISOString()}
           >
             {dateTimeConvert(createdAt)}
           </time>
@@ -42,6 +43,10 @@ export default function NewsDetail({
         className="prose customNews block w-full max-w-none"
         dangerouslySetInnerHTML={{ __html: content }}
       ></div>
+      <div className="flex flex-wrap items-center gap-2">
+        <b>Kaynak:</b>
+        <span className="text-sm font-bold underline">{sourceUrl}</span>
+      </div>
       <ShareArticle />
     </article>
   );

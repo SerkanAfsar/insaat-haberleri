@@ -94,6 +94,7 @@ export default async function Page({
         title={newsDetailData.title}
         content={newsDetailData.content}
         readedCount={newsDetailData.readedCount}
+        sourceUrl={newsDetailData.sourceUrl ?? "İnşaat Haberleri"}
       />
       <Slider3Section newses={relatedNews} title="Benzer Haberler" />
     </>

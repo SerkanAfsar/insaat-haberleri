@@ -220,7 +220,7 @@ export const dateTimeConvert = (date: Date | null) => {
   if (!date) return;
   const dateTime = new Intl.DateTimeFormat("tr-TR", {
     dateStyle: "full",
-  }).format();
+  }).format(new Date(date));
   return dateTime;
 };
 
