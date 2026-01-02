@@ -3,7 +3,7 @@ import CategoryNewsItem from "../Components/category-news-item";
 import SmallSectionTitle from "@/app/(Client)/Components/Common/small-section-title";
 import CategoryPagination from "../Components/category-pagination";
 import { Metadata } from "next";
-import { GetCategoryByIdService } from "@/Services/Category.service";
+
 import { getCategoryDetailCacheService } from "@/CacheFunctions";
 import { categorySlugUrl, slugUrl } from "@/lib/utils";
 import { getCategoryListWithNewsCount } from "@/ClientServices/category.clientservice";
@@ -16,7 +16,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const categoryId = Number(slug[1]);
 
-  const result = await GetCategoryByIdService(categoryId);
+  const result = await getCategoryDetailCacheService(categoryId, 1);
+
+  if (!result) {
+    return {};
+  }
 
   return {
     title: result.seoTitle,
