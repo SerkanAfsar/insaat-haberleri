@@ -50,7 +50,7 @@ export async function RegisterAllNewses() {
       categoryId: category.id,
     });
     revalidatePath(url);
-    for (let k = 0; k < pageSize; k++) {
+    for (let k = 1; k <= pageSize; k++) {
       revalidatePath(`${url}/${k}`);
     }
   }
