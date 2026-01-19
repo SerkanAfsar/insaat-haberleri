@@ -1,8 +1,14 @@
 "use server";
 import { NewsClass } from "@/Abstract";
 import prisma from "@/lib/db";
-import { envVariables, RegisterImageToCdn } from "@/lib/utils";
+import {
+  CACHE_KEYS,
+  categorySlugUrl,
+  envVariables,
+  RegisterImageToCdn,
+} from "@/lib/utils";
 import { AddNewsType } from "@/Types";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function RegisterAllNewses() {
   const categorySources = await prisma.categorySources.findMany({
@@ -13,6 +19,40 @@ export async function RegisterAllNewses() {
     const elem = categorySources[i];
     const categoruSource = new NewsClass(elem);
     await categoruSource.getNewsList();
+  }
+
+  const categories = await prisma.category.findMany({
+    orderBy: {
+      id: "asc",
+    },
+    select: {
+      categoryName: true,
+      id: true,
+      _count: {
+        select: {
+          Newses: true,
+        },
+      },
+    },
+  });
+
+  revalidateTag(CACHE_KEYS.CATEGORY_DETAIL, "default");
+  revalidateTag(CACHE_KEYS.CATEGORY_LIST, "default");
+  revalidateTag(CACHE_KEYS.MOST_READED, "default");
+  revalidateTag(CACHE_KEYS.TAB_LIST, "default");
+
+  for (let i = 0; i < categories.length; i++) {
+    const category = categories[i];
+    const pageSize = Math.ceil(Number(category._count) / 12);
+
+    const url = categorySlugUrl({
+      categoryName: category.categoryName,
+      categoryId: category.id,
+    });
+    revalidatePath(url);
+    for (let k = 0; k < pageSize; k++) {
+      revalidatePath(`${url}/${k}`);
+    }
   }
 }
 
