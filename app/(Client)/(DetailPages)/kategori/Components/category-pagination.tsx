@@ -40,7 +40,7 @@ export default function CategoryPagination({
         nextLabel=">"
         forcePage={currentPage}
         onPageChange={handlePageClick}
-        pageRangeDisplayed={3}
+        pageRangeDisplayed={2}
         pageCount={pageCount}
         previousLabel="<"
         renderOnZeroPageCount={null}

@@ -70,6 +70,7 @@ export async function getCategoryDetailCacheService(
       tags: [
         CACHE_KEYS.CATEGORY_DETAIL,
         `${CACHE_KEYS.CATEGORY_DETAIL}_${categoryId.toString()}`,
+        `${CACHE_KEYS.CATEGORY_DETAIL}_${categoryId.toString()}_${page.toString()}`,
       ],
     },
   );
