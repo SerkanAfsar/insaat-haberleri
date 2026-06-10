@@ -1,7 +1,7 @@
 import { encodeClaims } from "@/lib/admin.data";
 import { prisma } from "@/lib/db";
 import { AddRoleType, GetAllServiceType } from "@/Types";
-import { Prisma } from "@prisma/client";
+
 import { ColumnFiltersState, SortingState } from "@tanstack/react-table";
 
 export async function AddRoleService(role: AddRoleType) {
@@ -17,7 +17,7 @@ export async function GetAllRolesService({
   sorting,
   filters,
 }: GetAllServiceType) {
-  let query: Prisma.RolesWhereInput = {};
+  let query: any = {};
   let orderByCondition: any = {};
 
   if (globalFilter) {

@@ -2,7 +2,7 @@
 import { prisma } from "@/lib/db";
 import { BcryptHelper } from "@/lib/utils";
 import { AddUserType, GetAllServiceType, UpdateUserType } from "@/Types";
-import { Prisma } from "@prisma/client";
+
 import { ColumnFiltersState, SortingState } from "@tanstack/react-table";
 
 export async function AddUserService(data: AddUserType) {
@@ -36,7 +36,7 @@ export async function GetAllUsersService({
   sorting,
   filters,
 }: GetAllServiceType) {
-  let query: Prisma.UsersWhereInput = {};
+  let query: any = {};
   let orderByCondition: any = {};
 
   if (globalFilter) {

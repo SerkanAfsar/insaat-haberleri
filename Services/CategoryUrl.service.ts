@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/db";
 import { AddCategorySourceType, GetAllServiceType } from "@/Types";
-import { Prisma } from "@prisma/client";
+
 import { ColumnFiltersState, SortingState } from "@tanstack/react-table";
 
 export async function GetAllCategoryUrlService({
@@ -10,7 +10,7 @@ export async function GetAllCategoryUrlService({
   sorting,
   filters,
 }: GetAllServiceType) {
-  let query: Prisma.CategorySourcesWhereInput = {};
+  let query: any = {};
   let orderByCondition: any = {};
 
   if (globalFilter) {

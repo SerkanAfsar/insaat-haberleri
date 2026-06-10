@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/db";
 import { GetAllServiceType } from "@/Types";
-import { Prisma } from "@prisma/client";
+
 import { ColumnFiltersState, SortingState } from "@tanstack/react-table";
 
 export async function GetAllNewsesService({
@@ -10,7 +10,7 @@ export async function GetAllNewsesService({
   sorting,
   filters,
 }: GetAllServiceType) {
-  let query: Prisma.NewsesWhereInput = {};
+  let query: any = {};
   let orderByCondition: any = {};
 
   if (globalFilter) {
