@@ -8,14 +8,14 @@ import {
   slugUrl,
 } from "@/lib/utils";
 import { CloudFlareResponseType } from "@/Types";
-import { CategorySources } from "@prisma/client";
+
 import { parse } from "node-html-parser";
 
 export class NewsClass {
   public categoryNode: string;
-  public node: CategorySources;
+  public node: any;
 
-  constructor(node: CategorySources) {
+  constructor(node: any) {
     this.node = node;
     this.categoryNode =
       NEWS_SOURCES[
