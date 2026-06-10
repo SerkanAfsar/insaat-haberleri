@@ -1,5 +1,5 @@
 import { PrismaMssql } from "@prisma/adapter-mssql";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "./generated/prisma/client";
 
 const config = {
   server: "104.247.162.242",
