@@ -46,7 +46,7 @@ export async function AuthLogin(loginData: LoginType) {
     userSurname: user.surname,
     claims: [
       ...new Set(user.UserRoles.flatMap((a) => JSON.parse(a.role.claims))),
-    ],
+    ] as string[],
   };
 
   const { token: accessToken, expires: accessExpire } = await createSession(
