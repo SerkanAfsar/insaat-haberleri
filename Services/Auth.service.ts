@@ -45,7 +45,7 @@ export async function AuthLogin(loginData: LoginType) {
     userName: user.name,
     userSurname: user.surname,
     claims: [
-      ...new Set(user.UserRoles.flatMap((a) => JSON.parse(a.role.claims))),
+      ...new Set(user.UserRoles.flatMap((a: any) => JSON.parse(a.role.claims))),
     ] as string[],
   };
 
