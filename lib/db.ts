@@ -2,11 +2,11 @@ import { PrismaMssql } from "@prisma/adapter-mssql";
 import { PrismaClient } from "@prisma/client";
 
 const config = {
-  server: "localhost",
-  port: 1433,
-  database: "db_InsaatHaberleri",
-  user: "sa",
-  password: "1Q2w3E4r!",
+  server: "104.247.162.242",
+  port: 55548,
+  database: "serkanaf_dbinsaathaber",
+  user: "serkanaf_userinsaat",
+  password: "1Q2w3E4r!insaat",
   options: {
     encrypt: true,
     trustServerCertificate: true,
