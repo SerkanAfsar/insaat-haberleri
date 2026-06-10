@@ -1,5 +1,7 @@
 "use server";
-import prisma from "@/lib/db";
+
+import { prisma } from "@/lib/db";
+import { revalidateTag } from "next/cache";
 
 export async function ActionUpdateNewsCount(newsId: number) {
   const result = await prisma.newses.update({
@@ -13,4 +15,10 @@ export async function ActionUpdateNewsCount(newsId: number) {
     },
   });
   return result.readedCount;
+}
+
+export async function updateCacheTags(tagsList: string[]) {
+  for (const item of tagsList) {
+    revalidateTag(item, "default");
+  }
 }

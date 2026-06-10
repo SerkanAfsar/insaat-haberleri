@@ -1,5 +1,5 @@
 "use server";
-import prisma from "@/lib/db";
+import { prisma } from "@/lib/db";
 import { BcryptHelper } from "@/lib/utils";
 import { AddUserType, GetAllServiceType, UpdateUserType } from "@/Types";
 import { Prisma } from "@prisma/client";

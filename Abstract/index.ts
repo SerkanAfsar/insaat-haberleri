@@ -1,5 +1,5 @@
 import { NEWS_SOURCES } from "@/lib/admin.data";
-import prisma from "@/lib/db";
+import { prisma } from "@/lib/db";
 
 import {
   createNewUrl,

@@ -1,5 +1,5 @@
 import { createSession, decrypt } from "@/lib/auth";
-import prisma from "@/lib/db";
+import { prisma } from "@/lib/db";
 import { SessionPayload } from "@/Types";
 import { NextRequest, NextResponse } from "next/server";
 

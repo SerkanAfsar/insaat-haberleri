@@ -1,16 +1,13 @@
 import { LoginForm } from "@/components/login-form";
+import { Suspense } from "react";
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Promise<{ expired: string }>;
-}) {
-  const { expired } = await searchParams;
-
+export default function Page() {
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
-        <LoginForm expired={expired} />
+        <Suspense>
+          <LoginForm />
+        </Suspense>
       </div>
     </div>
   );

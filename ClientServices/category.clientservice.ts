@@ -1,9 +1,15 @@
-import prisma from "@/lib/db";
+import { prisma } from "@/lib/db";
+import { CACHE_KEYS } from "@/lib/utils";
+import { cacheLife, cacheTag } from "next/cache";
 
 export async function getCategoryDetailWithPaginatitedNews(
   categorId: number,
   page: number,
 ) {
+  "use cache";
+  cacheTag(CACHE_KEYS.CATEGORY_LIST);
+  cacheLife("days");
+
   return await prisma.category.findUnique({
     where: {
       id: categorId,

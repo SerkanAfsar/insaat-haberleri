@@ -1,9 +1,8 @@
 "use server";
 import { NewsClass } from "@/Abstract";
-import prisma from "@/lib/db";
-import { CACHE_KEYS, envVariables, RegisterImageToCdn } from "@/lib/utils";
+import { prisma } from "@/lib/db";
+import { envVariables, RegisterImageToCdn } from "@/lib/utils";
 import { AddNewsType } from "@/Types";
-import { revalidateTag } from "next/cache";
 
 export async function RegisterAllNewses() {
   const categorySources = await prisma.categorySources.findMany({
@@ -16,41 +15,20 @@ export async function RegisterAllNewses() {
     await categoruSource.getNewsList();
   }
 
-  const categories = await prisma.category.findMany({
-    orderBy: {
-      id: "asc",
-    },
-    select: {
-      categoryName: true,
-      id: true,
-      _count: {
-        select: {
-          Newses: true,
-        },
-      },
-    },
-  });
-
-  revalidateTag(CACHE_KEYS.CATEGORY_DETAIL, "default");
-  revalidateTag(CACHE_KEYS.CATEGORY_LIST, "default");
-  revalidateTag(CACHE_KEYS.MOST_READED, "default");
-  revalidateTag(CACHE_KEYS.TAB_LIST, "default");
-
-  for (let i = 0; i < categories.length; i++) {
-    const category = categories[i];
-    const pageSize = Math.ceil(Number(category._count) / 12);
-
-    revalidateTag(
-      `${CACHE_KEYS.CATEGORY_DETAIL}_${category.id.toString()}`,
-      "default",
-    );
-    for (let k = 1; k <= pageSize; k++) {
-      revalidateTag(
-        `${CACHE_KEYS.CATEGORY_DETAIL}_${category.id.toString()}_${k}`,
-        "default",
-      );
-    }
-  }
+  // const categories = await prisma.category.findMany({
+  //   orderBy: {
+  //     id: "asc",
+  //   },
+  //   select: {
+  //     categoryName: true,
+  //     id: true,
+  //     _count: {
+  //       select: {
+  //         Newses: true,
+  //       },
+  //     },
+  //   },
+  // });
 }
 
 export async function DeleteNewsService(id: number) {

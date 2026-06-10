@@ -1,3 +1,4 @@
+import { updateCacheTags } from "@/Actions/news.actions";
 import useFetchApi from "@/CustomHooks/useFetchApi";
 import { GetAllServiceType } from "@/Types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -67,6 +68,7 @@ export function useCrudData<T extends object, K extends object>(
   url: string,
   method: "POST" | "PUT" | "DELETE",
   validateKey: string,
+  cacheKeys?: string[],
 ) {
   const loader = useTopLoader();
   const queryClient = useQueryClient();
@@ -86,6 +88,9 @@ export function useCrudData<T extends object, K extends object>(
       return error;
     },
     onSuccess: (data: T) => {
+      if (cacheKeys) {
+        updateCacheTags(cacheKeys);
+      }
       return data;
     },
     onSettled: async () => {

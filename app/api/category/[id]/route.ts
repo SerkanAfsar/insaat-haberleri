@@ -27,7 +27,6 @@ export async function DELETE(
   try {
     const { id } = await params;
     const result = await DeleteCategoryService(Number(id));
-    revalidateTag(CACHE_KEYS.CATEGORY_DETAIL, "default");
     revalidateTag(CACHE_KEYS.CATEGORY_LIST, "default");
     return NextResponse.json(result, { status: 200 });
   } catch (error: any) {
@@ -43,7 +42,7 @@ export async function PUT(
     const { id } = await params;
     const data: AddCategoryType = await req.json();
     const result = await UpdateCategoryService(Number(id), data);
-    revalidateTag(CACHE_KEYS.CATEGORY_DETAIL, "default");
+
     revalidateTag(CACHE_KEYS.CATEGORY_LIST, "default");
     return NextResponse.json(result, { status: 200 });
   } catch (error: any) {

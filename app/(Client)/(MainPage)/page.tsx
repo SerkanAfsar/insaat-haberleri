@@ -1,17 +1,15 @@
+import { Metadata } from "next";
+import { Suspense } from "react";
+import MainPageLastNewsSkippedWrapper from "../Wrappers/main-page-last-news-skipped-wrapper";
+import CommonWrapper from "../Wrappers/common-wrapper";
 import {
   getLastNewsClientService,
   getLastNewsSkippedClientService,
   getSkipped12NewsClientService,
   mostReadedNewsClientService,
 } from "@/ClientServices/news.clientservice";
-
-import { Metadata } from "next";
-
-import Slider3Section from "../Sections/MainPage/slider-3-section";
-import CustomWrapper from "../Components/Common/custom-wrapper";
-import MainPageLastNewsSkipped from "../Sections/MainPage/main-page-last-news-skipped";
-import MainPageSkipped12 from "../Sections/MainPage/main-page-skipped-12";
 import SwiperSlideList from "../Components/Common/swiper-slide-list";
+import MainPageSkipped12 from "../Sections/MainPage/main-page-skipped-12";
 
 export const metadata: Metadata = {
   title: "Güncel İnşaat Haberleri | İnşaat Haberleri",
@@ -47,42 +45,48 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home() {
-  const [lastNewsResult, lastNewsSkipped, mostReaded, mostReaded12Skipped] =
-    await Promise.all([
-      getLastNewsClientService(),
-      getLastNewsSkippedClientService(),
-      mostReadedNewsClientService(),
-      getSkipped12NewsClientService(),
-    ]);
-
+export default function Home() {
   return (
     <>
-      <SwiperSlideList
-        newses={lastNewsResult.slice(0, 3)}
-        nextClass="next1"
-        prevClass="prev1"
-        key={0}
-      />
-      <Slider3Section newses={lastNewsResult.slice(3, 6)} key={1} />
-      <CustomWrapper
-        className="mt-20 flex flex-col gap-4 xl:flex-row"
-        component="section"
-      >
-        {lastNewsSkipped.map((item, index) => {
-          return <MainPageLastNewsSkipped newsList={item} key={index} />;
-        })}
-      </CustomWrapper>
-      <SwiperSlideList
-        newses={mostReaded}
-        nextClass="next2"
-        prevClass="prev2"
-      />
-      <MainPageSkipped12
-        items={mostReaded12Skipped}
-        className="mt-20 block"
-        key={4}
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <CommonWrapper
+          func={getLastNewsClientService}
+          component={SwiperSlideList}
+          propName="newses"
+          nextClass="next1"
+          prevClass="prev1"
+        />
+      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
+        <CommonWrapper
+          func={getLastNewsSkippedClientService}
+          component={MainPageLastNewsSkippedWrapper}
+          propName="result"
+        />
+      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
+        <CommonWrapper
+          func={getLastNewsClientService}
+          component={SwiperSlideList}
+          propName="newses"
+        />
+      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
+        <CommonWrapper
+          func={mostReadedNewsClientService}
+          component={SwiperSlideList}
+          propName="newses"
+          nextClass="next2"
+          prevClass="prev2"
+        />
+      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
+        <CommonWrapper
+          component={MainPageSkipped12}
+          func={getSkipped12NewsClientService}
+          propName="items"
+        />
+      </Suspense>
     </>
   );
 }

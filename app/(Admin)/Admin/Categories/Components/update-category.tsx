@@ -16,8 +16,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCrudData, useSingleItemById } from "@/CustomHooks/useQueries";
 import { Category } from "@prisma/client";
-import { ENDPOINTS } from "@/lib/utils";
+import { CACHE_KEYS, ENDPOINTS } from "@/lib/utils";
 import { addCategorySchema } from "@/lib/schemas";
+import { updateCacheTags } from "@/Actions/news.actions";
 
 export type UpdateComponentRef = {
   submit: () => void;
@@ -50,6 +51,7 @@ const UpdateCategory = React.forwardRef<
 
   const onSubmit: SubmitHandler<AddCategoryType> = async (data) => {
     await mutateAsync(data);
+    updateCacheTags([CACHE_KEYS.CATEGORY_LIST]);
   };
 
   useEffect(() => {

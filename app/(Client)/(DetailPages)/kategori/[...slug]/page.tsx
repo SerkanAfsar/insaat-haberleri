@@ -4,9 +4,11 @@ import SmallSectionTitle from "@/app/(Client)/Components/Common/small-section-ti
 import CategoryPagination from "../Components/category-pagination";
 import { Metadata } from "next";
 
-import { getCategoryDetailCacheService } from "@/CacheFunctions";
 import { categorySlugUrl, slugUrl } from "@/lib/utils";
-import { getCategoryListWithNewsCount } from "@/ClientServices/category.clientservice";
+import {
+  getCategoryDetailWithPaginatitedNews,
+  getCategoryListWithNewsCount,
+} from "@/ClientServices/category.clientservice";
 
 export async function generateMetadata({
   params,
@@ -16,7 +18,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const categoryId = Number(slug[1]);
 
-  const result = await getCategoryDetailCacheService(categoryId, 1);
+  const result = await getCategoryDetailWithPaginatitedNews(categoryId, 1);
 
   if (!result) {
     return {};
@@ -71,7 +73,7 @@ export default async function Page({
     return notFound();
   }
 
-  const categoryItem = await getCategoryDetailCacheService(
+  const categoryItem = await getCategoryDetailWithPaginatitedNews(
     categoryId,
     slug[2] ? page : 1,
   );

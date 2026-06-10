@@ -46,6 +46,7 @@ type DatatableRowActionProps<TData extends object> = {
   row: Row<TData>;
   componentKey: keyof typeof ENDPOINTS;
   column: Column<TData>;
+  cacheKeys?: string[];
 } & EitherKey;
 
 export default function DatatableRowActions<TData extends object>({
@@ -54,6 +55,7 @@ export default function DatatableRowActions<TData extends object>({
   CustomUpdateComponent,
   column,
   detailUrl,
+  cacheKeys,
 }: DatatableRowActionProps<TData>) {
   const router = useRouter();
 
@@ -82,7 +84,11 @@ export default function DatatableRowActions<TData extends object>({
         />
       )}
 
-      <DeleteComponent row={row} componentKey={componentKey} />
+      <DeleteComponent
+        row={row}
+        componentKey={componentKey}
+        cacheKeys={cacheKeys}
+      />
     </div>
   );
 }
@@ -90,9 +96,11 @@ export default function DatatableRowActions<TData extends object>({
 function DeleteComponent<TData extends object>({
   row,
   componentKey,
+  cacheKeys,
 }: {
   row: Row<TData>;
   componentKey: keyof typeof ENDPOINTS;
+  cacheKeys?: string[];
 }) {
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const { id } = row.original as any;
@@ -100,6 +108,7 @@ function DeleteComponent<TData extends object>({
     `${ENDPOINTS[componentKey].url}/${id}`,
     "DELETE",
     ENDPOINTS[componentKey].validateKey,
+    cacheKeys,
   );
 
   return (

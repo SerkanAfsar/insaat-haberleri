@@ -1,11 +1,10 @@
-import prisma from "@/lib/db";
-import { ConvertData } from "@/lib/utils";
-import AddCategoryUrlContainer from "../Containers/add-category-url-container";
+import { Suspense } from "react";
+import CategoryAddWrapper from "../Wrappers/category-add-wrapper";
 
 export default async function Page() {
-  const categoryList = await prisma.category.findMany({
-    orderBy: { id: "asc" },
-  });
-  const categoryData = ConvertData(categoryList, "id", "categoryName");
-  return <AddCategoryUrlContainer categoryList={categoryData} />;
+  return (
+    <Suspense>
+      <CategoryAddWrapper />
+    </Suspense>
+  );
 }

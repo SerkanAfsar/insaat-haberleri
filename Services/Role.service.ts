@@ -1,5 +1,5 @@
 import { encodeClaims } from "@/lib/admin.data";
-import prisma from "@/lib/db";
+import { prisma } from "@/lib/db";
 import { AddRoleType, GetAllServiceType } from "@/Types";
 import { Prisma } from "@prisma/client";
 import { ColumnFiltersState, SortingState } from "@tanstack/react-table";

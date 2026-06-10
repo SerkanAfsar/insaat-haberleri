@@ -78,8 +78,6 @@ export default async function Page({
     return notFound();
   }
 
-  // const readedCountResult = await updateReadedCountNewsClientServe(id);
-
   const relatedNews = await relatedNewsList(
     newsDetailData.categoryId,
     newsDetailData.id,

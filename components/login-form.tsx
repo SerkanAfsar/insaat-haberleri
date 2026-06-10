@@ -25,14 +25,16 @@ import { loginSchema } from "@/lib/schemas";
 import { LoginType } from "@/Types";
 
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 export function LoginForm({
   className,
-  expired,
+
   ...props
 }: React.ComponentProps<"div"> & { expired?: string }) {
+  const params = useSearchParams();
+  const expired = params.get("expired");
   const router = useRouter();
   const form = useForm<LoginType>({
     resolver: zodResolver(loginSchema),

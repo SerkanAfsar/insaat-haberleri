@@ -48,13 +48,18 @@ export type SliderProps = {
 };
 
 export type TabListProps = {
-  latestNews: Awaited<ReturnType<typeof LatestTabListNews>>;
-  popularNews: Awaited<ReturnType<typeof PopularTabListNews>>;
-  randomNews: Awaited<ReturnType<typeof RandomTabListNews>>;
+  result: {
+    latestNews: Awaited<ReturnType<typeof LatestTabListNews>>;
+    popularNews: Awaited<ReturnType<typeof PopularTabListNews>>;
+    randomNews: Awaited<ReturnType<typeof RandomTabListNews>>;
+  };
 };
 
 export type ItemsType = "En Son" | "Popüler" | "Rastege";
-export type TabListItemType = Record<ItemsType, TabListProps["latestNews"]>;
+export type TabListItemType = Record<
+  ItemsType,
+  TabListProps["result"]["latestNews"]
+>;
 
 export type HeaderContainerProps = {
   categories: Awaited<ReturnType<typeof getCategoryListClientService>>;

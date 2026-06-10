@@ -4,15 +4,11 @@ import { useState } from "react";
 import { ItemsType, TabListItemType, TabListProps } from "../types";
 import NewsItemSmallComponent from "./news-item-small-component";
 
-export default function TabList({
-  latestNews,
-  popularNews,
-  randomNews,
-}: TabListProps) {
+export default function TabList({ result }: TabListProps) {
   const items = {
-    "En Son": latestNews,
-    Popüler: popularNews,
-    Rastege: randomNews,
+    "En Son": result.latestNews,
+    Popüler: result.popularNews,
+    Rastege: result.randomNews,
   } as const satisfies TabListItemType;
 
   const [activeState, setActiveState] = useState<ItemsType>("En Son");

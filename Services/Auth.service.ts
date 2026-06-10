@@ -1,7 +1,7 @@
 "use server";
 
 import { createSession } from "@/lib/auth";
-import prisma from "@/lib/db";
+import { prisma } from "@/lib/db";
 import { BcryptHelper } from "@/lib/utils";
 import { LoginType, SessionPayload } from "@/Types";
 import { cookies } from "next/headers";

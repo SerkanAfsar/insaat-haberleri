@@ -1,5 +1,5 @@
 "use server";
-import prisma from "@/lib/db";
+import { prisma } from "@/lib/db";
 import { AddCategoryType, GetAllServiceType } from "@/Types";
 import { Prisma } from "@prisma/client";
 import { ColumnFiltersState, SortingState } from "@tanstack/react-table";

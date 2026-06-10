@@ -1,6 +1,12 @@
-import prisma from "@/lib/db";
+import { prisma } from "@/lib/db";
+import { CACHE_KEYS } from "@/lib/utils";
+import { cacheLife, cacheTag } from "next/cache";
 
 export async function getCategoryListClientService() {
+  "use cache";
+  cacheTag(CACHE_KEYS.CATEGORY_LIST);
+  cacheLife("weeks");
+
   return await prisma.category.findMany({
     orderBy: {
       id: "asc",
@@ -25,6 +31,10 @@ export async function getCategoryListClientService() {
 }
 
 export async function getLastNewsClientService() {
+  "use cache";
+  cacheTag(CACHE_KEYS.LAST_NEWS);
+  cacheLife("days");
+
   return prisma.newses.findMany({
     orderBy: {
       createdAt: "desc",
@@ -41,6 +51,10 @@ export async function getLastNewsClientService() {
 }
 
 export async function getLastNewsSkippedClientService() {
+  "use cache";
+  cacheTag(CACHE_KEYS.LAST_NEWS);
+  cacheLife("days");
+
   return prisma.newses.findMany({
     orderBy: {
       createdAt: "desc",
@@ -69,6 +83,10 @@ export async function getLastNewsSkippedClientService() {
 }
 
 export async function mostReadedNewsClientService() {
+  "use cache";
+  cacheTag(CACHE_KEYS.LAST_NEWS);
+  cacheLife("days");
+
   return prisma.newses.findMany({
     distinct: "categoryId",
     orderBy: {
@@ -85,6 +103,10 @@ export async function mostReadedNewsClientService() {
 }
 
 export async function getSkipped12NewsClientService() {
+  "use cache";
+  cacheTag(CACHE_KEYS.LAST_NEWS);
+  cacheLife("days");
+
   return await prisma.newses.findMany({
     skip: 12,
     take: 7,
@@ -107,6 +129,10 @@ export async function getSkipped12NewsClientService() {
 }
 
 export async function LatestTabListNews(categoryId: number | undefined) {
+  "use cache";
+  cacheTag(CACHE_KEYS.LAST_NEWS);
+  cacheLife("days");
+
   return await prisma.newses.findMany({
     where: {
       categoryId: categoryId ? categoryId : undefined,
@@ -131,6 +157,10 @@ export async function LatestTabListNews(categoryId: number | undefined) {
 }
 
 export async function PopularTabListNews(categoryId: number | undefined) {
+  "use cache";
+  cacheTag(CACHE_KEYS.LAST_NEWS);
+  cacheLife("days");
+
   return await prisma.newses.findMany({
     where: {
       categoryId: categoryId ? categoryId : undefined,
@@ -181,12 +211,19 @@ export async function RandomTabListNews(categoryId: number | undefined) {
 }
 
 export async function getNewsById(id: number) {
+  "use cache";
+  cacheTag("news:" + id);
+  cacheLife("weeks");
   return await prisma.newses.findUnique({
     where: { id },
   });
 }
 
 export async function relatedNewsList(categoryId: number, newsId: number) {
+  "use cache";
+  cacheTag("related-news");
+  cacheLife("days");
+
   return prisma.newses.findMany({
     where: {
       categoryId,
@@ -205,6 +242,10 @@ export async function relatedNewsList(categoryId: number, newsId: number) {
 }
 
 export async function mostReadede3NewsList() {
+  "use cache";
+  cacheTag(CACHE_KEYS.LAST_NEWS);
+  cacheLife("days");
+
   return prisma.newses.findMany({
     orderBy: {
       readedCount: "desc",

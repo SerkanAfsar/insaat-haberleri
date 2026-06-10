@@ -15,7 +15,7 @@ import { AddCategoryType } from "@/Types";
 import { Input } from "@/components/ui/input";
 import { Category } from "@prisma/client";
 import { useCrudData } from "@/CustomHooks/useQueries";
-import { ENDPOINTS } from "@/lib/utils";
+import { CACHE_KEYS, ENDPOINTS } from "@/lib/utils";
 import { addCategorySchema } from "@/lib/schemas";
 
 export default function AddUpdateCategoryContainer() {
@@ -32,6 +32,7 @@ export default function AddUpdateCategoryContainer() {
     ENDPOINTS.categories.url,
     "POST",
     ENDPOINTS.categories.validateKey,
+    [CACHE_KEYS.CATEGORY_LIST],
   );
 
   async function onSubmit(values: AddCategoryType) {
